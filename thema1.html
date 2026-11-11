@@ -1,0 +1,1235 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>.home-link{font-family:var(--f-body);font-size:.92rem;color:var(--ink-2);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:2px 11px;white-space:nowrap;margin-right:auto}.home-link:hover{color:var(--ink);border-color:var(--moss);background:var(--moss-soft)}</style>
+
+<title>Ecologie Thema 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Young+Serif&display=swap">
+<style>
+/* Layout: veldschrift — één hoofdstuk tegelijk, smalle leeskolom, oefeningen als losse werkbladen eronder */
+:root{
+  --paper:#EAF0EC; --sheet:#F8FBF9; --ink:#12302A; --ink-2:#4B6761; --line:#C6D6CE;
+  --moss:#4C7D27; --moss-soft:#DAE8CC; --water:#2A6C84; --water-soft:#D3E6ED;
+  --ok:#2C7A47; --ok-soft:#D5EDDC; --bad:#B0442D; --bad-soft:#F5DCD5;
+  --bone:#F3F1EA; --dead:#8D8676;
+  --f-display:"Young Serif", "Iowan Old Style", Georgia, serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0D1A17; --sheet:#132420; --ink:#E1ECE6; --ink-2:#9BB3AB; --line:#29423B;
+  --moss:#9CCB6B; --moss-soft:#22371B; --water:#74B5CA; --water-soft:#17313A;
+  --ok:#7ACB91; --ok-soft:#163322; --bad:#EC8F77; --bad-soft:#3B1E17;
+  --bone:#E9E6DC; --dead:#7A7466; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0D1A17; --sheet:#132420; --ink:#E1ECE6; --ink-2:#9BB3AB; --line:#29423B;
+  --moss:#9CCB6B; --moss-soft:#22371B; --water:#74B5CA; --water-soft:#17313A;
+  --ok:#7ACB91; --ok-soft:#163322; --bad:#EC8F77; --bad-soft:#3B1E17;
+  --bone:#E9E6DC; --dead:#7A7466; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;margin:0}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,5vw,3.6rem)}
+h2{font-size:clamp(1.6rem,3.4vw,2.3rem)}
+h3{font-size:1.3rem}
+p{margin:0}
+b,strong{font-weight:700}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--water);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:20px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 18px;padding-block:10px}
+.teacher{font-family:var(--f-display);font-size:1.15rem;color:var(--ink)}
+.brand{font-family:var(--f-display);font-size:1.15rem;white-space:nowrap;text-decoration:none;color:var(--ink)}
+.brand span{color:var(--moss)}
+nav.tabs{display:flex;flex-wrap:wrap;gap:4px;min-width:0;flex-basis:100%;margin-left:-11px}
+nav.tabs a{flex:none;display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;text-decoration:none;color:var(--ink-2);font-size:.92rem;white-space:nowrap}
+nav.tabs a:hover{background:var(--moss-soft);color:var(--ink)}
+nav.tabs a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+.ring{width:16px;height:16px;flex:none}
+.ring circle{fill:none;stroke-width:3}
+.ring .bg{stroke:var(--line)}
+.ring .fg{stroke:var(--moss);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%}
+nav.tabs a[aria-current="page"] .ring .bg{stroke:color-mix(in srgb,var(--paper) 35%,transparent)}
+
+main{padding-block:36px 80px}
+.view[hidden]{display:none}
+
+/* hero ladder */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:36px;align-items:center}
+.hero .lead{font-size:1.15rem;color:var(--ink-2);max-width:52ch;margin-top:14px}
+.ladder{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px;counter-reset:lv}
+.ladder button{border:1px solid var(--line);background:var(--sheet);padding:6px 12px;border-radius:999px;cursor:pointer;font-size:.95rem;display:flex;gap:7px;align-items:baseline}
+.ladder button .n{font-variant-numeric:tabular-nums;color:var(--ink-2);font-size:.8rem}
+.ladder button[aria-pressed="true"]{background:var(--moss);border-color:var(--moss);color:var(--sheet)}
+.ladder button[aria-pressed="true"] .n{color:inherit;opacity:.8}
+.lvinfo{margin-top:18px;min-height:7.5em;border-left:3px solid var(--moss);padding:4px 0 4px 16px;max-width:60ch}
+.lvinfo h3{font-size:1.5rem}
+.lvinfo .lvex{color:var(--ink-2);margin-top:6px;font-style:italic}
+#rings{width:100%;max-width:420px;height:auto;display:block;margin:auto}
+#rings circle{fill:transparent;stroke:var(--line);stroke-width:1.5;transition:fill .35s,stroke .35s;cursor:pointer}
+#rings circle.in{fill:color-mix(in srgb,var(--moss) 9%,transparent);stroke:color-mix(in srgb,var(--moss) 55%,var(--line))}
+#rings circle.on{stroke:var(--moss);stroke-width:3.5}
+#rings text{font-family:var(--f-body);font-size:13px;fill:var(--ink);text-anchor:middle;pointer-events:none}
+
+.chapters{margin-top:56px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.chap{display:block;text-decoration:none;color:inherit;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.chap:hover{border-color:var(--moss)}
+.chap .num{font-family:var(--f-display);font-size:1.9rem;color:var(--moss);line-height:1}
+.chap h3{margin-top:8px;font-size:1.15rem}
+.chap p{color:var(--ink-2);font-size:.92rem;margin-top:4px}
+.bar{height:5px;background:var(--line);border-radius:3px;margin-top:12px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--moss);border-radius:3px;width:0;transition:width .4s}
+.howto{margin-top:44px;max-width:64ch;color:var(--ink-2)}
+.howto h3{color:var(--ink);margin-bottom:6px}
+
+/* chapter */
+.chead{max-width:760px}
+.chead .num{font-family:var(--f-display);color:var(--moss);font-size:1.1rem}
+.chead p{font-size:1.12rem;color:var(--ink-2);margin-top:12px}
+.subnav{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.subnav a{font-size:.9rem;color:var(--water);text-decoration:none;border-bottom:1px solid currentColor}
+.block{margin-top:44px;max-width:760px}
+.block > h2{margin-bottom:6px}
+.sum{margin-top:22px;display:grid;gap:12px}
+.sum h3{margin-top:14px}
+.sum p,.sum li{max-width:68ch}
+.sum ul{margin:0;padding-left:1.2em;display:grid;gap:4px}
+dfn{font-style:normal;font-weight:700;background:linear-gradient(transparent 62%,var(--moss-soft) 62%)}
+.note{font-size:.95rem;color:var(--ink-2);border-left:3px solid var(--water);padding-left:12px}
+
+/* flashcards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:16px;max-width:1000px}
+.card{perspective:900px;border:none;background:none;padding:0;cursor:pointer;min-height:132px;text-align:left}
+.card .in{position:relative;display:block;width:100%;height:100%;min-height:132px;transition:transform .45s;transform-style:preserve-3d}
+.card.flip .in{transform:rotateY(180deg)}
+.card .f,.card .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;justify-content:center}
+.card .f{background:var(--sheet);border:1px solid var(--line);font-family:var(--f-display);font-size:1.2rem}
+.card .f small{font-family:var(--f-body);font-size:.78rem;color:var(--ink-2);margin-top:8px}
+.card .b{background:var(--moss-soft);border:1px solid var(--moss);transform:rotateY(180deg);font-size:.93rem;line-height:1.45}
+
+/* exercises */
+.ex-list{display:grid;gap:18px;margin-top:18px;max-width:1000px}
+.ex{min-width:0;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.ex.done{border-color:var(--ok)}
+.exh{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.exh h3{font-size:1.18rem;max-width:62ch}
+.exh .tag{font-size:.8rem;color:var(--ink-2);display:block;font-family:var(--f-body);margin-bottom:2px}
+.chip{font-size:.8rem;padding:3px 10px;border-radius:999px;background:var(--paper);color:var(--ink-2);white-space:nowrap;border:1px solid var(--line)}
+.ex.done .chip{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
+.ex .q{margin-top:8px;color:var(--ink-2);max-width:68ch}
+.ex-body{margin-top:14px}
+.row{display:flex;gap:10px 16px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:10px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:none}
+.row .t{flex:1 1 280px;min-width:0}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opt{border:1px solid var(--line);background:var(--paper);padding:5px 12px;border-radius:7px;cursor:pointer;font-size:.92rem}
+.opt:hover{border-color:var(--water)}
+.opt[aria-pressed="true"]{background:var(--water);color:var(--sheet);border-color:var(--water)}
+.row.ok .opt[aria-pressed="true"]{background:var(--ok);border-color:var(--ok)}
+.row.bad .opt[aria-pressed="true"]{background:var(--bad);border-color:var(--bad)}
+.fb{flex-basis:100%;font-size:.92rem;padding:6px 10px;border-radius:7px}
+.fb.ok{background:var(--ok-soft);color:var(--ink)}
+.fb.bad{background:var(--bad-soft);color:var(--ink)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.btn{border:none;background:var(--ink);color:var(--paper);padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.95rem}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:400}
+.btn:hover{opacity:.9}
+.msg{font-size:.95rem}
+.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+select{font:inherit;font-size:.93rem;padding:5px 8px;border-radius:7px;border:1px solid var(--line);background:var(--paper);color:var(--ink);max-width:100%}
+.row.ok select{border-color:var(--ok);background:var(--ok-soft)}
+.row.bad select{border-color:var(--bad);background:var(--bad-soft)}
+textarea{width:100%;min-height:90px;font:inherit;font-size:.95rem;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);resize:vertical}
+.model{margin-top:12px;background:var(--moss-soft);border-radius:8px;padding:12px 14px;font-size:.95rem}
+.model b{display:block;margin-bottom:2px}
+
+/* order */
+.pool,.answer{display:flex;flex-wrap:wrap;gap:8px;min-height:48px;padding:10px;border-radius:8px}
+.pool{background:var(--paper)}
+.answer{border:1.5px dashed var(--line);margin-top:10px;flex-direction:column;align-items:stretch}
+.answer:empty::before{content:"Tik de stappen hierboven aan in de juiste volgorde.";color:var(--ink-2);font-size:.92rem}
+.tok{border:1px solid var(--line);background:var(--sheet);padding:6px 12px;border-radius:7px;cursor:pointer;text-align:left;font-size:.93rem}
+.answer .tok{display:flex;gap:10px}
+.answer .tok .i{font-variant-numeric:tabular-nums;color:var(--ink-2);min-width:1.2em}
+.answer .tok.ok{border-color:var(--ok);background:var(--ok-soft)}
+.answer .tok.bad{border-color:var(--bad);background:var(--bad-soft)}
+
+/* table */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:380px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{font-weight:700;font-size:.9rem;color:var(--ink-2)}
+td.c,th.c{text-align:center}
+td.ok{background:var(--ok-soft)} td.bad{background:var(--bad-soft)}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--water)}
+
+/* explore */
+.explore{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:16px}
+.explore .list{display:flex;flex-direction:column;gap:6px}
+.explore .panel{background:var(--paper);border-radius:8px;padding:14px 16px;min-height:120px}
+.explore .panel h4{font-family:var(--f-display);font-weight:400;font-size:1.2rem;margin:0 0 6px}
+.explore .panel dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.explore .panel dt{color:var(--ink-2);font-size:.9rem}
+.explore .panel dd{margin:0}
+
+/* pyramid */
+.pyr{display:grid;gap:6px;margin-top:12px}
+.pyr .lv{display:grid;grid-template-columns:150px minmax(0,1fr) 110px;gap:10px;align-items:center;font-size:.92rem}
+.pyr .lv .bw{display:flex;justify-content:center}
+.pyr .lv .b{height:30px;background:var(--moss);border-radius:4px;min-width:3px;transition:width .3s}
+.pyr .lv:nth-child(2) .b{background:color-mix(in srgb,var(--moss) 75%,var(--water))}
+.pyr .lv:nth-child(3) .b{background:color-mix(in srgb,var(--moss) 45%,var(--water))}
+.pyr .lv:nth-child(4) .b{background:var(--water)}
+.pyr .lv .v{font-variant-numeric:tabular-nums;text-align:right}
+input[type=range]{width:100%;accent-color:var(--moss)}
+input[type=number]{font:inherit;width:9em;padding:5px 8px;border-radius:7px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+
+/* svg diagrams */
+.diagram{overflow-x:auto}
+.diagram svg{display:block;width:100%;min-width:560px;height:auto}
+.node rect{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+.node text{font-family:var(--f-body);font-size:14px;fill:var(--ink);text-anchor:middle}
+.arr{cursor:pointer}
+.arr line{stroke-width:3.5}
+.arr .hit{stroke:transparent;stroke-width:22}
+.arr text{font-family:var(--f-body);font-size:13px;font-weight:700;paint-order:stroke;stroke:var(--sheet);stroke-width:5px;stroke-linejoin:round}
+.arr.dim{opacity:.25}
+.arr.hl line{stroke-width:6}
+.k-fix{stroke:var(--water);fill:var(--water)}
+.k-ass{stroke:var(--moss);fill:var(--moss)}
+.k-nit{stroke:#C98A1B;fill:#C98A1B}
+.k-amm{stroke:var(--bad);fill:var(--bad)}
+.k-dood{stroke:var(--ink-2);fill:var(--ink-2)}
+.arr text.k-fix,.arr text.k-ass,.arr text.k-nit,.arr text.k-amm,.arr text.k-dood{stroke:var(--sheet)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:none;background:transparent;padding:6px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.infobox{margin-top:12px;background:var(--paper);border-radius:8px;padding:12px 14px;min-height:72px}
+
+/* coral */
+.coral{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:20px;align-items:center}
+.coral svg{width:100%;max-width:300px;height:auto}
+.coral .st{font-family:var(--f-display);font-size:1.5rem}
+.c-branch{transition:stroke .6s}
+.state-gezond .c-branch{stroke:var(--moss)}
+.state-gezond .c-pol{fill:#E0A33A;opacity:1}
+.state-verbleekt .c-branch{stroke:var(--bone)}
+.state-verbleekt .c-pol{fill:var(--bone);opacity:.7}
+.state-dood .c-branch{stroke:var(--dead)}
+.state-dood .c-pol{opacity:0}
+.c-alg{opacity:0;transition:opacity .6s;fill:var(--moss)}
+.state-dood .c-alg{opacity:.8}
+.c-pol{transition:fill .6s,opacity .6s}
+
+/* glossary */
+.gl-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.gl-tools input{font:inherit;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--sheet);color:var(--ink);flex:1 1 240px;min-width:0}
+.gl{margin-top:16px;display:grid;gap:0;max-width:820px}
+.gl div{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}
+.gl dt{font-weight:700}
+.gl dd{margin:0}
+.gl .h{font-size:.8rem;color:var(--ink-2)}
+
+/* toets */
+.quiz{max-width:760px}
+.qcard{background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.qcard .qn{color:var(--ink-2);font-size:.9rem;font-variant-numeric:tabular-nums}
+.qcard h3{margin:6px 0 14px}
+.qopts{display:grid;gap:8px}
+.qopt{border:1px solid var(--line);background:var(--paper);text-align:left;padding:10px 14px;border-radius:8px;cursor:pointer}
+.qopt:hover{border-color:var(--water)}
+.qopt.ok{background:var(--ok-soft);border-color:var(--ok)}
+.qopt.bad{background:var(--bad-soft);border-color:var(--bad)}
+.qopt:disabled{cursor:default}
+.score{font-family:var(--f-display);font-size:3rem;color:var(--moss)}
+
+.foot{margin-top:60px;color:var(--ink-2);font-size:.85rem;max-width:70ch}
+
+@media (max-width:820px){
+  .top{position:static}
+  .hero{grid-template-columns:1fr}
+  #rings{max-width:300px}
+  .explore,.coral{grid-template-columns:1fr}
+  .pyr .lv{grid-template-columns:110px minmax(0,1fr) 80px}
+  .gl div{grid-template-columns:1fr;gap:2px}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .ex{padding:16px}
+}
+
+/* oefenarena (spellen) */
+.ar-top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between}
+.ar-pts{display:flex;gap:8px;flex-wrap:wrap}
+.ar-pill{background:var(--sheet);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.ar-pill b{color:var(--moss)}
+.ar-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-top:26px}
+.ar-tabs button{border:1px solid var(--line);background:var(--sheet);padding:7px 14px;border-radius:999px;cursor:pointer;font-size:.95rem}
+.ar-tabs button[aria-selected="true"]{background:var(--moss);border-color:var(--moss);color:var(--sheet)}
+.ar-game{margin-top:16px;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;max-width:1000px}
+.ar-head{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:baseline}
+.ar-head p{flex-basis:100%;color:var(--ink-2);max-width:68ch;margin-top:6px}
+.ar-meta{color:var(--ink-2);font-variant-numeric:tabular-nums;font-weight:700;font-size:.95rem}
+.ar-fb{min-height:1.5em;font-weight:700;margin-top:10px;font-size:.95rem}
+.ar-fb.ok{color:var(--ok)} .ar-fb.no{color:var(--bad)}
+.ar-mem{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+@media (max-width:620px){.ar-mem{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ar-card{min-height:108px;border-radius:8px;border:1px solid var(--line);background:var(--ink);color:transparent;cursor:pointer;padding:8px;font-size:.86rem;line-height:1.3;position:relative}
+.ar-card::after{content:"?";position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-size:1.8rem;color:color-mix(in srgb,var(--paper) 45%,transparent)}
+.ar-card.open,.ar-card.done{background:var(--paper);color:var(--ink);cursor:default}
+.ar-card.open::after,.ar-card.done::after{content:none}
+.ar-card.term{font-family:var(--f-display);font-size:1.02rem}
+.ar-card.done{background:var(--ok-soft);border-color:var(--ok)}
+.ar-card.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.ar-pool{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border:1.5px dashed var(--line);border-radius:8px;margin-top:14px}
+.ar-chip{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:7px 12px;cursor:pointer;text-align:left;max-width:100%;font-size:.93rem}
+.ar-chip.sel{border-color:var(--water);background:var(--water-soft)}
+.ar-chip.placed{cursor:default;background:var(--ok-soft);border-color:transparent;font-size:.88rem;padding:5px 9px}
+.ar-buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:12px}
+.ar-bucket{border:1.5px solid var(--moss);border-radius:8px;padding:10px;min-height:100px;background:transparent;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ar-bucket h4{margin:0 0 4px;font-family:var(--f-display);font-weight:400;font-size:1.05rem;color:var(--moss)}
+.ar-bucket.flash{border-color:var(--bad);background:var(--bad-soft)}
+@keyframes ar-shake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.ar-shake{animation:ar-shake .3s}
+.ar-riddle{background:var(--moss-soft);border-radius:8px;padding:14px 16px;margin-top:14px}
+.ar-riddle ol{margin:0;padding-left:1.4em;display:grid;gap:6px}
+.ar-riddle li.hid{color:transparent;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--moss) 30%,transparent) 0 10px,transparent 10px 14px);border-radius:4px;list-style:none;margin-left:-1.4em;padding-left:1.4em}
+.ar-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:12px}
+.ar-opts button{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:11px;cursor:pointer;font-weight:700}
+.ar-opts button.ok{border-color:var(--ok);background:var(--ok-soft)}
+.ar-opts button.no{border-color:var(--bad);background:var(--bad-soft)}
+.ar-chain{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px;counter-reset:s}
+.ar-chain li{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--paper)}
+.ar-chain li .n{counter-increment:s;font-family:var(--f-display);color:var(--moss);width:1.6em;text-align:center;flex:none}
+.ar-chain li .n::before{content:counter(s)}
+.ar-chain li .t{flex:1;min-width:0}
+.ar-chain li.ok{border-color:var(--ok);background:var(--ok-soft)}
+.ar-chain li.no{border-color:var(--bad)}
+.ar-mv{border:1px solid var(--line);background:var(--sheet);border-radius:7px;width:38px;height:38px;cursor:pointer;flex:none}
+.ar-mv:disabled{opacity:.3;cursor:default}
+.chap.arena{border-color:var(--moss);background:var(--moss-soft)}
+@media (prefers-reduced-motion:reduce){.ar-shake{animation:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#start">Thema 1 <span>Ecologie</span></a>
+    <a class="home-link" href="index.html">Alle thema’s</a>
+    <span class="teacher">P. Vandenheede</span>
+    <nav class="tabs" id="tabs" aria-label="Hoofdstukken"></nav>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<script>
+const LEVELS = [
+  ["Cel","De kleinste structurele en functionele eenheid van het leven.","Een spiercel, een bladcel."],
+  ["Weefsel","Cellen met dezelfde vorm en functie die bij elkaar liggen.","Spierweefsel."],
+  ["Orgaan","Verschillende weefsels samen vormen een orgaan.","Het hart, een blad."],
+  ["Stelsel","Verschillende organen samen vormen een stelsel.","Het spijsverteringsstelsel."],
+  ["Organisme","Alle stelsels samen vormen een meercellig organisme.","Eén wolf."],
+  ["Populatie","Organismen van dezelfde soort in een bepaald gebied, waartussen interactie mogelijk is.","De wolven van de Scandinavische roedels. Met de Italiaanse wolven is er geen interactie: dat is een andere populatie."],
+  ["Levensgemeenschap","Alle populaties van verschillende soorten die elkaar direct of indirect beïnvloeden.","Wolven, herten, reeën, everzwijnen en de aaseters die van de prooiresten leven."],
+  ["Ecosysteem","Het geheel van interacties tussen alle biotische en abiotische factoren in een biotoop.","Een oerbos of een vijver, maar ook de bladerkroon van een boom of de vacht van een wolf."],
+  ["Biosfeer","Het grootste en meest complexe ecosysteem: het deel van de aarde waar leven mogelijk is. Lithosfeer (aarde), hydrosfeer (water) en atmosfeer (lucht).","Alle organismen in, op en rond de aarde, van bacteriën tot dieren."]
+];
+
+const CH = [
+/* ---------------- HOOFDSTUK 1 ---------------- */
+{ id:"h1", num:"1", title:"Ecosystemen", short:"Organisatieniveaus, biotoop, habitat en niche",
+  lead:"Van één cel tot de hele biosfeer: welke organisatieniveaus onderscheid je, en wat is het verschil tussen een biotoop, een habitat en een niche?",
+  summary:`
+  <h3>1.1 Van organisme tot ecosysteem</h3>
+  <p>Organismen van dezelfde soort in één gebied, die met elkaar in contact kunnen komen, vormen een <dfn>populatie</dfn>. Alle populaties van verschillende soorten die elkaar beïnvloeden, vormen samen een <dfn>levensgemeenschap</dfn>. Neem je ook de invloed van de <dfn>abiotische factoren</dfn> (licht, temperatuur, water …) mee, dan spreek je van een <dfn>ecosysteem</dfn>: het geheel van interacties tussen biotische en abiotische factoren in een biotoop.</p>
+  <p><dfn>Biodiversiteit</dfn> is de verscheidenheid van het leven in al zijn vormen: verschillende ecosystemen, verschillende soorten en genetische variatie. Ze is niet gelijk verdeeld over de aarde. <dfn>Ecologie</dfn> is de wetenschap die de wisselwerking tussen organismen en hun biotoop bestudeert.</p>
+  <h3>1.2 Ecosystemen op grote en kleine schaal</h3>
+  <p>Ecosystemen hebben meestal geen duidelijke grenzen. Het grootste is de <dfn>biosfeer</dfn>, met de lithosfeer (vaste aardkorst), de hydrosfeer (al het water) en de atmosfeer (lucht). Maar ook het Amazoneregenwoud, één bromelia of zelfs één waterdruppel op een blad is een ecosysteem, zolang er biotische én abiotische factoren op de levensgemeenschap inwerken.</p>
+  <ul>
+    <li><b>Abiotische kenmerken</b> zoals lichtsterkte, temperatuur en vochtigheid bepalen vooral welke <b>planten</b> er groeien.</li>
+    <li><b>Biotische kenmerken</b> zoals de dichtheid van het bladerdek, voedsel en nestgelegenheid bepalen vooral welke <b>dieren</b> er leven.</li>
+  </ul>
+  <h3>1.3 Biotoop, habitat en niche</h3>
+  <p>Een <dfn>biotoop</dfn> is een min of meer gelijkmatig gebied met eigen fysische en chemische kenmerken en een typische levensgemeenschap, bv. een poel. Bij een biotoop kijk je naar alle factoren die aanwezig zijn; bij een ecosysteem ligt de nadruk op de interacties.</p>
+  <p>Een <dfn>habitat</dfn> is de plaats die optimaal is voor één soort om te overleven, te groeien en zich voort te planten. Het leefgebied van een soort kan meerdere habitats in verschillende biotopen omvatten. De gewone pad gebruikt een poel als voortplantingshabitat, moerassen en vochtige graslanden als zomerhabitat en vorstvrije plekken in de strooisellaag of onder de grond als winterhabitat.</p>
+  <p>De <dfn>ecologische niche</dfn> is de rol of functie van een soort in het ecosysteem. Soorten met een gelijkaardige habitat kunnen naast elkaar leven omdat hun niche verschilt. De kerkuil jaagt ’s nachts op muizen, de torenvalk overdag. De gewone pad legt eieren in lange slierten dieper tussen de planten, de bruine kikker legt klompen kikkerdril in ondiep water.</p>`,
+  cards:[["Populatie","Organismen van dezelfde soort in een gebied, met interactie mogelijk."],["Levensgemeenschap","Alle populaties van verschillende soorten die elkaar beïnvloeden."],["Ecosysteem","Geheel van interacties tussen biotische en abiotische factoren in een biotoop."],["Biosfeer","Deel van de aarde waar leven mogelijk is: lithosfeer, hydrosfeer en atmosfeer."],["Biotoop","Min of meer homogeen gebied met eigen fysische en chemische kenmerken en een typische levensgemeenschap."],["Habitat","Plaats die optimaal is voor één soort om te overleven, groeien en voortplanten."],["Niche","De ecologische rol of functie van een soort in het ecosysteem."],["Ecologie","Wetenschap die de wisselwerking tussen organismen en hun biotoop bestudeert."]],
+  exercises:[
+    { type:"explore", title:"Verken de poel", q:"Vier soorten leven in dezelfde zoetwaterbiotoop. Klik op een soort en vergelijk hun habitat en niche.",
+      items:[
+        {n:"Waterlelie",d:[["Habitat","Drijvende bladeren, stengels onder het wateroppervlak"],["Niche","Houdt zonlicht tegen, waardoor algen minder snel groeien"]]},
+        {n:"Schaatsenrijder",d:[["Habitat","Op het wateroppervlak"],["Niche","Eet insecten die per ongeluk op het water vallen; wacht passief tot hun gespartel ze verraadt"]]},
+        {n:"Vederkruid",d:[["Habitat","In het water, onderwaterplant (zuurstofplant)"],["Niche","Beschermt kikkervisjes en produceert veel zuurstofgas"]]},
+        {n:"Bootsmannetje",d:[["Habitat","Net onder het wateroppervlak"],["Niche","Jaagt actief op insecten, zoals larven van libellen"]]},
+        {n:"Gewone pad",d:[["Voortplanting","Poel met voldoende vegetatie en insecten"],["Zomer","Moerassen en vochtige graslanden"],["Winter","Vorstvrije plekken in de strooisellaag of ondergronds"]]}
+      ]},
+    { type:"classify", title:"Welk organisatieniveau?", q:"Kies bij elke beschrijving het juiste niveau.",
+      buckets:["Populatie","Levensgemeenschap","Ecosysteem"],
+      items:[
+        {t:"Een school anemoonvissen",b:0},
+        {t:"Koraalpoliepen, algen, anemoonvissen en kwallen",b:1},
+        {t:"Een koraalrif",b:2},
+        {t:"Alle wolven van de roedels in Scandinavië",b:0},
+        {t:"Wolven, herten, reeën, everzwijnen en aaseters in een bos",b:1},
+        {t:"De vacht van een wolf, met alles wat erin leeft en de invloed van temperatuur en vocht",b:2}
+      ],
+      ok:"Een populatie bevat één soort, een levensgemeenschap meerdere soorten. Komen de abiotische factoren erbij, dan is het een ecosysteem."},
+    { type:"classify", title:"Biotoop, habitat of niche?", q:"Gaat de uitspraak over de biotoop, de habitat of de niche?",
+      buckets:["Biotoop","Habitat","Niche"],
+      items:[
+        {t:"Blaasjeskruid vangt kleine diertjes zoals watervlooien om genoeg voedingsstoffen te hebben.",b:2},
+        {t:"Blaasjeskruid kan voorkomen in poelen.",b:0},
+        {t:"Blaasjeskruid groeit enkel op ondiepe plaatsen.",b:1},
+        {t:"Een poel: geïsoleerd, stilstaand water met ondiepe en diepere delen.",b:0},
+        {t:"De schaatsenrijder leeft op het wateroppervlak.",b:1},
+        {t:"De kerkuil jaagt ’s nachts op muizen, de torenvalk overdag.",b:2}
+      ]},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Ecosystemen vormen het onderzoeksdomein van de ecologie.",a:true,e:"Ecologie bestudeert de wisselwerking tussen organismen en hun biotoop, dus ecosystemen."},
+        {s:"Aarde, water en lucht vormen samen een ecosysteem.",a:false,e:"Dat zijn enkel abiotische factoren. Een ecosysteem bevat ook een levensgemeenschap en de interacties ertussen."},
+        {s:"De habitat van een veldmuis kan verschillende biotopen omvatten, zoals een bos, een weide en een akker.",a:true,e:"Net zoals bij de gewone pad kan het leefgebied van een soort over meerdere biotopen verspreid liggen."},
+        {s:"Een kerkuil en een torenvalk jagen allebei op veldmuizen en hebben dus dezelfde niche.",a:false,e:"De kerkuil jaagt ’s nachts, de torenvalk overdag. Daardoor verschilt hun niche."}
+    ]},
+    { type:"open", title:"Pad en kikker in één poel", q:"Leg uit waarom de gewone pad en de bruine kikker samen in dezelfde poel kunnen leven.",
+      model:"Ze hebben een verschillende niche. De gewone pad legt zijn eieren in lange slierten, beschermd tussen planten dieper in het water. De bruine kikker legt grote klompen kikkerdril aan de oppervlakte in ondiepe delen."},
+    { type:"open", title:"Klein en groot ecosysteem", q:"Geef een voorbeeld van een klein, eenvoudig ecosysteem. Geef daarna een groot, complex ecosysteem waar het deel van uitmaakt en verklaar.",
+      model:"Bv. een regendruppel op een bromelia: er leven meerdere organismen samen en abiotische factoren (gaswisseling, zwaartekracht) hebben invloed. Die maakt deel uit van het Amazonewoud, waar veel neerslag valt en heel veel verschillende soorten leven."}
+  ]},
+
+/* ---------------- HOOFDSTUK 2 ---------------- */
+{ id:"h2", num:"2", title:"Biodiversiteit in ecosystemen", short:"Inventariseren en drie niveaus van biodiversiteit",
+  lead:"Hoe breng je biodiversiteit in kaart, en waarom is ze belangrijk op het niveau van ecosystemen, soorten en genen?",
+  summary:`
+  <h3>2.1 Biodiversiteit in kaart brengen</h3>
+  <p>Biodiversiteit is een belangrijke maatstaf voor de <b>natuurkwaliteit</b>. België heeft dankzij het gematigde klimaat en een afwisselend landschap een verrassende biodiversiteit. Typische biotopen worden beschermd in natuurreservaten, zoals de Westhoek, het Zwin en de Hoge Venen.</p>
+  <p>Bij een <dfn>terreinstudie</dfn> zoek je eerst de naam van de organismen op: <dfn>determineren</dfn> (kwalitatief). Daarna tel of schat je de aantallen en hun verspreiding: <dfn>inventariseren</dfn> (kwantitatief).</p>
+  <p>Omdat je niet alle soorten kunt tellen, onderzoekt men vaak <dfn>indicatorsoorten</dfn>: soorten die door hun aan- of afwezigheid iets vertellen over het milieu.</p>
+  <ul>
+    <li>Brandnetels wijzen op een stikstofrijke bodem.</li>
+    <li>De brede orchis groeit in vochtige graslanden met een mineraalrijke bodem.</li>
+    <li>De kokerjuffer overleeft enkel in heel zuiver water.</li>
+  </ul>
+  <p>Een terreinstudie is een <b>momentopname</b>. Door ze te herhalen kun je de biodiversiteit <b>monitoren</b>. Planten onderzoek je met een <dfn>vegetatieopname</dfn> in een opnamevlak of langs een traject. Dieren inventariseer je <b>rechtstreeks</b> (nestkasten controleren, tellen, vangen) of <b>onrechtstreeks</b> via sporen zoals pootafdrukken, uitwerpselen, haren en dode dieren. Sporen tonen enkel aan- of afwezigheid, geen aantallen. Inventarisatie is nodig om goede <b>beheerplannen</b> op te stellen.</p>
+  <h3>2.2 Drie niveaus van biodiversiteit</h3>
+  <p><b>A. Ecosystemen.</b> Zonder invloed van de mens spreek je van <dfn>natuurlijke ecosystemen</dfn> (zuidpool, hoge toppen van de Himalaya). De Vlaamse natuurreservaten (zo’n 30 000 ha) zijn <dfn>halfnatuurlijk</dfn>. Wegbermen (bijna 25 000 ha) zijn <dfn>kunstmatige ecosystemen</dfn> door maaien en afvoeren van maaisel, maar bloemrijke bermen zijn waardevol voor vlinders, bijen en hommels en verbinden natuurgebieden met elkaar.</p>
+  <p><b>B. Soortniveau.</b> Een bloemrijke wegberm telt veel meer soorten dan de berm van een wandelpad. Daar groeien <dfn>tredplanten</dfn>, aangepast aan een verdichte bodem: straatgras, varkensgras, grote weegbree en madeliefje.</p>
+  <p><b>C. Genetisch niveau.</b> Genetische diversiteit is de motor van de natuurlijke selectie. Binnen de soort paardenbloem bestaan wel 250 variëteiten, met bv. rechtopstaande of platte bladeren, lichte of zware zaden en kortere of langere bloemstelen.</p>`,
+  cards:[["Determineren","Kwalitatief: de naam van een organisme opzoeken."],["Inventariseren","Kwantitatief: aantallen en verspreiding van soorten tellen of schatten."],["Indicatorsoort","Soort die door aan- of afwezigheid informatie geeft over een kenmerk van het milieu."],["Vegetatieopname","Alle planten in een opnamevlak of langs een traject determineren en inventariseren."],["Halfnatuurlijk ecosysteem","Ecosysteem beïnvloed door de mens, zoals de Vlaamse natuurreservaten."],["Kunstmatig ecosysteem","Ecosysteem dat door intensief beheer bestaat, zoals wegbermen."],["Tredplant","Plant aangepast aan een verdichte bodem met slechte waterhuishouding."],["Genetische diversiteit","Variatie binnen een soort; motor van natuurlijke selectie."]],
+  exercises:[
+    { type:"match", title:"Natuurreservaten en hun biotoop", q:"Koppel elk Belgisch natuurreservaat aan zijn biotoop.",
+      options:["strand en duinen","slik en schor","polder","bos","heide","hoogveen"],
+      items:[{t:"De Westhoek",a:0},{t:"Het Zwin",a:1},{t:"De Polders van Kruibeke",a:2},{t:"Het Hallerbos",a:3},{t:"De Mechelse Heide",a:4},{t:"De Hoge Venen",a:5}]},
+    { type:"explore", title:"Waarom de paardenbloem belangrijk is", q:"Klik op een deel van de plant om te zien wat het betekent voor de biodiversiteit.",
+      items:[
+        {n:"Blad",d:[["Vorm","Rozet, laag tegen de bodem, bestand tegen maaien en begrazing"],["Belang","Verdringt andere planten; voedsel voor knaagdieren"]]},
+        {n:"Bloem",d:[["Vorm","Veel kleine bloemetjes op een lange steel, zichtbaar boven andere planten"],["Belang","Vroeg in het jaar nectar voor vlinders; insecten zorgen voor bestuiving"]]},
+        {n:"Vruchten en zaden",d:[["Vorm","Zaden met gesteeld vruchtpluis"],["Belang","Voedsel voor vogels; de wind verspreidt de zaden"]]},
+        {n:"Wortel",d:[["Vorm","Diepe penwortel, stevig verankerd"],["Belang","Verbetert lucht- en waterhuishouding van de bodem, goed voor regenwormen"]]}
+      ]},
+    { type:"classify", title:"Rechtstreeks of onrechtstreeks inventariseren?", q:"Welke methode wordt hier gebruikt om dieren te inventariseren?",
+      buckets:["Rechtstreeks","Onrechtstreeks"],
+      items:[{t:"Nestkasten controleren",b:0},{t:"Een pootafdruk in de modder vinden",b:1},{t:"Vogels tellen tijdens het Grote Vogelweekend",b:0},{t:"Uitwerpselen en haren verzamelen",b:1},{t:"Dieren vangen en weer loslaten",b:0},{t:"Een dood dier langs de weg noteren",b:1}],
+      ok:"Onrechtstreekse methodes tonen enkel of een soort aanwezig is, niet hoeveel exemplaren er zijn."},
+    { type:"classify", title:"Op welk niveau?", q:"Over welk niveau van biodiversiteit gaat het?",
+      buckets:["Ecosysteem","Soort","Genetisch"],
+      items:[
+        {t:"Naast de jaguar leven in het regenwoud ook de ocelot, de margay en de tijgerkat.",b:1},
+        {t:"Verschillende kattenrassen",b:2},
+        {t:"Biosfeer, tropisch regenwoud, boomkruin, composthoop, waterdruppel",b:0},
+        {t:"250 variëteiten van de paardenbloem",b:2},
+        {t:"Een bloemrijke berm telt veel meer plantensoorten dan de berm van een wandelpad.",b:1},
+        {t:"Natuurreservaten en wegbermen vormen samen een netwerk van leefgebieden.",b:0}
+      ]},
+    { type:"classify", title:"Natuurlijk, halfnatuurlijk of kunstmatig?", buckets:["Natuurlijk","Halfnatuurlijk","Kunstmatig"],
+      items:[{t:"Het zuidpoolgebied",b:0},{t:"Een natuurreservaat in Vlaanderen",b:1},{t:"Een gemaaide wegberm",b:2},{t:"De hoge toppen van de Himalaya",b:0}]},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Voor de beoordeling van de natuurkwaliteit is het belangrijk om biotoopstudies uit te voeren.",a:true,e:"Biodiversiteit is een maatstaf voor natuurkwaliteit, en die breng je in kaart met terreinstudies."},
+        {s:"Wegbermen verbinden natuurgebieden, waardoor planten en dieren zich over een groter gebied kunnen verspreiden.",a:true,e:"Wegbermen hebben een belangrijke ecologische verbindingsfunctie."}
+    ]},
+    { type:"open", title:"Korstmossen als indicator", q:"Korstmossen groeien op bomen, terrassen en dakpannen en zijn afhankelijk van licht en water. Als er te veel zwaveldioxide in de lucht zit, sterven ze af. Waarvoor zijn korstmossen een indicatorsoort?",
+      model:"Voor de luchtkwaliteit. Ze kunnen niet tegen te veel zwaveldioxide, een gas dat vrijkomt bij de verbranding van steenkool en aardolie."},
+    { type:"open", title:"Monitoren bij wegenwerken", q:"Waarom is het nodig om de biodiversiteit te monitoren vóór, tijdens én na grote infrastructuurwerken?",
+      model:"Eén terreinstudie is maar een momentopname. Door voor, tijdens en na de werken te inventariseren, zie je hoe de natuurkwaliteit evolueert en kun je met de juiste beheermaatregelen de biodiversiteit behouden of laten herstellen."}
+  ]},
+
+/* ---------------- FOCUS MADAGASKAR ---------------- */
+{ id:"mad", num:"Focus", title:"Bijzondere biodiversiteit op Madagaskar", short:"Endemische soorten en unieke ecosystemen",
+  lead:"Een eiland dat al zo’n 90 miljoen jaar losligt van het vasteland, met ecosystemen en soorten die nergens anders voorkomen.",
+  summary:`
+  <p>Veel soorten op Madagaskar leven daar en nergens anders ter wereld: het zijn <dfn>endemische soorten</dfn>. Zo’n 90 miljoen jaar geleden kwam het eiland volledig los van het Afrikaanse en Indiase vasteland. Daardoor konden de soorten op het eiland onafhankelijk evolueren.</p>
+  <h3>Diversiteit aan ecosystemen</h3>
+  <p>Een bergketen loopt van noord naar zuid over het eiland. Regenwolken uit de Indische Oceaan worden er omhoog gestuwd, de waterdamp condenseert en het regent in het oosten.</p>
+  <ul>
+    <li><b>Oosten:</b> veel neerslag, tropisch regenwoud.</li>
+    <li><b>Westen:</b> minder neerslag, droge loofbossen en kalksteenformaties.</li>
+    <li><b>Zuiden:</b> extreem droog, ‘spiny forest’ met doornige struiken en baobabs (apenbroodbomen).</li>
+    <li><b>Zuidwesten:</b> vooral succulenten, die water opslaan in hun organen.</li>
+  </ul>
+  <h3>Diversiteit aan soorten</h3>
+  <p>Er leven 31 soorten <b>tenreks</b>: kleine insectenetende zoogdieren die allemaal uit dezelfde voorouder ontstaan zijn. Door natuurlijke selectie namen ze verschillende niches in en vermeden ze concurrentie. Sommige zijn harig, andere stekelig; sommige lijken op een muis, andere op een otter.</p>
+  <p>De <b>ringstaartmaki</b> heeft een lange staart met veertien witte en zwarte ringen. De <b>aye-aye</b> (vingerdier) tikt ’s nachts op boomschors om larven te vinden en haalt ze eruit met zijn lange, dunne middelvinger.</p>`,
+  cards:[["Endemische soort","Soort die enkel in één bepaald gebied voorkomt."],["Succulent","Plant die water opslaat in organen, aangepast aan droogte."],["Tenreks","31 soorten insectenetende zoogdieren uit één voorouder, met verschillende niches."]],
+  exercises:[
+    { type:"madmap", title:"Waarom het oosten nat is en het westen droog", q:"Klik op een deel van de doorsnede van het eiland (west links, oost rechts)." },
+    { type:"classify", title:"Diversiteit op drie niveaus", buckets:["Ecosysteem","Soort","Genetisch"],
+      items:[{t:"Tropisch regenwoud in het oosten, droge loofbossen in het westen",b:0},{t:"31 verschillende soorten tenreks",b:1},{t:"Genetische variatie binnen de soort baobab",b:2},{t:"Spiny forest in het zuiden",b:0}]},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Endemische soorten komen enkel voor op Madagaskar.",a:false,e:"Een endemische soort komt enkel voor in één bepaald gebied. Dat kan elk gebied zijn, niet alleen Madagaskar."},
+        {s:"Baobabs zijn bomen die aangepast zijn aan droge leefgebieden.",a:true,e:"Ze groeien in het extreem droge zuiden van het eiland."}
+    ]},
+    { type:"open", title:"De reizigersboom", q:"De reizigersboom wordt wereldwijd in tropische parken aangeplant, maar kwam oorspronkelijk enkel op Madagaskar voor. Verklaar: ‘De reizigersboom was oorspronkelijk een endemische soort.’",
+      model:"Vroeger kwam de boom alleen op Madagaskar voor, dus was hij endemisch. Nu de mens hem wereldwijd aanplant, komt hij ook elders voor en is hij dat niet meer."}
+  ]},
+
+/* ---------------- HOOFDSTUK 3 ---------------- */
+{ id:"h3", num:"3", title:"Energiestromen en kringlopen", short:"Voedselkringloop, energiestroom, water, C en N",
+  lead:"Energie stroomt door een ecosysteem en verdwijnt als warmte. Stoffen zoals water, koolstof en stikstof gaan rond in kringlopen.",
+  summary:`
+  <h3>3.1 Voedselkringloop</h3>
+  <p>Een <dfn>voedselketen</dfn> toont wie wie eet. Verbonden voedselketens vormen een <dfn>voedselweb</dfn>. De plaats van een organisme in een voedselketen is zijn <dfn>trofisch niveau</dfn>.</p>
+  <ul>
+    <li><dfn>Producenten</dfn> (autotroof): planten, algen en sommige bacteriën. Met zonlicht doen ze aan <b>fotosynthese</b>: koolstofdioxide + water → glucose + zuurstofgas. Sommige bacteriën gebruiken chemische energie: <b>chemosynthese</b>.</li>
+    <li><dfn>Consumenten</dfn> (heterotroof) van de eerste, tweede, derde orde … Herbivoren eten planten, bacterivoren bacteriën, carnivoren enkel dieren en omnivoren planten én dieren.</li>
+    <li><dfn>Detritivoren</dfn> (afvaleters) leven van dood organisch materiaal en verkleinen het, zoals de regenworm.</li>
+    <li><dfn>Reducenten</dfn> (bacteriën en schimmels) zetten de laatste resten om in mineralen: <dfn>mineralisatie</dfn>. Zo sluit de keten zich tot een <dfn>voedselkringloop</dfn>.</li>
+  </ul>
+  <p>Voedselketens, -webben en -kringlopen zijn <b>kwalitatief</b>. Een <dfn>ecologische piramide</dfn> is <b>kwantitatief</b>: de piramide van <b>aantallen</b>, van <b>biomassa</b> en van <b>energie</b>. Reducenten staan nooit in een piramide.</p>
+  <h3>3.2 Energiestroom</h3>
+  <p>Bij elke overgang naar een volgend trofisch niveau wordt gemiddeld maar <b>10 %</b> van de biomassa doorgegeven: zo’n <b>90 % energieverlies</b>. Producenten zetten een klein deel van de stralingsenergie van de zon om in chemische energie. Ongeveer de helft verbruiken ze zelf (<b>celademhaling</b>, de warmte is onbruikbaar), de andere helft wordt eigen biomassa.</p>
+  <p><b>Biomassaverlies</b> ontstaat wanneer producenten sterven zonder opgegeten te worden, slechts gedeeltelijk opgegeten worden, of onverteerd het lichaam verlaten in uitwerpselen. Planteneters verliezen meer dan vleeseters, want plantencellen hebben een celwand en zijn moeilijker verteerbaar. De energie in afval gaat naar detritivoren en reducenten.</p>
+  <p>Uiteindelijk wordt alle stralingsenergie omgezet in warmte. Daarom spreek je van een <dfn>energiestroom</dfn> en niet van een kringloop. Een voedselkringloop telt nooit meer dan acht schakels.</p>
+  <h3>3.3 Materiekringlopen</h3>
+  <p><b>Watercyclus.</b> In de <b>korte</b> kringloop verdampt zeewater, condenseert in de koude lucht tot wolken en valt als neerslag terug in zee. In de <b>lange</b> kringloop valt neerslag op land: het water <b>vloeit af</b> naar beken en rivieren (oppervlaktewater, rijk aan mineralen) of <b>sijpelt in</b> als bodemwater en dieper als grondwater (vaak neutraal, arm aan voedingsstoffen). Boven land komt water terug in de lucht door <b>evaporatie</b> en door <b>transpiratie</b> via de huidmondjes van planten. Neerslag is zoet en licht zuur, doordat water met koolstofdioxide koolzuur vormt.</p>
+  <p><b>Koolstofcyclus.</b> In de <b>korte</b> kringloop (tot enkele honderden jaren) leggen producenten CO₂ vast via foto- of chemosynthese. Via de voeding gaat koolstof naar consumenten en reducenten. Bij aerobe celademhaling komt CO₂ vrij, bij anaerobe celademhaling (bv. in de darmen van vee) methaangas, dat in de lucht omgezet wordt in CO₂. In de <b>lange</b> kringloop (duizenden tot miljoenen jaren) ligt koolstof opgeslagen in de lithosfeer: als kalksteen, krijt, grafiet en diamant, of bij anaerobe omstandigheden als aardolie, aardgas, steenkool en turf. Door verwering of verbranding komt die koolstof vrij als CO₂.</p>
+  <p><b>Stikstofcyclus.</b> De lucht bestaat voor bijna 79 % uit stikstofgas, maar planten en dieren kunnen dat niet gebruiken. Bekijk het schema hieronder voor de vijf processen.</p>`,
+  cards:[["Trofisch niveau","Plaats van een organisme in een voedselketen."],["Autotroof","Maakt zelf organische stoffen uit anorganische (producenten)."],["Heterotroof","Haalt organische stoffen uit voedsel (consumenten, reducenten)."],["Detritivoor","Afvaleter die leeft van dood organisch materiaal."],["Reducent","Bacterie of schimmel die organisch afval omzet in mineralen."],["Mineralisatie","Omzetting van organisch materiaal in anorganische stoffen of mineralen."],["Ecologische piramide","Kwantitatieve voorstelling van een voedselketen: aantallen, biomassa of energie."],["Energiestroom","Stralingsenergie gaat via de voedselketen door en wordt uiteindelijk warmte."],["Transpiratie","Water verdampt via de huidmondjes van planten."],["Evaporatie","Verdamping van oppervlaktewater."],["Stikstoffixatie","Stikstofgas omzetten in stikstofverbindingen in de bodem."],["Ammonificatie","Reducenten zetten stikstof in organisch afval om in ammoniak/ammonium."],["Nitrificatie","Bacteriën oxideren ammonium tot nitraat; vraagt zuurstofgas."],["Denitrificatie","Bacteriën in zuurstofarme bodem zetten nitraat om in stikstofgas of ammoniak."]],
+  exercises:[
+    { type:"classify", title:"Wie eet wie?", q:"Geef elk organisme zijn rol in de voedselkringloop.",
+      buckets:["Producent","Consument 1e orde","Consument 2e orde","Consument 3e orde","Detritivoor","Reducent"],
+      items:[{t:"Paardenbloem",b:0},{t:"Slak",b:1},{t:"Pad",b:2},{t:"Blauwe reiger die de pad eet",b:3},{t:"Regenworm",b:4},{t:"Schimmels",b:5},{t:"Fytoplankton",b:0}]},
+    { type:"pyramid", title:"De 10 %-regel", q:"Verschuif de energie in de producenten en kijk hoeveel er bij elk volgend niveau overblijft. De balken zijn op schaal." },
+    { type:"mc", title:"Biomassaverlies herkennen", q:"Een merel eet van de lijsterbes enkel de vruchten. Welke vorm van biomassaverlies is dit?",
+      o:["De producent sterft zonder opgegeten te worden","De producent wordt slechts gedeeltelijk opgegeten","Een deel van de biomassa verlaat het lichaam onverteerd"],a:1,
+      e:"De rest van de plant blijft staan. Braakballen van een kerkuil of zaden in uitwerpselen zijn voorbeelden van de derde vorm."},
+    { type:"mc", title:"Mineralen in de vijver", q:"Een buurman vervuilt het vijverwater met mineralen. Welke organismen nemen als eerste in aantal toe?",
+      o:["De producenten","De consumenten","De reducenten"],a:0,e:"Producenten nemen mineralen op en zetten ze om in organische stoffen. Zie ook: algenbloei door eutrofiëring."},
+    { type:"mc", title:"Energie afgeven bij de mens", q:"Bij welk(e) proces(sen) geeft de mens een deel van de opgenomen energie af aan het milieu: uitademing (1), uitscheiding (2), transpiratie (3)?",
+      o:["Alleen bij 1","Alleen bij 2","Alleen bij 3","Alleen bij 1 en 2","Alleen bij 1 en 3","Bij alle processen"],a:5,e:"Bij elk van de drie processen verlaat energie het lichaam (warmte, en energie in stoffen die het lichaam verlaten)."},
+    { type:"multi", title:"Korte of lange waterkringloop?", q:"Vink aan in welke kringloop elk proces voorkomt. Soms zijn het er twee.",
+      cols:["Korte","Lange"],
+      rows:[{t:"Transpiratie",a:[1,1]},{t:"Infiltratie",a:[0,1]},{t:"Evaporatie",a:[1,1]},{t:"Afvloeiing",a:[0,1]},{t:"Neerslag",a:[1,1]},{t:"Indringing",a:[0,1]}]},
+    { type:"classify", title:"Korte of lange koolstofkringloop?", buckets:["Korte kringloop","Lange kringloop"],
+      items:[{t:"Fotosynthese door producenten",b:0},{t:"Methaangas uit de darmen van vee",b:0},{t:"Aerobe celademhaling",b:0},{t:"Vorming van kalksteen en krijt uit kalkskeletten",b:1},{t:"Vorming van aardolie en steenkool",b:1},{t:"Verbranding van fossiele brandstoffen",b:1}]},
+    { type:"ncycle", title:"De stikstofcyclus", q:"Klik op een pijl om het proces te bekijken. Klaar? Schakel naar ‘Test’ en benoem elke pijl." },
+    { type:"mc", title:"Bacteriën in de stikstofcyclus", q:"Welke functies hebben bacteriën in de stikstofcyclus? Er kunnen meerdere antwoorden juist zijn.",
+      o:["Ze zetten nitraten om in stikstofgas.","Ze zetten stikstofgas om in nitraten en nitrieten.","Ze zetten aminozuren om in eiwitten."],a:[0,1],
+      e:"Denitrificerende bacteriën maken stikstofgas van nitraat; stikstoffixerende en nitrificerende bacteriën maken het omgekeerd mogelijk."},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"De verschillende voedselpiramides hebben altijd dezelfde vorm.",a:false,e:"Er bestaan drie soorten piramides (aantallen, biomassa, energie) en ze tonen elk iets anders. De piramidevorm van biomassa en energie komt door het verlies van gemiddeld 90 % per niveau."},
+        {s:"In een ecosysteem is er een kringloop van energie dankzij de vele energieomzettingen.",a:false,e:"Energie stroomt door het ecosysteem en verdwijnt als warmte. Het is een energiestroom."},
+        {s:"Verdamping en neerslag zijn de belangrijkste processen in de korte watercyclus.",a:true,e:"Zeewater verdampt en valt als neerslag terug in zee."},
+        {s:"De reducenten spelen een belangrijke rol in het sluiten van de C- en de N-cyclus.",a:true,e:"Ze breken organisch afval af tot CO₂ en tot ammoniak/ammonium."}
+    ]},
+    { type:"open", title:"Stroom of kringloop?", q:"Waarom spreek je wel van een energiestroom, maar niet van een energiekringloop?",
+      model:"Bij elke overgang gaat energie verloren als warmte door celademhaling. Die warmte kan geen enkel organisme nog gebruiken. Uiteindelijk is alle stralingsenergie omgezet in warmte; er is dus voortdurend nieuwe energie van de zon nodig."},
+    { type:"open", title:"Koolstof en energie", q:"Leg het verband uit tussen de koolstofcyclus en de energiestroom.",
+      model:"In de koolstofcyclus worden energiearme anorganische stoffen (CO₂) omgezet in energierijke organische stoffen (glucose) en daarna weer in energiearme anorganische stoffen (bij celademhaling)."},
+    { type:"open", title:"Regenwoud kappen", q:"Welke invloed heeft het kappen van het tropisch regenwoud op de koolstofcyclus?",
+      model:"Er blijven minder producenten over die CO₂ vastleggen via fotosynthese. Wordt het hout verbrand, dan komt de koolstof bovendien vrij als CO₂. Er komt dus meer CO₂ in de atmosfeer."}
+  ]},
+
+/* ---------------- HOOFDSTUK 4 ---------------- */
+{ id:"h4", num:"4", title:"Het belang van ecosystemen voor de mens", short:"Vier soorten ecosysteemdiensten",
+  lead:"Wat levert de natuur ons op? Ecosysteemdiensten maken alle voordelen zichtbaar, ook de minder opvallende.",
+  summary:`
+  <p><dfn>Ecosysteemdiensten</dfn> zijn alle goederen en diensten die de natuur aan de mens levert. Je onderscheidt vier groepen.</p>
+  <ul>
+    <li><b>Producerende</b>: voordelen die ons leven mogelijk maken, zoals voedsel, drinkbaar water, zuurstofgas, grondstoffen en energie (een moestuin, kippen, zon- en windenergie, fossiele brandstoffen, biomassa uit uitwerpselen).</li>
+    <li><b>Culturele</b>: rust, ontspanning en recreatie. Een wandeling in het park maakt je hoofd leeg; patiënten met zicht op groen herstellen sneller.</li>
+    <li><b>Regulerende</b>: bescherming tegen natuurlijke bedreigingen. Duinen beschermen tegen stormvloeden, straten met bomen warmen minder op tijdens een hittegolf, insecten en vleermuizen zorgen voor bestuiving, lieveheersbeestjes bestrijden bladluizen.</li>
+    <li><b>Ondersteunende</b>: de energiestroom en de voedsel- en materiekringlopen, zoals bodemvorming. Ze zijn nodig voor alle andere diensten.</li>
+  </ul>
+  <p>Hoe gezonder het ecosysteem, hoe meer voordelen. Er is een <b>wisselwerking</b>: het ecosysteem levert diensten, maar de mens zet ecosystemen steeds meer onder druk.</p>`,
+  cards:[["Producerende esd","Voedsel, drinkwater, zuurstofgas, grondstoffen, energie."],["Culturele esd","Rust, ontspanning, recreatie, erfgoed."],["Regulerende esd","Bescherming tegen bedreigingen: kustbescherming, bestuiving, plaagbestrijding, verkoeling."],["Ondersteunende esd","Energiestroom en kringlopen, zoals bodemvorming; basis voor de andere diensten."]],
+  exercises:[
+    { type:"classify", title:"Welke ecosysteemdienst?", buckets:["Producerend","Regulerend","Cultureel","Ondersteunend"],
+      items:[
+        {t:"Strand en duinen beschermen tegen stormvloeden.",b:1},
+        {t:"Honing van bijen",b:0},
+        {t:"Bronwater van Spa",b:0},
+        {t:"Het zelfreinigend vermogen van waterlopen",b:1},
+        {t:"Hunebedden",b:2},
+        {t:"Bodemorganismen zorgen door de afbraak van bladeren voor bodemvruchtbaarheid.",b:3},
+        {t:"Bijen zorgen voor bestuiving.",b:1},
+        {t:"Lieveheersbeestjes eten bladluizen.",b:1},
+        {t:"Een wandeling in het park",b:2},
+        {t:"Biomassa uit uitwerpselen gebruiken voor energie",b:0}
+      ]},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Ecosysteemdiensten zijn goederen en diensten uit de natuur die de mens kan gebruiken.",a:true,e:"Dat is precies de omschrijving."},
+        {s:"Bestuiving is nodig voor de voedselproductie. Het is dus een ondersteunende ecosysteemdienst.",a:false,e:"Bestuiving is een regulerende ecosysteemdienst."}
+    ]},
+    { type:"open", title:"Vier diensten in een waterloop", q:"Toon met voorbeelden aan dat de vier soorten ecosysteemdiensten voorkomen in een waterloop.",
+      model:"Producerend: water en vis. Regulerend: het zelfreinigend vermogen van het water. Cultureel: wandelen en ontspannen langs de oever. Ondersteunend: de watercyclus en de voedselkringloop in het water."}
+  ]},
+
+/* ---------------- HOOFDSTUK 5 ---------------- */
+{ id:"h5", num:"5", title:"De invloed van de mens op ecosystemen", short:"Versterkt broeikaseffect en koraalverbleking",
+  lead:"De mens verstoort het evenwicht in ecosystemen. Koraalriffen tonen goed wat er dan gebeurt.",
+  summary:`
+  <p>In een gezond ecosysteem zijn biodiversiteit, energiestroom en materiekringlopen in evenwicht. De mens verstoort dat evenwicht: door de <b>verbranding van fossiele brandstoffen</b> en <b>ontbossing</b> stijgt de concentratie <b>broeikasgassen</b> zoals koolstofdioxide en methaan. Naast het natuurlijke broeikaseffect ontstaat zo een <dfn>versterkt broeikaseffect</dfn>, met wereldwijde <b>klimaatverandering</b>. Pakijs smelt, permafrost ontdooit, gletsjers smelten en droogte en hittegolven veroorzaken bosbranden.</p>
+  <h3>Koraalriffen onder druk</h3>
+  <p><b>Koraal</b> is een samenleving van een dier, de koraalpoliep, met <b>microalgen</b>. De microalgen leveren via fotosynthese voedingsstoffen en geven het koraal zijn kleur. Het koraal bouwt er een kalkskelet van calciumcarbonaat mee.</p>
+  <p>Bij stress, zoals snelle opwarming of afkoeling van het water of een bacteriële ziekte, sterven de microalgen af of worden ze giftig. De poliep stoot ze af, de kleur verdwijnt en het witte kalkskelet komt bloot: <dfn>verbleking</dfn>. Neemt het koraal opnieuw microalgen op, dan overleeft het. Lukt dat niet, dan verhongert het. Koraal sterft pas af als verbleking vaker voorkomt dan de herstelperiode.</p>
+  <p>Door opwarming, verzuring, zeespiegelstijging, vervuiling en meer tropische stormen volgen de verblekingen elkaar sneller op. Gespecialiseerde soorten verdwijnen, grote plaatkoralen, sponsen, wieren en algen nemen toe. Tegen 2100 dreigt 90 % van de kleurrijke koraalriffen te verdwijnen.</p>
+  <p>Ook de mens voelt de gevolgen, want koraalriffen leveren ecosysteemdiensten: habitat voor vissen (visvangst), kustbescherming tegen golven en erosie, en toerisme.</p>`,
+  cards:[["Versterkt broeikaseffect","Extra opwarming door de stijging van broeikasgassen door menselijke activiteiten."],["Koraal","Samenleving van een koraalpoliep met microalgen."],["Verbleking","Microalgen worden afgestoten, het witte kalkskelet komt bloot."]],
+  exercises:[
+    { type:"coral", title:"Koraal onder stress", q:"Gebruik de knoppen om te zien hoe koraal reageert op stress, en wanneer het zich herstelt." },
+    { type:"order", title:"Van uitstoot tot schade", q:"Zet de oorzaak-gevolgketen in de juiste volgorde.",
+      items:["Verbranding van fossiele brandstoffen en ontbossing","Toename van broeikasgassen in de atmosfeer","Versterkt broeikaseffect","Wereldwijde klimaatverandering","Schade aan ecosystemen, zoals koraalverbleking"]},
+    { type:"order", title:"Zo verbleekt koraal", q:"Zet de stappen van verbleking in de juiste volgorde.",
+      items:["Het zeewater warmt snel op (stress)","De microalgen sterven af of worden giftig","De koraalpoliep stoot de microalgen af","De kleur verdwijnt en het witte kalkskelet komt bloot","Het koraal neemt opnieuw microalgen op en herstelt, of verhongert"]},
+    { type:"classify", title:"Wat verliest de mens?", q:"Welke ecosysteemdienst van een koraalrif komt hier onder druk?",
+      buckets:["Producerend","Regulerend","Cultureel"],
+      items:[{t:"Minder visvangst en voedseltekort",b:0},{t:"Minder bescherming van de kust tegen stormen",b:1},{t:"Minder toeristen die het rif bezoeken",b:2},{t:"Meer erosie van de kustlijn",b:1}]},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"De invloed van de mens op de C-cyclus is de oorzaak van de huidige klimaatverandering.",a:true,e:"Verbranding van fossiele brandstoffen en ontbossing brengen extra CO₂ in de atmosfeer."},
+        {s:"Verbleking is een natuurlijke aanpassing van koralen aan veranderende factoren.",a:false,e:"Verbleking is een reactie op stress: de microalgen worden afgestoten. Het koraal kan herstellen, maar verbleking zelf is geen aanpassing."},
+        {s:"De verandering van ecosystemen heeft weinig invloed op het voortbestaan van de mens.",a:false,e:"De mens is afhankelijk van ecosysteemdiensten zoals visvangst en kustbescherming."}
+    ]},
+    { type:"open", title:"Ook positief", q:"Toon met twee voorbeelden aan dat de mens ook een positieve invloed kan hebben op ecosystemen.",
+      model:"Bv. natuurreservaten beschermen en beheren met beheerplannen, en wegbermen ecologisch maaien zodat bloemrijke bermen ontstaan die natuurgebieden verbinden. Ook vrijwilligers die soorten tellen (citizen science) helpen de natuur op te volgen."}
+  ]}
+];
+
+const GLOSS = [
+ ["Abiotische factor","Niet-levende factor, zoals licht, temperatuur, water.","1"],
+ ["Biotische factor","Levende factor, zoals voedsel of nestgelegenheid.","1"],
+ ["Populatie","Organismen van dezelfde soort in een gebied, met interactie mogelijk.","1"],
+ ["Levensgemeenschap","Alle populaties van verschillende soorten die elkaar beïnvloeden.","1"],
+ ["Ecosysteem","Geheel van interacties tussen biotische en abiotische factoren in een biotoop.","1"],
+ ["Biosfeer","Deel van de aarde waar leven mogelijk is: lithosfeer, hydrosfeer, atmosfeer.","1"],
+ ["Lithosfeer","Vaste gedeelte van de aardkorst.","1"],
+ ["Hydrosfeer","Al het water boven, op en onder het aardoppervlak.","1"],
+ ["Atmosfeer","De lucht rond de aarde.","1"],
+ ["Biotoop","Min of meer homogeen gebied met eigen fysische en chemische kenmerken en een typische levensgemeenschap.","1"],
+ ["Habitat","Plaats die optimaal is voor één soort om te overleven, groeien en voortplanten.","1"],
+ ["Ecologische niche","Rol of functie van een soort in het ecosysteem.","1"],
+ ["Biodiversiteit","Verscheidenheid van het leven: ecosystemen, soorten en genetische variatie.","1"],
+ ["Ecologie","Wetenschap die de wisselwerking tussen organismen en hun biotoop bestudeert.","1"],
+ ["Determineren","Naam van een organisme opzoeken (kwalitatief).","2"],
+ ["Inventariseren","Aantallen en verspreiding van soorten tellen of schatten (kwantitatief).","2"],
+ ["Indicatorsoort","Soort die door aan- of afwezigheid iets zegt over het milieu.","2"],
+ ["Vegetatieopname","Planten determineren en inventariseren in een opnamevlak of langs een traject.","2"],
+ ["Natuurlijk ecosysteem","Ecosysteem zonder invloed van de mens.","2"],
+ ["Halfnatuurlijk ecosysteem","Ecosysteem beïnvloed door de mens, zoals natuurreservaten.","2"],
+ ["Kunstmatig ecosysteem","Ecosysteem dat bestaat door intensief beheer, zoals wegbermen.","2"],
+ ["Tredplant","Plant aangepast aan een verdichte bodem.","2"],
+ ["Endemische soort","Soort die enkel in één bepaald gebied voorkomt.","Focus"],
+ ["Voedselketen","Reeks organismen waarbij elk een voedselbron is voor het volgende.","3"],
+ ["Voedselweb","Verbonden voedselketens in een ecosysteem.","3"],
+ ["Trofisch niveau","Plaats van een organisme in de voedselketen.","3"],
+ ["Producent","Autotroof organisme dat organische stoffen maakt (fotosynthese of chemosynthese).","3"],
+ ["Consument","Heterotroof organisme dat andere organismen eet.","3"],
+ ["Herbivoor","Eet planten.","3"],
+ ["Carnivoor","Eet uitsluitend dieren.","3"],
+ ["Omnivoor","Eet planten en dieren.","3"],
+ ["Bacterivoor","Eet bacteriën, zoals het pantoffeldiertje.","3"],
+ ["Detritivoor","Afvaleter die leeft van dood organisch materiaal.","3"],
+ ["Reducent","Bacterie of schimmel die organisch materiaal omzet in mineralen.","3"],
+ ["Mineralisatie","Omzetting van organische resten in anorganische stoffen of mineralen.","3"],
+ ["Fotosynthese","CO₂ + water → glucose + zuurstofgas, met stralingsenergie van de zon.","3"],
+ ["Chemosynthese","Organische stoffen maken met chemische energie, zonder zonlicht.","3"],
+ ["Ecologische piramide","Kwantitatieve voorstelling van een voedselketen: aantallen, biomassa of energie.","3"],
+ ["Celademhaling","Verbranding van organische stoffen voor energie; warmte gaat verloren.","3"],
+ ["Biomassaverlies","Biomassa die niet naar het volgende trofische niveau gaat.","3"],
+ ["Energiestroom","Stralingsenergie gaat via de voedselketen door en wordt uiteindelijk warmte.","3"],
+ ["Evaporatie","Verdamping van oppervlaktewater.","3"],
+ ["Transpiratie","Waterdamp ontsnapt via de huidmondjes van bladeren.","3"],
+ ["Grondwater","Water onder de grondwatertafel; vaak neutraal en arm aan voedingsstoffen.","3"],
+ ["Stikstoffixatie","Stikstofgas wordt omgezet in stikstofverbindingen in de bodem.","3"],
+ ["Stikstofassimilatie","Producenten zetten stikstofverbindingen om in biomassa.","3"],
+ ["Ammonificatie","Reducenten zetten stikstof in organisch afval om in ammoniak/ammonium.","3"],
+ ["Nitrificatie","Bacteriën oxideren ammoniak/ammonium tot nitraat; vraagt zuurstofgas.","3"],
+ ["Denitrificatie","Bacteriën in een zuurstofarme bodem zetten nitraat om in stikstofgas of ammoniak.","3"],
+ ["Ecosysteemdiensten","Goederen en diensten die de natuur aan de mens levert.","4"],
+ ["Versterkt broeikaseffect","Extra opwarming door broeikasgassen uit menselijke activiteiten.","5"],
+ ["Verbleking","Koraal stoot microalgen af en verliest zijn kleur.","5"]
+];
+
+const POOL = [
+ {q:"Wat is een populatie?",o:["Organismen van dezelfde soort in een gebied, met interactie mogelijk","Alle soorten in een gebied","Alle organismen op aarde","Een groep cellen met dezelfde functie"],a:0},
+ {q:"Het geheel van interacties tussen biotische en abiotische factoren in een biotoop noem je …",o:["een levensgemeenschap","een ecosysteem","een habitat","een populatie"],a:1},
+ {q:"Wat is een ecologische niche?",o:["De plaats waar een soort het liefst leeft","De rol of functie van een soort in het ecosysteem","Een beschermd natuurgebied","Een klein ecosysteem"],a:1},
+ {q:"Waarom hebben de kerkuil en de torenvalk een verschillende niche?",o:["Ze eten andere prooien","Ze jagen op een ander tijdstip","Ze leven in een andere biotoop","Ze zijn even groot"],a:1},
+ {q:"Determineren is …",o:["de naam van een organisme opzoeken","de aantallen van een soort tellen","een gebied beschermen","een vegetatie maaien"],a:0},
+ {q:"De aanwezigheid van brandnetels wijst op …",o:["een zure bodem","een zoute bodem","een stikstofrijke bodem","een droge bodem"],a:2},
+ {q:"De kokerjuffer is een indicatorsoort voor …",o:["luchtkwaliteit","waterkwaliteit","bodemverdichting","temperatuur"],a:1},
+ {q:"Wegbermen zijn …",o:["natuurlijke ecosystemen","halfnatuurlijke ecosystemen","kunstmatige ecosystemen","geen ecosystemen"],a:2},
+ {q:"250 variëteiten van de paardenbloem tonen biodiversiteit op …",o:["ecosysteemniveau","soortniveau","genetisch niveau"],a:2},
+ {q:"Een endemische soort is een soort die …",o:["bedreigd is","enkel in één bepaald gebied voorkomt","op een eiland leeft","door de mens is aangeplant"],a:1},
+ {q:"Waarom regent het veel in het oosten van Madagaskar?",o:["Door de woestijn in het westen","Regenwolken uit de Indische Oceaan worden door de bergketen omhoog gestuwd","Door de kalksteenformaties","Door de baobabs"],a:1},
+ {q:"Het eerste trofische niveau bestaat altijd uit …",o:["herbivoren","reducenten","producenten","detritivoren"],a:2},
+ {q:"Welke organismen zorgen voor mineralisatie?",o:["Bacteriën en schimmels","Planten","Herbivoren","Carnivoren"],a:0},
+ {q:"Welke piramide toont de totale massa aan organische verbindingen per trofisch niveau?",o:["Piramide van aantallen","Piramide van biomassa","Piramide van energie"],a:1},
+ {q:"Hoeveel biomassa wordt gemiddeld doorgegeven naar het volgende trofische niveau?",o:["1 %","10 %","50 %","90 %"],a:1},
+ {q:"Waarom is het energieverlies bij planteneters groter dan bij vleeseters?",o:["Planteneters bewegen meer","Plantencellen hebben een celwand en zijn moeilijker verteerbaar","Planten bevatten geen energie","Planteneters zijn groter"],a:1},
+ {q:"Grondwater is meestal …",o:["zuur en rijk aan mineralen","neutraal en arm aan voedingsstoffen","zout","rijk aan zuurstofgas"],a:1},
+ {q:"Waarom is neerslag licht zuur?",o:["Door zout uit de zee","Water en koolstofdioxide vormen koolzuur","Door stikstofgas","Door transpiratie"],a:1},
+ {q:"Methaangas ontstaat bij …",o:["fotosynthese","aerobe celademhaling","anaerobe celademhaling, bv. in de darmen van vee","verdamping"],a:2},
+ {q:"Stikstoffixatie is …",o:["stikstofgas omzetten in stikstofverbindingen in de bodem","nitraat omzetten in stikstofgas","eiwitten opbouwen in planten","ammonium omzetten in nitraat"],a:0},
+ {q:"Welk proces heeft voldoende zuurstofgas nodig?",o:["Denitrificatie","Nitrificatie","Ammonificatie","Stikstoffixatie door wortelknolbacteriën"],a:1},
+ {q:"De lucht bestaat voor bijna 79 % uit …",o:["zuurstofgas","koolstofdioxide","stikstofgas","waterdamp"],a:2},
+ {q:"Lieveheersbeestjes die bladluizen opeten, zijn een … ecosysteemdienst.",o:["producerende","regulerende","culturele","ondersteunende"],a:1},
+ {q:"Patiënten met zicht op groen herstellen sneller. Dit is een … ecosysteemdienst.",o:["producerende","regulerende","culturele","ondersteunende"],a:2},
+ {q:"Bodemvorming is een … ecosysteemdienst.",o:["producerende","regulerende","culturele","ondersteunende"],a:3},
+ {q:"Wat gebeurt er bij koraalverbleking?",o:["Het kalkskelet lost op","De microalgen worden afgestoten en het witte kalkskelet komt bloot","De poliep krijgt meer kleur","Er groeien meer microalgen"],a:1},
+ {q:"Wanneer sterft verbleekt koraal af?",o:["Meteen na één verbleking","Als verbleking vaker voorkomt dan de herstelperiode","Als het water afkoelt","Nooit"],a:1},
+ {q:"Welke menselijke activiteiten versterken het broeikaseffect?",o:["Verbranding van fossiele brandstoffen en ontbossing","Bomen planten","Natuurreservaten beheren","Wegbermen maaien"],a:0}
+];
+const TABS = {h1:"Ecosystemen",h2:"Biodiversiteit",mad:"Madagaskar",h3:"Energie & kringlopen",h4:"Ecosysteemdiensten",h5:"Mens & klimaat"};
+const KEY = "eco-thema1-v1";
+let P = {};
+try { P = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e) { P = {}; }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(P)); } catch(e) {} }
+
+const $ = (s, r=document) => r.querySelector(s);
+function h(html){ const t=document.createElement("template"); t.innerHTML=html.trim(); return t.content.firstElementChild; }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+const fmt = n => n.toLocaleString("nl-BE");
+
+function chProgress(ch){ const n=ch.exercises.length; let d=0; ch.exercises.forEach((_,i)=>{ if(P[ch.id+"-"+i]) d++; }); return {d,n}; }
+function ringSVG(f){ const c=2*Math.PI*6; return `<svg class="ring" viewBox="0 0 16 16" aria-hidden="true"><circle class="bg" cx="8" cy="8" r="6"/><circle class="fg" cx="8" cy="8" r="6" stroke-dasharray="${(c*f).toFixed(2)} ${c.toFixed(2)}"/></svg>`; }
+
+function renderTabs(cur){
+  const nav = $("#tabs");
+  let s = `<a href="#start" ${cur==="start"?'aria-current="page"':""}>Start</a>`;
+  CH.forEach(ch=>{ const p=chProgress(ch); s += `<a href="#${ch.id}" ${cur===ch.id?'aria-current="page"':""}>${ringSVG(p.d/p.n)}${ch.num==="Focus"?"":ch.num+" "}${TABS[ch.id]}</a>`; });
+  s += `<a href="#arena" ${cur==="arena"?'aria-current="page"':""}>Oefenarena</a><a href="#begrippen" ${cur==="begrippen"?'aria-current="page"':""}>Begrippen</a><a href="#toets" ${cur==="toets"?'aria-current="page"':""}>Eindtoets</a>`;
+  nav.innerHTML = s;
+}
+
+/* ---------- START ---------- */
+function renderStart(app){
+  const v = h(`<section class="view">
+    <div class="hero">
+      <div>
+        <h1>Van cel tot ecosysteem</h1>
+        <p class="lead">Leven is georganiseerd in niveaus die steeds groter worden. Klik op een niveau om te zien wat het betekent. Daarna werk je per hoofdstuk door de leerstof van thema 1.</p>
+        <ol class="ladder" id="ladder"></ol>
+        <div class="lvinfo" id="lvinfo" aria-live="polite"></div>
+      </div>
+      <svg id="rings" viewBox="0 0 400 400" role="img" aria-label="Organisatieniveaus als ringen, van cel in het midden tot biosfeer buitenaan"></svg>
+    </div>
+    <div class="chapters" id="chaps"></div>
+    <div class="howto">
+      <h3>Zo werk je</h3>
+      <p>Lees in elk hoofdstuk eerst de samenvatting. Draai daarna de begripkaarten om en maak de oefeningen: je krijgt meteen feedback. Een oefening die volledig juist is, krijgt een groen vinkje en telt mee in de voortgangsring bovenaan. Je voortgang wordt alleen in deze browser bewaard. Oefen daarna spelenderwijs in de oefenarena en test jezelf op het einde met de eindtoets.</p>
+    </div>
+  </section>`);
+  app.appendChild(v);
+  const lad=$("#ladder",v), svg=$("#rings",v), info=$("#lvinfo",v);
+  let rs="";
+  for(let i=LEVELS.length-1;i>=0;i--){ const r=16+i*22.5; rs+=`<circle data-i="${i}" cx="200" cy="200" r="${r}"/>`; }
+  rs += `<text id="ringlbl" x="200" y="200"></text>`;
+  svg.innerHTML = rs;
+  LEVELS.forEach((l,i)=>{ const b=h(`<li><button type="button" aria-pressed="false" data-i="${i}"><span class="n">${i+1}</span>${l[0]}</button></li>`); lad.appendChild(b); });
+  function pick(i){
+    lad.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.i==i));
+    svg.querySelectorAll("circle").forEach(c=>{ const k=+c.dataset.i; c.classList.toggle("in",k<=i); c.classList.toggle("on",k==i); });
+    const r=16+i*22.5, t=$("#ringlbl",svg); t.textContent=LEVELS[i][0]; t.setAttribute("y", 200 - r + 16);
+    if(i===0) t.setAttribute("y", 200+5);
+    info.innerHTML = `<h3>${LEVELS[i][0]}</h3><p>${LEVELS[i][1]}</p><p class="lvex">Voorbeeld: ${LEVELS[i][2]}</p>`;
+  }
+  lad.addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) pick(+b.dataset.i); });
+  svg.addEventListener("click",e=>{ const c=e.target.closest("circle"); if(c) pick(+c.dataset.i); });
+  pick(7);
+  const cg=$("#chaps",v);
+  CH.forEach(ch=>{ const p=chProgress(ch); cg.appendChild(h(`<a class="chap" href="#${ch.id}"><div class="num">${ch.num}</div><h3>${ch.title}</h3><p>${ch.short}</p><div class="bar" aria-label="${p.d} van ${p.n} oefeningen juist"><i style="width:${100*p.d/p.n}%"></i></div></a>`)); });
+  cg.appendChild(h(`<a class="chap arena" href="#arena"><div class="num">Spel</div><h3>Oefenarena</h3><p>Memory, sorteerrace, wie ben ik? en kettingreactie over het hele thema.</p></a>`));
+}
+
+/* ---------- CHAPTER ---------- */
+function renderChapter(app, ch){
+  const v = h(`<section class="view">
+    <div class="chead"><div class="num">${ch.num==="Focus"?"Focus":"Hoofdstuk "+ch.num}</div><h1>${ch.title}</h1><p>${ch.lead}</p>
+      <div class="subnav"><a href="#${ch.id}" data-jump="sum">Samenvatting</a><a href="#${ch.id}" data-jump="cards">Begripkaarten</a><a href="#${ch.id}" data-jump="oef">Oefeningen</a></div></div>
+    <div class="block" id="sum"><h2>Samenvatting</h2><div class="sum">${ch.summary}</div></div>
+    <div class="block" id="cards" style="max-width:1000px"><h2>Begripkaarten</h2><p class="note">Denk eerst zelf na over de betekenis. Klik daarna om de kaart om te draaien.</p><div class="cards"></div></div>
+    <div class="block" id="oef" style="max-width:1000px"><h2>Oefeningen</h2><div class="ex-list"></div></div>
+    <p class="foot">Gebaseerd op Focus Biologie 4.2 (Pelckmans), thema 1 Ecologie. Samenvattingen en oefeningen zijn bewerkt voor eigen gebruik in de les.</p>
+  </section>`);
+  app.appendChild(v);
+  v.querySelector(".subnav").addEventListener("click",e=>{ const a=e.target.closest("[data-jump]"); if(a){ e.preventDefault(); const t=v.querySelector("#"+a.dataset.jump); t.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); } });
+  const cards=$(".cards",v);
+  ch.cards.forEach(c=>{ const b=h(`<button type="button" class="card" aria-label="${c[0]}: klik om om te draaien"><span class="in"><span class="f">${c[0]}<small>klik om om te draaien</small></span><span class="b">${c[1]}</span></span></button>`); b.addEventListener("click",()=>b.classList.toggle("flip")); cards.appendChild(b); });
+  const list=$(".ex-list",v);
+  ch.exercises.forEach((ex,i)=> list.appendChild(buildEx(ex, ch.id+"-"+i, (ch.num==="Focus"?"F":ch.num)+"."+(i+1))));
+}
+
+function shell(ex,id,label){
+  const w = h(`<article class="ex${P[id]?" done":""}" id="ex-${id}">
+    <div class="exh"><h3><span class="tag">Oefening ${label}</span>${ex.title}</h3><span class="chip">${P[id]?"Juist":"Te doen"}</span></div>
+    ${ex.q?`<p class="q">${ex.q}</p>`:""}<div class="ex-body"></div></article>`);
+  w.done = () => { P[id]=true; save(); w.classList.add("done"); $(".chip",w).textContent="Juist"; renderTabs(current); };
+  return w;
+}
+function actions(w, onCheck, onReset){
+  const a = h(`<div class="actions"><button type="button" class="btn">Controleer</button>${onReset?'<button type="button" class="btn ghost">Opnieuw</button>':""}<span class="msg" aria-live="polite"></span></div>`);
+  a.children[0].addEventListener("click",()=>onCheck($(".msg",a)));
+  if(onReset) a.children[1].addEventListener("click",()=>{ $(".msg",a).textContent=""; $(".msg",a).className="msg"; onReset(); });
+  w.appendChild(a); return a;
+}
+function setMsg(m, good, total, okText){
+  const all = good===total;
+  m.className = "msg " + (all?"ok":"bad");
+  m.textContent = all ? ("Alles juist! " + (okText||"")) : (good + " van " + total + " juist. Pas de rode antwoorden aan.");
+  return all;
+}
+
+function buildEx(ex,id,label){
+  const w = shell(ex,id,label), body=$(".ex-body",w);
+  const T = BUILD[ex.type]; T(ex,w,body); return w;
+}
+
+const BUILD = {
+  classify(ex,w,body){
+    const items = shuffle(ex.items);
+    items.forEach((it,k)=>{
+      const r = h(`<div class="row"><div class="t">${it.t}</div><div class="opts" role="group"></div></div>`);
+      ex.buckets.forEach((b,j)=>{ const btn=h(`<button type="button" class="opt" aria-pressed="false">${b}</button>`); btn.addEventListener("click",()=>{ r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); btn.setAttribute("aria-pressed","true"); r.dataset.c=j; r.classList.remove("ok","bad"); const f=$(".fb",r); if(f) f.remove(); }); $(".opts",r).appendChild(btn); });
+      r.it=it; body.appendChild(r);
+    });
+    actions(w, m=>{
+      let g=0; body.querySelectorAll(".row").forEach(r=>{ const ok = r.dataset.c!==undefined && +r.dataset.c===r.it.b; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok); if(ok) g++; });
+      if(setMsg(m,g,items.length,ex.ok)) w.done();
+    }, ()=>{ body.querySelectorAll(".row").forEach(r=>{ delete r.dataset.c; r.classList.remove("ok","bad"); r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); }); });
+  },
+  match(ex,w,body){
+    ex.items.forEach((it,k)=>{
+      const sid = w.id+"-s"+k;
+      const r = h(`<div class="row"><label class="t" for="${sid}">${it.t}</label><select id="${sid}"><option value="">Kies …</option>${ex.options.map((o,j)=>`<option value="${j}">${o}</option>`).join("")}</select></div>`);
+      r.it=it; $("select",r).addEventListener("change",()=>r.classList.remove("ok","bad")); body.appendChild(r);
+    });
+    actions(w, m=>{ let g=0; body.querySelectorAll(".row").forEach(r=>{ const v=$("select",r).value; const ok = v!=="" && +v===r.it.a; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok); if(ok) g++; }); if(setMsg(m,g,ex.items.length)) w.done(); });
+  },
+  tf(ex,w,body){
+    const state = ex.items.map(()=>null);
+    ex.items.forEach((it,k)=>{
+      const r = h(`<div class="row"><div class="t">${k+1}. ${it.s}</div><div class="opts"><button type="button" class="opt" aria-pressed="false" data-v="1">Waar</button><button type="button" class="opt" aria-pressed="false" data-v="0">Niet waar</button></div></div>`);
+      r.addEventListener("click",e=>{ const b=e.target.closest(".opt"); if(!b) return;
+        r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");
+        const ok = (b.dataset.v==="1")===it.a; state[k]=ok; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok);
+        let f=$(".fb",r); if(!f){ f=h(`<div class="fb"></div>`); r.appendChild(f); }
+        f.className="fb "+(ok?"ok":"bad"); f.innerHTML = (ok?"<b>Juist.</b> ":"<b>Niet juist.</b> Denk nog eens na. ") + (ok?it.e:"");
+        if(state.every(s=>s===true)) w.done();
+      });
+      body.appendChild(r);
+    });
+  },
+  mc(ex,w,body){
+    const multi = Array.isArray(ex.a); const sel=new Set();
+    const box = h(`<div class="qopts" role="group"></div>`);
+    ex.o.forEach((o,j)=>{ const b=h(`<button type="button" class="qopt" aria-pressed="false">${String.fromCharCode(97+j)}&ensp;${o}</button>`);
+      b.addEventListener("click",()=>{ if(!multi){ sel.clear(); box.querySelectorAll(".qopt").forEach(x=>x.setAttribute("aria-pressed","false")); }
+        if(sel.has(j)){ sel.delete(j); b.setAttribute("aria-pressed","false"); } else { sel.add(j); b.setAttribute("aria-pressed","true"); }
+        box.querySelectorAll(".qopt").forEach(x=>x.classList.remove("ok","bad")); });
+      box.appendChild(b); });
+    body.appendChild(box);
+    const css = `.qopt[aria-pressed="true"]{border-color:var(--water);box-shadow:inset 0 0 0 1px var(--water)}`;
+    if(!document.getElementById("mccss")){ const s=document.createElement("style"); s.id="mccss"; s.textContent=css; document.head.appendChild(s); }
+    actions(w, m=>{
+      const want = new Set(multi?ex.a:[ex.a]);
+      const ok = sel.size===want.size && [...sel].every(x=>want.has(x));
+      box.querySelectorAll(".qopt").forEach((b,j)=>{ b.classList.remove("ok","bad"); if(sel.has(j)) b.classList.add(want.has(j)?"ok":"bad"); });
+      m.className="msg "+(ok?"ok":"bad");
+      m.textContent = sel.size===0 ? "Kies eerst een antwoord." : ok ? "Juist! "+(ex.e||"") : (multi?"Nog niet helemaal juist. Let op: er kunnen meerdere antwoorden juist zijn.":"Niet juist. Probeer opnieuw.");
+      if(ok) w.done();
+    });
+  },
+  multi(ex,w,body){
+    const t = h(`<div class="tbl"><table><thead><tr><th>Proces</th>${ex.cols.map(c=>`<th class="c">${c} waterkringloop</th>`).join("")}</tr></thead><tbody></tbody></table></div>`);
+    ex.rows.forEach((r,k)=>{ const tr=h(`<tr><td>${r.t}</td>${ex.cols.map((c,j)=>`<td class="c"><input type="checkbox" id="${w.id}-${k}-${j}" aria-label="${r.t}, ${c}"></td>`).join("")}</tr>`); $("tbody",t).appendChild(tr); });
+    body.appendChild(t);
+    t.addEventListener("change",e=>{ const td=e.target.closest("td"); if(td) td.classList.remove("ok","bad"); });
+    actions(w, m=>{ let g=0,n=0; ex.rows.forEach((r,k)=>ex.cols.forEach((c,j)=>{ const cb=document.getElementById(`${w.id}-${k}-${j}`); const ok=cb.checked===!!r.a[j]; n++; if(ok) g++; cb.parentElement.classList.toggle("ok",ok&&cb.checked); cb.parentElement.classList.toggle("bad",!ok); })); if(setMsg(m,g,n,"In de korte kringloop komt het water niet op het land terecht.")) w.done(); });
+  },
+  order(ex,w,body){
+    const pool=h(`<div class="pool"></div>`), ans=h(`<ol class="answer" style="list-style:none;margin:10px 0 0"></ol>`);
+    body.append(pool,ans);
+    function reset(){ pool.innerHTML=""; ans.innerHTML=""; shuffle(ex.items.map((t,i)=>i)).forEach(i=>pool.appendChild(tok(i))); }
+    function tok(i){ const b=h(`<button type="button" class="tok" data-i="${i}"><span class="i"></span><span>${ex.items[i]}</span></button>`); return b; }
+    function renum(){ ans.querySelectorAll(".tok").forEach((b,k)=>{ $(".i",b).textContent=(k+1)+"."; }); pool.querySelectorAll(".i").forEach(s=>s.textContent=""); }
+    pool.addEventListener("click",e=>{ const b=e.target.closest(".tok"); if(b){ const li=document.createElement("li"); li.appendChild(b); ans.appendChild(li); ans.querySelectorAll(".tok").forEach(x=>x.classList.remove("ok","bad")); renum(); } });
+    ans.addEventListener("click",e=>{ const b=e.target.closest(".tok"); if(b){ const li=b.parentElement; pool.appendChild(b); li.remove(); ans.querySelectorAll(".tok").forEach(x=>x.classList.remove("ok","bad")); renum(); } });
+    reset();
+    actions(w, m=>{ const toks=[...ans.querySelectorAll(".tok")]; if(toks.length<ex.items.length){ m.className="msg bad"; m.textContent="Zet eerst alle stappen in je volgorde."; return; }
+      let g=0; toks.forEach((b,k)=>{ const ok=+b.dataset.i===k; b.classList.toggle("ok",ok); b.classList.toggle("bad",!ok); if(ok) g++; }); if(setMsg(m,g,toks.length)) w.done(); }, reset);
+  },
+  open(ex,w,body){
+    const id=w.id+"-ta";
+    body.appendChild(h(`<div><label for="${id}" class="note" style="display:block;margin-bottom:6px;border:none;padding:0">Schrijf eerst je eigen antwoord.</label><textarea id="${id}"></textarea></div>`));
+    const a=h(`<div class="actions"><button type="button" class="btn">Toon modelantwoord</button></div>`); w.appendChild(a);
+    a.children[0].addEventListener("click",()=>{ if(!$(".model",w)){ w.appendChild(h(`<div class="model"><b>Modelantwoord</b>${ex.model}<br><span style="color:var(--ink-2);font-size:.9rem">Vergelijk met je eigen antwoord. Staan alle kernwoorden erin?</span></div>`)); w.done(); } });
+  },
+  explore(ex,w,body){
+    const g=h(`<div class="explore"><div class="list" role="group"></div><div class="panel" aria-live="polite"></div></div>`); body.appendChild(g);
+    const seen=new Set();
+    ex.items.forEach((it,k)=>{ const b=h(`<button type="button" class="opt" aria-pressed="false" style="text-align:left">${it.n}</button>`);
+      b.addEventListener("click",()=>{ g.querySelectorAll(".list .opt").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");
+        $(".panel",g).innerHTML=`<h4>${it.n}</h4><dl>${it.d.map(d=>`<dt>${d[0]}</dt><dd>${d[1]}</dd>`).join("")}</dl>`; seen.add(k); if(seen.size===ex.items.length) w.done(); });
+      $(".list",g).appendChild(b); });
+    g.querySelector(".list .opt").click();
+  },
+  pyramid(ex,w,body){
+    const names=["Producenten","Consumenten 1e orde","Consumenten 2e orde","Consumenten 3e orde"];
+    const g=h(`<div><label for="${w.id}-r">Energie in de producenten: <b class="pv"></b> kJ</label><input type="range" id="${w.id}-r" min="1000" max="100000" step="1000" value="10000"><div class="pyr"></div>
+      <p class="note" style="margin-top:12px">Bij elke stap gaat gemiddeld 90 % verloren: als warmte door celademhaling en door biomassaverlies (niet opgegeten, onverteerd in uitwerpselen).</p>
+      <div class="row" style="margin-top:10px;border-top:1px solid var(--line)"><label class="t" for="${w.id}-n">Producenten bevatten 50 000 kJ. Hoeveel kJ komt terecht bij de consumenten van de 3e orde?</label><input type="number" id="${w.id}-n" inputmode="numeric"></div></div>`);
+    body.appendChild(g);
+    const pyr=$(".pyr",g), r=$("input[type=range]",g);
+    names.forEach(n=>pyr.appendChild(h(`<div class="lv"><span>${n}</span><span class="bw"><span class="b"></span></span><span class="v"></span></div>`)));
+    function upd(){ const e=+r.value; $(".pv",g).textContent=fmt(e); pyr.querySelectorAll(".lv").forEach((lv,k)=>{ const val=e/Math.pow(10,k); $(".b",lv).style.width=(100/Math.pow(10,k))+"%"; $(".v",lv).textContent=fmt(Math.round(val*100)/100)+" kJ"; }); }
+    r.addEventListener("input",upd); upd();
+    actions(w, m=>{ const v=parseFloat(String($("input[type=number]",g).value).replace(",",".")); const ok=v===50; m.className="msg "+(ok?"ok":"bad"); m.textContent= ok?"Juist: 50 000 → 5 000 → 500 → 50 kJ.":"Niet juist. Deel bij elke stap door 10."; if(ok) w.done(); });
+  },
+  ncycle(ex,w,body){
+    const N={n2:[360,48,"stikstofgas (N₂) in lucht"],nit:[610,215,"nitraationen (NO₃⁻)"],amm:[500,385,"ammoniak / ammonium"],afv:[180,385,"stikstof in organisch afval"],bio:[120,215,"biomassa (planten, dieren)"]};
+    const A=[
+      {k:"fix",f:"n2",t:"amm",c:"k-fix",n:"Stikstoffixatie",lx:384,ly:150,an:"end",i:"Stikstofgas uit de lucht wordt omgezet in stikstofverbindingen in de bodem. Vrij levende bodembacteriën en wortelknolbacteriën (bij erwten, bonen, luzerne, klaver) maken er ammoniak/ammonium van. Tijdens onweer reageert stikstofgas met ozon; via regenwater komt het als nitraat in de bodem."},
+      {k:"ass",f:"nit",t:"bio",c:"k-ass",n:"Stikstofassimilatie",lx:300,ly:203,an:"middle",i:"Producenten nemen vooral nitraationen op (ook ammoniak/ammonium) en maken er organische stoffen van, zoals plantaardige eiwitten. Via de voeding gaan die naar consumenten, die er dierlijke eiwitten en urine van maken."},
+      {k:"dood",f:"bio",t:"afv",c:"k-dood",n:"Afsterven en uitscheiden",lx:162,ly:300,an:"start",i:"Dode resten, uitwerpselen en urine bevatten stikstofverbindingen in organisch afval. Urine bevat ureum, een goede meststof voor planten."},
+      {k:"amm",f:"afv",t:"amm",c:"k-amm",n:"Ammonificatie",lx:340,ly:372,an:"middle",i:"Reducenten zoals rottingsbacteriën en urobacteriën zetten de stikstof in organisch afval om in ammoniak en ammoniumionen. Dit is een anaeroob proces."},
+      {k:"nitri",f:"amm",t:"nit",c:"k-nit",n:"Nitrificatie",lx:574,ly:312,an:"start",i:"Nitrificerende bodembacteriën oxideren ammoniak/ammonium tot nitraationen. Daarvoor is voldoende zuurstofgas nodig."},
+      {k:"denit",f:"nit",t:"n2",c:"k-nit",n:"Denitrificatie",lx:540,ly:122,an:"start",i:"In een zuurstofarme bodem zetten denitrificerende bacteriën nitraationen om in stikstofgas (of ammoniak). Zo sluit de kringloop volledig."}
+    ];
+    const W=96,H=22;
+    function clip(a,b){ const dx=b[0]-a[0], dy=b[1]-a[1]; const t=Math.min(dx?W/Math.abs(dx):1e9, dy?H/Math.abs(dy):1e9); return [a[0]+dx*(t+0.03*0), a[1]+dy*(t)]; }
+    let s=`<svg viewBox="0 0 720 430" role="img" aria-label="Schema van de stikstofcyclus">`;
+    A.forEach((a,k)=>{ const p=N[a.f],q=N[a.t]; const p1=clip(p,q), q0=clip(q,p); const dx=q0[0]-p1[0], dy=q0[1]-p1[1], L=Math.hypot(dx,dy), ux=dx/L, uy=dy/L;
+      const x1=p1[0]+ux*6, y1=p1[1]+uy*6, x2=q0[0]-ux*8, y2=q0[1]-uy*8;
+      const hx=x2-ux*12, hy=y2-uy*12, px=-uy*6, py=ux*6;
+      s+=`<g class="arr" data-k="${k}" tabindex="0" role="button" aria-label="${a.n}"><line class="hit" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/><line class="${a.c}" x1="${x1}" y1="${y1}" x2="${hx}" y2="${hy}"/><polygon class="${a.c}" points="${x2},${y2} ${hx+px},${hy+py} ${hx-px},${hy-py}"/><text class="${a.c} lbl" x="${a.lx}" y="${a.ly}" text-anchor="${a.an}">${a.n.toLowerCase()}</text></g>`; });
+    Object.values(N).forEach(n=>{ s+=`<g class="node"><rect x="${n[0]-W}" y="${n[1]-H}" width="${2*W}" height="${2*H}" rx="8"/><text x="${n[0]}" y="${n[1]+5}">${n[2]}</text></g>`; });
+    s+=`</svg>`;
+    const g=h(`<div><div class="seg" role="group" aria-label="Modus"><button type="button" aria-pressed="true" data-m="v">Verkennen</button><button type="button" aria-pressed="false" data-m="t">Test</button></div><div class="diagram" style="margin-top:12px">${s}</div><div class="infobox" aria-live="polite">Klik op een pijl.</div></div>`);
+    body.appendChild(g);
+    const svg=$("svg",g), box=$(".infobox",g); let mode="v", target=-1; const found=new Set();
+    function labels(show){ svg.querySelectorAll(".arr text").forEach(t=>t.style.visibility=show?"visible":"hidden"); }
+    function hl(k){ svg.querySelectorAll(".arr").forEach(a=>{ a.classList.toggle("hl",+a.dataset.k===k); a.classList.toggle("dim",k>=0&&+a.dataset.k!==k); }); }
+    function explore(k){ hl(k); box.innerHTML=`<b>${A[k].n}.</b> ${A[k].i}`; }
+    function next(){ const left=A.map((_,i)=>i).filter(i=>!found.has(i)); if(!left.length){ hl(-1); labels(true); box.innerHTML=`<b>Alle zes pijlen juist benoemd!</b> Schakel terug naar ‘Verkennen’ om de uitleg te herlezen.`; w.done(); return; }
+      target=left[Math.floor(Math.random()*left.length)]; hl(target);
+      box.innerHTML=`<p style="margin-bottom:8px">Welk proces hoort bij de dikke pijl? <span style="color:var(--ink-2)">(${found.size}/6)</span></p><div class="opts">${shuffle(A.map((a,i)=>i)).map(i=>`<button type="button" class="opt" data-a="${i}">${A[i].n}</button>`).join("")}</div><p class="msg" style="margin-top:8px"></p>`; }
+    box.addEventListener("click",e=>{ const b=e.target.closest("[data-a]"); if(!b||mode!=="t") return; const m=$(".msg",box);
+      if(+b.dataset.a===target){ found.add(target); m.className="msg ok"; m.textContent="Juist!"; setTimeout(next,700); } else { b.style.borderColor="var(--bad)"; m.className="msg bad"; m.textContent="Niet juist, probeer opnieuw."; } });
+    svg.addEventListener("click",e=>{ const a=e.target.closest(".arr"); if(a&&mode==="v") explore(+a.dataset.k); });
+    svg.addEventListener("keydown",e=>{ if((e.key==="Enter"||e.key===" ")&&mode==="v"){ const a=e.target.closest(".arr"); if(a){ e.preventDefault(); explore(+a.dataset.k);} } });
+    $(".seg",g).addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; mode=b.dataset.m; $(".seg",g).querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+      if(mode==="t"){ labels(false); found.clear(); next(); } else { labels(true); hl(-1); box.textContent="Klik op een pijl."; } });
+  },
+  coral(ex,w,body){
+    const S={gezond:["Gezond koraal","De microalgen leven in de koraalpoliep, leveren voedingsstoffen via fotosynthese en geven het koraal zijn kleur."],
+             verbleekt:["Verbleekt koraal","Door de stress zijn de microalgen afgestorven of giftig geworden en afgestoten. Het witte kalkskelet komt bloot. Het koraal krijgt geen voedingsstoffen meer en verzwakt."],
+             dood:["Dood koraal","De stress hield te lang aan of verbleking kwam vaker terug dan de herstelperiode. Het koraal is verhongerd. Algen nemen het skelet over."]};
+    const svg=`<svg viewBox="0 0 300 260" role="img" aria-label="Tekening van een koraal">
+      <rect x="0" y="0" width="300" height="260" rx="10" fill="var(--water-soft)"/><ellipse cx="150" cy="245" rx="120" ry="14" fill="var(--line)"/>
+      <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16">
+        <path class="c-branch" d="M150 242 L150 170 L112 122 L98 70"/><path class="c-branch" d="M150 172 L192 118 L202 62"/><path class="c-branch" d="M112 124 L142 84"/><path class="c-branch" d="M192 120 L232 98 L250 58"/><path class="c-branch" d="M150 205 L84 172 L62 122"/>
+      </g>
+      ${[[98,66],[202,58],[142,80],[250,54],[62,118],[124,138],[176,140],[220,104],[90,176],[150,190],[106,98],[196,90]].map(p=>`<circle class="c-pol" cx="${p[0]}" cy="${p[1]}" r="6"/>`).join("")}
+      ${[[150,200],[118,128],[196,112],[80,170],[230,96],[100,80],[146,160]].map(p=>`<circle class="c-alg" cx="${p[0]}" cy="${p[1]}" r="11"/>`).join("")}
+    </svg>`;
+    const g=h(`<div class="coral state-gezond"><div>${svg}</div><div><div class="st"></div><p class="desc" style="margin-top:6px"></p><p class="note" style="margin-top:10px">Tijd: <span class="tm">—</span></p>
+      <div class="opts" style="margin-top:14px"><button type="button" class="opt" data-a="up">Stress neemt toe</button><button type="button" class="opt" data-a="keep">Stress houdt aan</button><button type="button" class="opt" data-a="down">Stress neemt af</button><button type="button" class="opt" data-a="reset">Opnieuw</button></div></div></div>`);
+    body.appendChild(g);
+    let st="gezond"; const seen=new Set(["gezond"]); let recovered=false;
+    function show(tm){ g.className="coral state-"+st; $(".st",g).textContent=S[st][0]; $(".desc",g).textContent=S[st][1]; $(".tm",g).textContent=tm||"—"; seen.add(st); if(seen.size===3&&recovered) w.done(); }
+    g.addEventListener("click",e=>{ const b=e.target.closest("[data-a]"); if(!b) return; const a=b.dataset.a;
+      if(a==="reset"){ st="gezond"; show(); return; }
+      if(st==="gezond"){ if(a==="up"){ st="verbleekt"; show("weken tot maanden"); } else show("Er is geen stress: het koraal blijft gezond."); }
+      else if(st==="verbleekt"){ if(a==="down"){ st="gezond"; recovered=true; show("Het koraal nam opnieuw microalgen op en herstelt."); } else { st="dood"; show("aanhoudende of terugkerende stress"); } }
+      else { show("Dood koraal herstelt niet meer. Klik op ‘Opnieuw’."); }
+    });
+    show();
+    body.appendChild(h(`<p class="note" style="margin-top:14px">Probeer alle drie de toestanden en laat het koraal minstens één keer herstellen.</p>`));
+  },
+  madmap(ex,w,body){
+    const info={
+      west:["Westen","Minder neerslag: hier groeien droge loofbossen en vind je de beroemde kalksteenformaties."],
+      berg:["Bergketen","Loopt van noord naar zuid. Regenwolken uit het oosten worden omhoog gestuwd, de waterdamp condenseert."],
+      oost:["Oosten","Veel neerslag: tropisch regenwoud."],
+      zee:["Indische Oceaan","Hiervandaan komen de regenwolken naar het eiland."]};
+    const s=`<svg viewBox="0 0 720 260" role="img" aria-label="Doorsnede van Madagaskar van west naar oost">
+      <rect x="640" y="200" width="80" height="60" fill="var(--water-soft)" data-r="zee" style="cursor:pointer"/>
+      <path d="M0 225 L150 205 L290 128 L360 62 L430 128 L560 196 L640 205 L640 260 L0 260 Z" fill="var(--line)"/>
+      <path d="M0 225 L150 205 L290 128 L330 95 L330 260 L0 260 Z" fill="transparent" data-r="west" style="cursor:pointer"/>
+      <path d="M330 95 L360 62 L392 95 L392 260 L330 260 Z" fill="transparent" data-r="berg" style="cursor:pointer"/>
+      <path d="M392 95 L430 128 L560 196 L640 205 L640 260 L392 260 Z" fill="transparent" data-r="oost" style="cursor:pointer"/>
+      ${[[445,128],[470,140],[495,152],[520,165],[545,178],[575,190],[605,196],[458,124],[508,150],[560,174]].map(p=>`<circle cx="${p[0]}" cy="${p[1]-8}" r="10" fill="var(--moss)" pointer-events="none"/>`).join("")}
+      ${[[90,206],[200,186],[260,150]].map(p=>`<circle cx="${p[0]}" cy="${p[1]-5}" r="6" fill="var(--moss)" opacity=".6" pointer-events="none"/>`).join("")}
+      <g fill="var(--sheet)" stroke="var(--ink-2)" stroke-width="1.5" pointer-events="none">
+        <ellipse cx="660" cy="120" rx="38" ry="16"/><ellipse cx="540" cy="80" rx="40" ry="16"/><ellipse cx="430" cy="48" rx="36" ry="14"/>
+      </g>
+      <g stroke="var(--water)" stroke-width="2" pointer-events="none">${[510,525,540,555,570].map((x,i)=>`<line x1="${x}" y1="${102+(i%2)*6}" x2="${x-6}" y2="${122+(i%2)*6}"/>`).join("")}</g>
+      <path d="M700 150 Q600 120 470 70" fill="none" stroke="var(--ink-2)" stroke-width="2" stroke-dasharray="6 5" pointer-events="none"/>
+      <polygon points="466,68 480,68 472,80" fill="var(--ink-2)" pointer-events="none"/>
+      <g font-family="var(--f-body)" font-size="14" fill="var(--ink)" pointer-events="none">
+        <text x="20" y="250">west</text><text x="700" y="250" text-anchor="end">oost</text>
+        <text x="360" y="40" text-anchor="middle">bergketen</text>
+      </g>
+    </svg>`;
+    const g=h(`<div><div class="diagram">${s}</div><div class="infobox" aria-live="polite">Klik op het westen, de bergketen, het oosten of de oceaan.</div>
+      <p class="note" style="margin-top:12px">Het zuiden (niet op deze doorsnede) is extreem droog: ‘spiny forest’ met doornige struiken en baobabs. In het zuidwesten groeien vooral succulenten.</p></div>`);
+    body.appendChild(g); const seen=new Set();
+    $("svg",g).addEventListener("click",e=>{ const r=e.target.closest("[data-r]"); if(!r) return; const k=r.dataset.r; $(".infobox",g).innerHTML=`<b>${info[k][0]}.</b> ${info[k][1]}`; seen.add(k); if(seen.size===4) w.done(); });
+  }
+};
+
+/* ---------- GLOSSARY ---------- */
+function renderGloss(app){
+  const v=h(`<section class="view"><div class="chead"><h1>Begrippenlijst</h1><p>Alle kernbegrippen van thema 1. Zoek een woord of filter op hoofdstuk.</p></div>
+    <div class="gl-tools"><input type="search" id="gl-q" placeholder="Zoek een begrip, bv. niche" aria-label="Zoek een begrip"><select id="gl-c" aria-label="Filter op hoofdstuk"><option value="">Alle hoofdstukken</option><option value="1">1 Ecosystemen</option><option value="2">2 Biodiversiteit</option><option value="Focus">Focus Madagaskar</option><option value="3">3 Energie &amp; kringlopen</option><option value="4">4 Ecosysteemdiensten</option><option value="5">5 Mens &amp; klimaat</option></select><button type="button" class="btn ghost" id="gl-hide" aria-pressed="false">Verberg betekenissen</button></div>
+    <dl class="gl"></dl></section>`);
+  app.appendChild(v);
+  const dl=$(".gl",v), q=$("#gl-q",v), c=$("#gl-c",v), hide=$("#gl-hide",v); let hidden=false;
+  function draw(){ const s=q.value.trim().toLowerCase(); const rows=GLOSS.filter(g=>(!c.value||g[2]===c.value)&&(!s||(g[0]+" "+g[1]).toLowerCase().includes(s))).sort((a,b)=>a[0].localeCompare(b[0],"nl"));
+    dl.innerHTML = rows.length ? rows.map(g=>`<div><dt>${g[0]}<br><span class="h">${g[2]==="Focus"?"Focus":"hoofdstuk "+g[2]}</span></dt><dd ${hidden?'style="filter:blur(6px);cursor:pointer" title="Klik om te tonen"':""}>${g[1]}</dd></div>`).join("") : `<p class="note" style="margin-top:12px">Geen begrip gevonden. Probeer een ander woord of kies ‘Alle hoofdstukken’.</p>`; }
+  q.addEventListener("input",draw); c.addEventListener("change",draw);
+  hide.addEventListener("click",()=>{ hidden=!hidden; hide.setAttribute("aria-pressed",hidden); hide.textContent=hidden?"Toon betekenissen":"Verberg betekenissen"; draw(); });
+  dl.addEventListener("click",e=>{ const d=e.target.closest("dd"); if(d) d.style.filter="none"; });
+  draw();
+}
+
+/* ---------- QUIZ ---------- */
+function renderQuiz(app){
+  const v=h(`<section class="view quiz"><div class="chead"><h1>Eindtoets thema 1</h1><p>Tien willekeurige vragen over het hele thema. Elke keer dat je start, krijg je andere vragen.</p></div><div class="block" id="qz"></div></section>`);
+  app.appendChild(v); const box=$("#qz",v);
+  function intro(){ const best=P.best; box.innerHTML=`<div class="qcard"><h3>Klaar om jezelf te testen?</h3><p>${best!=null?`Je beste score tot nu toe: <b>${best}/10</b>.`:"Je hebt de toets nog niet gemaakt."}</p><div class="actions"><button type="button" class="btn" id="qstart">Start de toets</button></div></div>`; $("#qstart",box).addEventListener("click",start); }
+  let qs=[], i=0, score=0;
+  function start(){ qs=shuffle(POOL).slice(0,10).map(q=>{ const ord=shuffle(q.o.map((_,j)=>j)); return {q:q.q,o:ord.map(j=>q.o[j]),a:ord.indexOf(q.a)}; }); i=0; score=0; ask(); }
+  function ask(){ const q=qs[i];
+    box.innerHTML=`<div class="qcard"><div class="qn">Vraag ${i+1} van 10</div><div class="bar"><i style="width:${i*10}%"></i></div><h3>${q.q}</h3><div class="qopts">${q.o.map((o,j)=>`<button type="button" class="qopt" data-j="${j}">${o}</button>`).join("")}</div><div class="actions"><span class="msg" aria-live="polite"></span></div></div>`;
+    box.querySelector(".qopts").addEventListener("click",e=>{ const b=e.target.closest(".qopt"); if(!b||b.disabled) return; const j=+b.dataset.j; const ok=j===q.a; if(ok) score++;
+      box.querySelectorAll(".qopt").forEach((x,k)=>{ x.disabled=true; if(k===q.a) x.classList.add("ok"); }); if(!ok) b.classList.add("bad");
+      const m=$(".msg",box); m.className="msg "+(ok?"ok":"bad"); m.textContent= ok?"Juist!":"Niet juist. Het juiste antwoord is groen.";
+      const nb=h(`<button type="button" class="btn">${i<9?"Volgende vraag":"Bekijk je score"}</button>`); nb.addEventListener("click",()=>{ i++; i<10?ask():end(); }); $(".actions",box).prepend(nb); nb.focus(); });
+  }
+  function end(){ if(P.best==null||score>P.best){ P.best=score; save(); }
+    const t = score>=8?"Sterk gedaan. Je beheerst dit thema goed.":score>=5?"Goed bezig. Herhaal de hoofdstukken waar je twijfelde.":"Lees de samenvattingen nog eens en maak de oefeningen opnieuw.";
+    box.innerHTML=`<div class="qcard"><div class="score">${score}/10</div><p style="margin-top:6px">${t}</p><div class="actions"><button type="button" class="btn" id="qagain">Nieuwe toets</button><a class="btn ghost" href="#start" style="text-decoration:none">Terug naar start</a></div></div>`;
+    $("#qagain",box).addEventListener("click",start); }
+  intro();
+}
+
+const AR_MEM=[
+ ["populatie","Organismen van dezelfde soort in een gebied, met interactie mogelijk"],
+ ["levensgemeenschap","Alle populaties van verschillende soorten die elkaar beïnvloeden"],
+ ["ecosysteem","Geheel van interacties tussen biotische en abiotische factoren in een biotoop"],
+ ["biosfeer","Deel van de aarde waar leven mogelijk is"],
+ ["biotoop","Min of meer homogeen gebied met eigen fysische en chemische kenmerken"],
+ ["habitat","Plaats die optimaal is voor één soort om te overleven en voort te planten"],
+ ["niche","Rol of functie van een soort in het ecosysteem"],
+ ["determineren","De naam van een organisme opzoeken"],
+ ["inventariseren","Aantallen en verspreiding van soorten tellen of schatten"],
+ ["indicatorsoort","Zegt door aan- of afwezigheid iets over het milieu"],
+ ["tredplant","Plant aangepast aan een verdichte bodem"],
+ ["endemische soort","Komt enkel voor in één bepaald gebied"],
+ ["trofisch niveau","Plaats van een organisme in een voedselketen"],
+ ["producent","Maakt organische stoffen via foto- of chemosynthese"],
+ ["detritivoor","Afvaleter die dood organisch materiaal verkleint"],
+ ["reducent","Bacterie of schimmel die resten omzet in mineralen"],
+ ["mineralisatie","Omzetting van organisch materiaal in mineralen"],
+ ["energiestroom","Stralingsenergie gaat door de voedselketen en wordt warmte"],
+ ["transpiratie","Waterdamp ontsnapt via de huidmondjes van bladeren"],
+ ["evaporatie","Verdamping van oppervlaktewater"],
+ ["stikstoffixatie","Stikstofgas wordt omgezet in stikstofverbindingen in de bodem"],
+ ["denitrificatie","Bacteriën in een zuurstofarme bodem maken van nitraat stikstofgas"],
+ ["ecosysteemdiensten","Goederen en diensten die de natuur aan de mens levert"],
+ ["verbleking","Koraal stoot microalgen af en verliest zijn kleur"]
+];
+const AR_SETS=[
+ {t:"Biotoop, habitat of niche?",c:["biotoop","habitat","niche"],i:[["Blaasjeskruid vangt watervlooien voor voedingsstoffen.",2],["Blaasjeskruid kan voorkomen in poelen.",0],["Blaasjeskruid groeit enkel op ondiepe plaatsen.",1],["Een poel: geïsoleerd, stilstaand water met ondiepe en diepere delen.",0],["De schaatsenrijder leeft op het wateroppervlak.",1],["De kerkuil jaagt ’s nachts op muizen, de torenvalk overdag.",2],["Vederkruid beschermt kikkervisjes en maakt veel zuurstofgas.",2],["Moerassen en vochtige graslanden als zomerverblijf van de gewone pad.",1]]},
+ {t:"Abiotisch of biotisch kenmerk?",c:["abiotisch","biotisch"],i:[["lichtsterkte",0],["temperatuur",0],["vochtigheid",0],["dichtheid van het bladerdek",1],["voedsel",1],["nestgelegenheid",1]]},
+ {t:"Dieren inventariseren",c:["rechtstreeks","onrechtstreeks"],i:[["nestkasten controleren",0],["een pootafdruk in de modder",1],["vogels tellen",0],["uitwerpselen en haren verzamelen",1],["dieren vangen en weer loslaten",0],["een dood dier langs de weg",1]]},
+ {t:"Op welk niveau van biodiversiteit?",c:["ecosysteem","soort","genetisch"],i:[["Naast de jaguar leven in het regenwoud ook de ocelot en de margay.",1],["verschillende kattenrassen",2],["biosfeer, regenwoud, boomkruin, waterdruppel",0],["250 variëteiten van de paardenbloem",2],["Een bloemrijke berm telt veel meer plantensoorten.",1],["Natuurreservaten en wegbermen vormen een netwerk.",0]]},
+ {t:"Natuurlijk, halfnatuurlijk of kunstmatig?",c:["natuurlijk","halfnatuurlijk","kunstmatig"],i:[["het zuidpoolgebied",0],["een natuurreservaat in Vlaanderen",1],["een gemaaide wegberm",2],["de hoge toppen van de Himalaya",0]]},
+ {t:"Wie doet wat in de voedselkringloop?",c:["producent","consument","detritivoor","reducent"],i:[["paardenbloem",0],["fytoplankton",0],["slak",1],["pad",1],["blauwe reiger",1],["regenworm",2],["schimmels",3],["bacteriën die mineralen vormen",3]]},
+ {t:"Korte of lange koolstofkringloop?",c:["korte kringloop","lange kringloop"],i:[["fotosynthese door producenten",0],["methaangas uit de darmen van vee",0],["aerobe celademhaling",0],["vorming van kalksteen en krijt",1],["vorming van aardolie en steenkool",1],["verbranding van fossiele brandstoffen",1]]},
+ {t:"Welke ecosysteemdienst?",c:["producerend","regulerend","cultureel","ondersteunend"],i:[["Duinen beschermen tegen stormvloeden.",1],["honing van bijen",0],["bronwater van Spa",0],["zelfreinigend vermogen van waterlopen",1],["hunebedden",2],["bodemvruchtbaarheid door bodemorganismen",3],["bestuiving door bijen",1],["een wandeling in het park",2],["energie uit biomassa van uitwerpselen",0]]},
+ {t:"Klimaat in Madagaskar",c:["oosten","westen","zuiden"],i:[["veel neerslag",0],["tropisch regenwoud",0],["droge loofbossen",1],["kalksteenformaties",1],["spiny forest met baobabs",2],["extreem droog",2]]}
+];
+const AR_WHO=[
+ {a:"regenworm",o:["regenworm","schimmel","slak","pad"],h:["Ik maak de bodem luchtig.","Ik leef van dood organisch materiaal en verklein het.","Ik ben een detritivoor, geen reducent."]},
+ {a:"kokerjuffer",o:["kokerjuffer","brandnetel","schaatsenrijder","watervlo"],h:["Ik ben een indicatorsoort.","Ik leef in het water.","Ik overleef enkel in heel zuiver water."]},
+ {a:"aye-aye",o:["aye-aye","ringstaartmaki","tenrek","kerkuil"],h:["Ik ben endemisch op Madagaskar.","Ik tik ’s nachts op boomschors om larven te vinden.","Ik haal ze eruit met mijn lange, dunne middelvinger."]},
+ {a:"brandnetel",o:["brandnetel","brede orchis","paardenbloem","madeliefje"],h:["Ik ben een indicatorsoort.","Waar ik groei, is de bodem rijk aan stikstof.","Raak je mij aan, dan prikt het."]},
+ {a:"paardenbloem",o:["paardenbloem","brandnetel","grote weegbree","baobab"],h:["Binnen mijn soort bestaan wel 250 variëteiten.","Mijn zaden hebben vruchtpluis en de wind verspreidt ze.","Ik heb een diepe penwortel en een bladrozet."]},
+ {a:"koraal",o:["koraal","fytoplankton","schimmel","spons"],h:["Ik bouw een kalkskelet van calciumcarbonaat.","Ik ben een samenleving van een dier en microalgen.","Bij stress stoot ik mijn microalgen af en word ik wit."]},
+ {a:"kerkuil",o:["kerkuil","torenvalk","blauwe reiger","bosuil"],h:["Ik ben een roofvogel.","Ik jaag op veldmuizen.","Ik jaag ’s nachts; mijn concurrent doet dat overdag."]},
+ {a:"nitrificatie",o:["nitrificatie","denitrificatie","ammonificatie","stikstoffixatie"],h:["Ik ben een proces in de stikstofcyclus.","Ik heb zuurstofgas nodig.","Bacteriën maken bij mij van ammonium nitraat."]},
+ {a:"regulerende ecosysteemdienst",o:["regulerende ecosysteemdienst","producerende ecosysteemdienst","culturele ecosysteemdienst","ondersteunende ecosysteemdienst"],h:["Ik ben een voordeel dat de natuur de mens levert.","Lieveheersbeestjes en bijen zorgen voor mij.","Ik bescherm tegen bedreigingen zoals stormvloeden en hitte."]},
+ {a:"habitat",o:["habitat","niche","biotoop","populatie"],h:["Ik ben geen rol, wel een plek.","De gewone pad heeft er een voor de voortplanting, de zomer en de winter.","Ik ben de plaats die optimaal is voor één soort."]},
+ {a:"biosfeer",o:["biosfeer","atmosfeer","levensgemeenschap","ecosysteem"],h:["Ik ben het grootste ecosysteem.","Ik bevat alle organismen in, op en rond de aarde.","Ik besta uit lithosfeer, hydrosfeer en atmosfeer."]},
+ {a:"koolstofdioxide",o:["koolstofdioxide","stikstofgas","zuurstofgas","methaangas"],h:["Ik ben een gas in de atmosfeer.","Bij aerobe celademhaling kom ik vrij.","Producenten leggen mij vast via fotosynthese."]},
+ {a:"tenrek",o:["tenrek","aye-aye","ringstaartmaki","egel"],h:["Ik ben een klein zoogdier dat insecten eet.","Er bestaan 31 soorten van mij, allemaal uit één voorouder.","Ik leef enkel op Madagaskar; sommige van ons zijn stekelig."]},
+ {a:"succulent",o:["succulent","baobab","tredplant","reizigersboom"],h:["Ik ben een plant.","Ik groei vooral in het droge zuidwesten van Madagaskar.","Ik sla water op in mijn organen."]}
+];
+const AR_CHAINS=[
+ {t:"Van cel tot biosfeer",q:"Zet de organisatieniveaus van klein naar groot.",s:["cel","weefsel","orgaan","stelsel","organisme","populatie","levensgemeenschap","ecosysteem","biosfeer"]},
+ {t:"Energie door de voedselketen",q:"Volg de energie van de zon tot ze verloren gaat.",s:["stralingsenergie van de zon","producenten maken via fotosynthese chemische energie","consumenten 1e orde eten de producenten","consumenten 2e orde eten de consumenten 1e orde","uiteindelijk is alle energie omgezet in warmte"]},
+ {t:"De korte waterkringloop",q:"Zet de stappen van de korte waterkringloop in volgorde.",s:["zeewater verdampt","de waterdamp stijgt en komt in koude lucht","de waterdamp condenseert tot wolken","het water valt als neerslag terug in zee"]},
+ {t:"Van uitstoot tot schade",q:"Zet de oorzaak-gevolgketen in de juiste volgorde.",s:["verbranding van fossiele brandstoffen en ontbossing","toename van broeikasgassen in de atmosfeer","versterkt broeikaseffect","wereldwijde klimaatverandering","schade aan ecosystemen, zoals koraalverbleking"]},
+ {t:"Zo verbleekt koraal",q:"Zet de stappen van verbleking in de juiste volgorde.",s:["het zeewater warmt snel op (stress)","de microalgen sterven af of worden giftig","de koraalpoliep stoot de microalgen af","de kleur verdwijnt en het witte kalkskelet komt bloot","het koraal neemt opnieuw microalgen op en herstelt, of verhongert"]},
+ {t:"Regen op Madagaskar",q:"Waarom regent het in het oosten van Madagaskar? Zet in volgorde.",s:["regenwolken komen van de Indische Oceaan","de bergketen stuwt de wolken omhoog","de waterdamp condenseert","het regent in het oosten: tropisch regenwoud"]}
+];
+
+/* ---------- OEFENARENA ---------- */
+let arTotal=0, arTab="mem";
+function renderArena(app){
+  const v=h(`<section class="view">
+    <div class="ar-top"><div class="chead"><div class="num">Oefenen</div><h1>Oefenarena</h1><p>Vier spellen over het hele thema. Verdien punten en verbeter je record. Je punten worden alleen in deze browser bewaard.</p></div>
+      <div class="ar-pts" aria-live="polite"><span class="ar-pill">Punten <b id="ar-total">0</b></span><span class="ar-pill">Record <b id="ar-best">0</b></span></div></div>
+    <div class="ar-tabs" role="tablist" aria-label="Spellen">
+      <button role="tab" data-g="mem">Begrippen-memory</button><button role="tab" data-g="sort">Sorteerrace</button>
+      <button role="tab" data-g="who">Wie ben ik?</button><button role="tab" data-g="chain">Kettingreactie</button></div>
+    <div id="ar-stage"></div>
+    <p class="foot">Gebaseerd op Focus Biologie 4.2 (Pelckmans), thema 1 Ecologie.</p></section>`);
+  app.appendChild(v);
+  const stage=$("#ar-stage",v);
+  function pts(n){ arTotal=Math.max(0,arTotal+n); $("#ar-total",v).textContent=arTotal; if(arTotal>(P.arenaBest||0)){ P.arenaBest=arTotal; save(); } $("#ar-best",v).textContent=P.arenaBest||0; }
+  pts(0);
+  let timer=null;
+  function fb(el,ok,t){ el.className="ar-fb "+(ok?"ok":"no"); el.textContent=t; }
+  const GAMES={
+    mem(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2>Begrippen-memory</h2><span class="ar-meta" id="m-meta"></span><p>Draai telkens twee kaarten om en zoek bij elk begrip de juiste omschrijving. Hoe minder beurten, hoe meer punten.</p></div><div class="ar-mem" id="m-grid"></div><div class="actions"><button type="button" class="btn" id="m-new">Nieuw spel</button></div><div class="ar-fb" id="m-fb" aria-live="polite"></div></div>`;
+      let st;
+      function meta(){ $("#m-meta",stage).textContent=`Beurten: ${st.turns} · Paren: ${st.found}/8`; }
+      function start(){
+        const pick=shuffle(AR_MEM).slice(0,8);
+        st={cards:shuffle(pick.flatMap((g,i)=>[{id:i,t:g[0],term:true},{id:i,t:g[1],term:false}])),open:[],turns:0,found:0,lock:false};
+        const grid=$("#m-grid",stage); grid.innerHTML=""; $("#m-fb",stage).textContent="";
+        st.cards.forEach((c,k)=>{ const b=document.createElement("button"); b.type="button"; b.className="ar-card"+(c.term?" term":""); b.textContent=c.t; b.setAttribute("aria-label","Kaart "+(k+1)+", omgedraaid"); b.addEventListener("click",()=>flip(k,b)); c.el=b; grid.appendChild(b); });
+        meta();
+      }
+      function flip(k,b){
+        const c=st.cards[k]; if(st.lock||c.done||st.open.includes(k)) return;
+        b.classList.add("open"); b.setAttribute("aria-label",c.t); st.open.push(k); if(st.open.length<2) return;
+        st.turns++; const [a,z]=st.open.map(i=>st.cards[i]); const m=$("#m-fb",stage);
+        if(a.id===z.id&&a.term!==z.term){ a.done=z.done=true; a.el.classList.add("done"); z.el.classList.add("done"); st.open=[]; st.found++; fb(m,true,"Juist paar!");
+          if(st.found===8){ const p=Math.max(4,20-Math.max(0,st.turns-8)); pts(p); fb(m,true,`Alle paren gevonden in ${st.turns} beurten: +${p} punten.`); } }
+        else { st.lock=true; a.el.classList.add("wrong"); z.el.classList.add("wrong"); fb(m,false,"Geen paar. Onthoud waar ze liggen.");
+          setTimeout(()=>{ [a,z].forEach(c=>{ c.el.classList.remove("open","wrong"); c.el.setAttribute("aria-label","Omgedraaide kaart"); }); st.open=[]; st.lock=false; },1300); }
+        meta();
+      }
+      $("#m-new",stage).addEventListener("click",start); start();
+    },
+    sort(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2 id="s-title">Sorteerrace</h2><span class="ar-meta" id="s-meta"></span><p>Tik op een kaartje en daarna op de juiste kolom. Elke fout kost een punt; ben je binnen de minuut klaar, dan krijg je 2 bonuspunten.</p></div>
+        <div class="actions"><label for="s-pick" class="ar-meta">Onderwerp</label><select id="s-pick"></select><button type="button" class="btn" id="s-next">Volgende ronde</button></div>
+        <div class="ar-pool" id="s-pool" aria-label="Te sorteren kaartjes"></div><div class="ar-buckets" id="s-buckets"></div><div class="ar-fb" id="s-fb" aria-live="polite"></div></div>`;
+      const sel=$("#s-pick",stage); AR_SETS.forEach((s,i)=>sel.appendChild(h(`<option value="${i}">${s.t}</option>`)));
+      let st={idx:-1};
+      function meta(){ $("#s-meta",stage).textContent=`Nog ${st.left} · Fouten ${st.err} · ${Math.round((Date.now()-st.t0)/1000)} s`; }
+      function start(idx){
+        if(idx===undefined) idx=(st.idx+1)%AR_SETS.length;
+        const s=AR_SETS[idx]; st={idx,set:s,left:s.i.length,err:0,sel:null,t0:Date.now()}; sel.value=idx;
+        $("#s-title",stage).textContent=s.t; $("#s-fb",stage).textContent="";
+        const pool=$("#s-pool",stage); pool.innerHTML="";
+        shuffle(s.i).forEach(it=>{ const b=document.createElement("button"); b.type="button"; b.className="ar-chip"; b.textContent=it[0]; b.dataset.c=it[1];
+          b.addEventListener("click",()=>{ if(b.classList.contains("placed")) return; stage.querySelectorAll(".ar-chip.sel").forEach(x=>x.classList.remove("sel")); b.classList.add("sel"); st.sel=b; }); pool.appendChild(b); });
+        const bk=$("#s-buckets",stage); bk.innerHTML="";
+        s.c.forEach((c,ci)=>{ const d=document.createElement("button"); d.type="button"; d.className="ar-bucket"; d.innerHTML=`<h4>${c}</h4>`; d.setAttribute("aria-label","Kolom "+c); d.addEventListener("click",()=>drop(ci,d)); bk.appendChild(d); });
+        clearInterval(timer); timer=setInterval(()=>{ if(!document.body.contains(stage)) return clearInterval(timer); meta(); },500); meta();
+      }
+      function drop(ci,d){
+        const b=st.sel, m=$("#s-fb",stage); if(!b){ fb(m,false,"Tik eerst op een kaartje."); return; }
+        if(+b.dataset.c===ci){ b.classList.remove("sel"); b.classList.add("placed"); d.appendChild(b); st.sel=null; st.left--; fb(m,true,"Juist!");
+          if(st.left===0){ clearInterval(timer); const sec=Math.round((Date.now()-st.t0)/1000); const p=Math.max(1,st.set.i.length-st.err+(sec<60?2:0)); pts(p);
+            fb(m,true,`Ronde klaar in ${sec} s met ${st.err} fout(en): +${p} punten.${sec<60?" (snelheidsbonus +2)":""}`); } }
+        else { st.err++; d.classList.add("flash","ar-shake"); b.classList.add("ar-shake"); setTimeout(()=>{ d.classList.remove("flash","ar-shake"); b.classList.remove("ar-shake"); },400);
+          fb(m,false,`‘${b.textContent}’ hoort niet bij ${st.set.c[ci]}. Probeer opnieuw.`); }
+        meta();
+      }
+      sel.addEventListener("change",()=>start(+sel.value)); $("#s-next",stage).addEventListener("click",()=>start()); start(0);
+    },
+    who(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2>Wie ben ik?</h2><span class="ar-meta" id="w-meta"></span><p>Raad het organisme, proces of begrip. Na één hint verdien je 3 punten, na twee hints 2 punten, na drie hints 1 punt.</p></div>
+        <div class="ar-riddle"><ol id="w-hints"></ol></div><div class="actions"><button type="button" class="btn ghost" id="w-hint">Volgende hint</button></div>
+        <div class="ar-opts" id="w-opts"></div><div class="ar-fb" id="w-fb" aria-live="polite"></div><div class="actions"><button type="button" class="btn" id="w-next">Volgend raadsel</button></div></div>`;
+      let st={order:[],k:-1,shown:1,done:false};
+      function draw(){ const r=AR_WHO[st.order[st.k]]; $("#w-hints",stage).innerHTML=r.h.map((x,i)=>i<st.shown?`<li>${x}</li>`:`<li class="hid" aria-hidden="true">verborgen hint</li>`).join("");
+        $("#w-hint",stage).disabled=st.done||st.shown>=3; $("#w-meta",stage).textContent=`Raadsel ${st.k+1}/${AR_WHO.length} · waard ${4-st.shown} pt`; }
+      function next(){
+        if(!st.order.length||st.k>=st.order.length-1){ st.order=shuffle(AR_WHO.map((_,i)=>i)); st.k=-1; }
+        st.k++; st.shown=1; st.done=false; const r=AR_WHO[st.order[st.k]]; $("#w-fb",stage).textContent=""; draw();
+        const o=$("#w-opts",stage); o.innerHTML="";
+        shuffle(r.o).forEach(t=>{ const b=document.createElement("button"); b.type="button"; b.textContent=t; b.addEventListener("click",()=>answer(b,t,r)); o.appendChild(b); });
+      }
+      function answer(b,t,r){ if(st.done) return; const m=$("#w-fb",stage);
+        if(t===r.a){ st.done=true; b.classList.add("ok"); const p=4-st.shown; pts(p); st.shown=3; draw(); fb(m,true,`Juist, het is ${r.a}! +${p} punten.`); }
+        else { b.classList.add("no"); b.disabled=true;
+          if(st.shown<3){ st.shown++; draw(); fb(m,false,"Niet juist. Je krijgt een extra hint."); }
+          else { st.done=true; stage.querySelectorAll("#w-opts button").forEach(x=>{ if(x.textContent===r.a) x.classList.add("ok"); }); draw(); fb(m,false,`Helaas, het juiste antwoord is ${r.a}.`); } } }
+      $("#w-hint",stage).addEventListener("click",()=>{ if(st.shown<3){ st.shown++; draw(); } });
+      $("#w-next",stage).addEventListener("click",next); next();
+    },
+    chain(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2 id="c-title">Kettingreactie</h2><span class="ar-meta" id="c-meta"></span><p id="c-q"></p></div>
+        <ol class="ar-chain" id="c-list"></ol><div class="actions"><button type="button" class="btn" id="c-check">Controleer</button><button type="button" class="btn ghost" id="c-next">Volgende ketting</button></div><div class="ar-fb" id="c-fb" aria-live="polite"></div></div>`;
+      let st={k:-1,cur:[],checked:false};
+      function draw(marks){ const ol=$("#c-list",stage); ol.innerHTML="";
+        st.cur.forEach((s,i)=>{ const li=document.createElement("li"); if(marks) li.className=marks[i]?"ok":"no";
+          li.innerHTML=`<span class="n" aria-hidden="true"></span><span class="t"></span>`; $(".t",li).textContent=s;
+          const up=h(`<button type="button" class="ar-mv">↑</button>`), dn=h(`<button type="button" class="ar-mv">↓</button>`);
+          up.setAttribute("aria-label","Omhoog: "+s); dn.setAttribute("aria-label","Omlaag: "+s); up.disabled=i===0||st.checked; dn.disabled=i===st.cur.length-1||st.checked;
+          up.addEventListener("click",()=>{ [st.cur[i-1],st.cur[i]]=[st.cur[i],st.cur[i-1]]; draw(); ol.children[i-1].querySelector(".ar-mv").focus(); });
+          dn.addEventListener("click",()=>{ [st.cur[i+1],st.cur[i]]=[st.cur[i],st.cur[i+1]]; draw(); ol.children[i+1].querySelectorAll(".ar-mv")[1].focus(); });
+          li.append(up,dn); ol.appendChild(li); }); }
+      function next(){ st.k=(st.k+1)%AR_CHAINS.length; const c=AR_CHAINS[st.k]; let cur; do{ cur=shuffle(c.s); }while(cur.every((x,i)=>x===c.s[i]));
+        st.cur=cur; st.checked=false; $("#c-title",stage).textContent=c.t; $("#c-q",stage).textContent=c.q+" Zet de stappen in de juiste volgorde met de pijltjes en controleer. Elke stap op de juiste plaats = 1 punt.";
+        $("#c-fb",stage).textContent=""; $("#c-check",stage).disabled=false; $("#c-meta",stage).textContent=`Ketting ${st.k+1}/${AR_CHAINS.length}`; draw(); }
+      $("#c-check",stage).addEventListener("click",()=>{ if(st.checked) return; const c=AR_CHAINS[st.k]; const marks=st.cur.map((s,i)=>s===c.s[i]); const n=marks.filter(Boolean).length;
+        st.checked=true; draw(marks); pts(n); $("#c-check",stage).disabled=true;
+        fb($("#c-fb",stage),n===c.s.length, n===c.s.length?`Perfect! +${n} punten.`:`${n} van de ${c.s.length} stappen staan juist: +${n} punten. Juiste volgorde: ${c.s.join(" → ")}`); });
+      $("#c-next",stage).addEventListener("click",next); next();
+    }
+  };
+  const tabs=v.querySelectorAll(".ar-tabs button");
+  function open(g){ arTab=g; clearInterval(timer); tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.g===g)); GAMES[g](); }
+  v.querySelector(".ar-tabs").addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) open(b.dataset.g); });
+  open(arTab);
+}
+
+/* ---------- ROUTER ---------- */
+let current="start";
+function route(){
+  const id=(location.hash||"#start").slice(1);
+  const ch=CH.find(c=>c.id===id);
+  current = ch?id:(["begrippen","toets","arena"].includes(id)?id:"start");
+  const app=$("#app"); app.innerHTML="";
+  if(ch) renderChapter(app,ch); else if(current==="begrippen") renderGloss(app); else if(current==="toets") renderQuiz(app); else if(current==="arena") renderArena(app); else renderStart(app);
+  renderTabs(current); window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+route();
+
+</script>
+
+
+<script>try{localStorage.setItem("bio42-last","1")}catch(e){}</script>
+</body>
+</html>

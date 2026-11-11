@@ -1,0 +1,1156 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voortplanting bij de mens – Thema 6 (2 lesuren)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Young+Serif&display=swap">
+<style>
+/* Layout: veldschrift — één hoofdstuk tegelijk, smalle leeskolom, oefeningen als losse werkbladen eronder */
+:root{
+  --paper:#EAF0EC; --sheet:#F8FBF9; --ink:#12302A; --ink-2:#4B6761; --line:#C6D6CE;
+  --moss:#4C7D27; --moss-soft:#DAE8CC; --water:#2A6C84; --water-soft:#D3E6ED;
+  --ok:#2C7A47; --ok-soft:#D5EDDC; --bad:#B0442D; --bad-soft:#F5DCD5;
+  --bone:#F3F1EA; --dead:#8D8676;
+  --f-display:"Young Serif", "Iowan Old Style", Georgia, serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0D1A17; --sheet:#132420; --ink:#E1ECE6; --ink-2:#9BB3AB; --line:#29423B;
+  --moss:#9CCB6B; --moss-soft:#22371B; --water:#74B5CA; --water-soft:#17313A;
+  --ok:#7ACB91; --ok-soft:#163322; --bad:#EC8F77; --bad-soft:#3B1E17;
+  --bone:#E9E6DC; --dead:#7A7466; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0D1A17; --sheet:#132420; --ink:#E1ECE6; --ink-2:#9BB3AB; --line:#29423B;
+  --moss:#9CCB6B; --moss-soft:#22371B; --water:#74B5CA; --water-soft:#17313A;
+  --ok:#7ACB91; --ok-soft:#163322; --bad:#EC8F77; --bad-soft:#3B1E17;
+  --bone:#E9E6DC; --dead:#7A7466; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;margin:0}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,5vw,3.6rem)}
+h2{font-size:clamp(1.6rem,3.4vw,2.3rem)}
+h3{font-size:1.3rem}
+p{margin:0}
+b,strong{font-weight:700}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--water);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:20px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 18px;padding-block:10px}
+.teacher{font-family:var(--f-display);font-size:1.15rem;color:var(--ink)}
+.brand{font-family:var(--f-display);font-size:1.15rem;white-space:nowrap;text-decoration:none;color:var(--ink)}
+.brand span{color:var(--moss)}
+nav.tabs{display:flex;flex-wrap:wrap;gap:4px;min-width:0;flex-basis:100%;margin-left:-11px}
+nav.tabs a{flex:none;display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;text-decoration:none;color:var(--ink-2);font-size:.92rem;white-space:nowrap}
+nav.tabs a:hover{background:var(--moss-soft);color:var(--ink)}
+nav.tabs a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+.ring{width:16px;height:16px;flex:none}
+.ring circle{fill:none;stroke-width:3}
+.ring .bg{stroke:var(--line)}
+.ring .fg{stroke:var(--moss);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%}
+nav.tabs a[aria-current="page"] .ring .bg{stroke:color-mix(in srgb,var(--paper) 35%,transparent)}
+
+main{padding-block:36px 80px}
+.view[hidden]{display:none}
+
+/* hero ladder */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:36px;align-items:center}
+.hero .lead{font-size:1.15rem;color:var(--ink-2);max-width:52ch;margin-top:14px}
+.ladder{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px;counter-reset:lv}
+.ladder button{border:1px solid var(--line);background:var(--sheet);padding:6px 12px;border-radius:999px;cursor:pointer;font-size:.95rem;display:flex;gap:7px;align-items:baseline}
+.ladder button .n{font-variant-numeric:tabular-nums;color:var(--ink-2);font-size:.8rem}
+.ladder button[aria-pressed="true"]{background:var(--moss);border-color:var(--moss);color:var(--sheet)}
+.ladder button[aria-pressed="true"] .n{color:inherit;opacity:.8}
+.lvinfo{margin-top:18px;min-height:7.5em;border-left:3px solid var(--moss);padding:4px 0 4px 16px;max-width:60ch}
+.lvinfo h3{font-size:1.5rem}
+.lvinfo .lvex{color:var(--ink-2);margin-top:6px;font-style:italic}
+#rings{width:100%;max-width:420px;height:auto;display:block;margin:auto}
+#rings circle{fill:transparent;stroke:var(--line);stroke-width:1.5;transition:fill .35s,stroke .35s;cursor:pointer}
+#rings circle.in{fill:color-mix(in srgb,var(--moss) 9%,transparent);stroke:color-mix(in srgb,var(--moss) 55%,var(--line))}
+#rings circle.on{stroke:var(--moss);stroke-width:3.5}
+#rings text{font-family:var(--f-body);font-size:13px;fill:var(--ink);text-anchor:middle;pointer-events:none}
+
+.chapters{margin-top:56px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.chap{display:block;text-decoration:none;color:inherit;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.chap:hover{border-color:var(--moss)}
+.chap .num{font-family:var(--f-display);font-size:1.9rem;color:var(--moss);line-height:1}
+.chap h3{margin-top:8px;font-size:1.15rem}
+.chap p{color:var(--ink-2);font-size:.92rem;margin-top:4px}
+.bar{height:5px;background:var(--line);border-radius:3px;margin-top:12px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--moss);border-radius:3px;width:0;transition:width .4s}
+.howto{margin-top:44px;max-width:64ch;color:var(--ink-2)}
+.howto h3{color:var(--ink);margin-bottom:6px}
+
+/* chapter */
+.chead{max-width:760px}
+.chead .num{font-family:var(--f-display);color:var(--moss);font-size:1.1rem}
+.chead p{font-size:1.12rem;color:var(--ink-2);margin-top:12px}
+.subnav{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.subnav a{font-size:.9rem;color:var(--water);text-decoration:none;border-bottom:1px solid currentColor}
+.block{margin-top:44px;max-width:760px}
+.block > h2{margin-bottom:6px}
+.sum{margin-top:22px;display:grid;gap:12px}
+.sum h3{margin-top:14px}
+.sum p,.sum li{max-width:68ch}
+.sum ul{margin:0;padding-left:1.2em;display:grid;gap:4px}
+dfn{font-style:normal;font-weight:700;background:linear-gradient(transparent 62%,var(--moss-soft) 62%)}
+.note{font-size:.95rem;color:var(--ink-2);border-left:3px solid var(--water);padding-left:12px}
+
+/* flashcards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:16px;max-width:1000px}
+.card{perspective:900px;border:none;background:none;padding:0;cursor:pointer;min-height:132px;text-align:left}
+.card .in{position:relative;display:block;width:100%;height:100%;min-height:132px;transition:transform .45s;transform-style:preserve-3d}
+.card.flip .in{transform:rotateY(180deg)}
+.card .f,.card .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;justify-content:center}
+.card .f{background:var(--sheet);border:1px solid var(--line);font-family:var(--f-display);font-size:1.2rem}
+.card .f small{font-family:var(--f-body);font-size:.78rem;color:var(--ink-2);margin-top:8px}
+.card .b{background:var(--moss-soft);border:1px solid var(--moss);transform:rotateY(180deg);font-size:.93rem;line-height:1.45}
+
+/* exercises */
+.ex-list{display:grid;gap:18px;margin-top:18px;max-width:1000px}
+.ex{min-width:0;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.ex.done{border-color:var(--ok)}
+.exh{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.exh h3{font-size:1.18rem;max-width:62ch}
+.exh .tag{font-size:.8rem;color:var(--ink-2);display:block;font-family:var(--f-body);margin-bottom:2px}
+.chip{font-size:.8rem;padding:3px 10px;border-radius:999px;background:var(--paper);color:var(--ink-2);white-space:nowrap;border:1px solid var(--line)}
+.ex.done .chip{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
+.ex .q{margin-top:8px;color:var(--ink-2);max-width:68ch}
+.ex-body{margin-top:14px}
+.row{display:flex;gap:10px 16px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:10px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:none}
+.row .t{flex:1 1 280px;min-width:0}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opt{border:1px solid var(--line);background:var(--paper);padding:5px 12px;border-radius:7px;cursor:pointer;font-size:.92rem}
+.opt:hover{border-color:var(--water)}
+.opt[aria-pressed="true"]{background:var(--water);color:var(--sheet);border-color:var(--water)}
+.row.ok .opt[aria-pressed="true"]{background:var(--ok);border-color:var(--ok)}
+.row.bad .opt[aria-pressed="true"]{background:var(--bad);border-color:var(--bad)}
+.fb{flex-basis:100%;font-size:.92rem;padding:6px 10px;border-radius:7px}
+.fb.ok{background:var(--ok-soft);color:var(--ink)}
+.fb.bad{background:var(--bad-soft);color:var(--ink)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.btn{border:none;background:var(--ink);color:var(--paper);padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.95rem}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:400}
+.btn:hover{opacity:.9}
+.msg{font-size:.95rem}
+.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+select{font:inherit;font-size:.93rem;padding:5px 8px;border-radius:7px;border:1px solid var(--line);background:var(--paper);color:var(--ink);max-width:100%}
+.row.ok select{border-color:var(--ok);background:var(--ok-soft)}
+.row.bad select{border-color:var(--bad);background:var(--bad-soft)}
+textarea{width:100%;min-height:90px;font:inherit;font-size:.95rem;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);resize:vertical}
+.model{margin-top:12px;background:var(--moss-soft);border-radius:8px;padding:12px 14px;font-size:.95rem}
+.model b{display:block;margin-bottom:2px}
+
+/* order */
+.pool,.answer{display:flex;flex-wrap:wrap;gap:8px;min-height:48px;padding:10px;border-radius:8px}
+.pool{background:var(--paper)}
+.answer{border:1.5px dashed var(--line);margin-top:10px;flex-direction:column;align-items:stretch}
+.answer:empty::before{content:"Tik de stappen hierboven aan in de juiste volgorde.";color:var(--ink-2);font-size:.92rem}
+.tok{border:1px solid var(--line);background:var(--sheet);padding:6px 12px;border-radius:7px;cursor:pointer;text-align:left;font-size:.93rem}
+.answer .tok{display:flex;gap:10px}
+.answer .tok .i{font-variant-numeric:tabular-nums;color:var(--ink-2);min-width:1.2em}
+.answer .tok.ok{border-color:var(--ok);background:var(--ok-soft)}
+.answer .tok.bad{border-color:var(--bad);background:var(--bad-soft)}
+
+/* table */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:380px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{font-weight:700;font-size:.9rem;color:var(--ink-2)}
+td.c,th.c{text-align:center}
+td.ok{background:var(--ok-soft)} td.bad{background:var(--bad-soft)}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--water)}
+
+/* explore */
+.explore{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:16px}
+.explore .list{display:flex;flex-direction:column;gap:6px}
+.explore .panel{background:var(--paper);border-radius:8px;padding:14px 16px;min-height:120px}
+.explore .panel h4{font-family:var(--f-display);font-weight:400;font-size:1.2rem;margin:0 0 6px}
+.explore .panel dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.explore .panel dt{color:var(--ink-2);font-size:.9rem}
+.explore .panel dd{margin:0}
+
+/* pyramid */
+.pyr{display:grid;gap:6px;margin-top:12px}
+.pyr .lv{display:grid;grid-template-columns:150px minmax(0,1fr) 110px;gap:10px;align-items:center;font-size:.92rem}
+.pyr .lv .bw{display:flex;justify-content:center}
+.pyr .lv .b{height:30px;background:var(--moss);border-radius:4px;min-width:3px;transition:width .3s}
+.pyr .lv:nth-child(2) .b{background:color-mix(in srgb,var(--moss) 75%,var(--water))}
+.pyr .lv:nth-child(3) .b{background:color-mix(in srgb,var(--moss) 45%,var(--water))}
+.pyr .lv:nth-child(4) .b{background:var(--water)}
+.pyr .lv .v{font-variant-numeric:tabular-nums;text-align:right}
+input[type=range]{width:100%;accent-color:var(--moss)}
+input[type=number]{font:inherit;width:9em;padding:5px 8px;border-radius:7px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+
+/* svg diagrams */
+.diagram{overflow-x:auto}
+.diagram svg{display:block;width:100%;min-width:560px;height:auto}
+.node rect{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+.node text{font-family:var(--f-body);font-size:14px;fill:var(--ink);text-anchor:middle}
+.arr{cursor:pointer}
+.arr line{stroke-width:3.5}
+.arr .hit{stroke:transparent;stroke-width:22}
+.arr text{font-family:var(--f-body);font-size:13px;font-weight:700;paint-order:stroke;stroke:var(--sheet);stroke-width:5px;stroke-linejoin:round}
+.arr.dim{opacity:.25}
+.arr.hl line{stroke-width:6}
+.k-fix{stroke:var(--water);fill:var(--water)}
+.k-ass{stroke:var(--moss);fill:var(--moss)}
+.k-nit{stroke:#C98A1B;fill:#C98A1B}
+.k-amm{stroke:var(--bad);fill:var(--bad)}
+.k-dood{stroke:var(--ink-2);fill:var(--ink-2)}
+.arr text.k-fix,.arr text.k-ass,.arr text.k-nit,.arr text.k-amm,.arr text.k-dood{stroke:var(--sheet)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:none;background:transparent;padding:6px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.infobox{margin-top:12px;background:var(--paper);border-radius:8px;padding:12px 14px;min-height:72px}
+
+/* coral */
+.coral{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:20px;align-items:center}
+.coral svg{width:100%;max-width:300px;height:auto}
+.coral .st{font-family:var(--f-display);font-size:1.5rem}
+.c-branch{transition:stroke .6s}
+.state-gezond .c-branch{stroke:var(--moss)}
+.state-gezond .c-pol{fill:#E0A33A;opacity:1}
+.state-verbleekt .c-branch{stroke:var(--bone)}
+.state-verbleekt .c-pol{fill:var(--bone);opacity:.7}
+.state-dood .c-branch{stroke:var(--dead)}
+.state-dood .c-pol{opacity:0}
+.c-alg{opacity:0;transition:opacity .6s;fill:var(--moss)}
+.state-dood .c-alg{opacity:.8}
+.c-pol{transition:fill .6s,opacity .6s}
+
+/* glossary */
+.gl-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.gl-tools input{font:inherit;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--sheet);color:var(--ink);flex:1 1 240px;min-width:0}
+.gl{margin-top:16px;display:grid;gap:0;max-width:820px}
+.gl div{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}
+.gl dt{font-weight:700}
+.gl dd{margin:0}
+.gl .h{font-size:.8rem;color:var(--ink-2)}
+
+/* toets */
+.quiz{max-width:760px}
+.qcard{background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.qcard .qn{color:var(--ink-2);font-size:.9rem;font-variant-numeric:tabular-nums}
+.qcard h3{margin:6px 0 14px}
+.qopts{display:grid;gap:8px}
+.qopt{border:1px solid var(--line);background:var(--paper);text-align:left;padding:10px 14px;border-radius:8px;cursor:pointer}
+.qopt:hover{border-color:var(--water)}
+.qopt.ok{background:var(--ok-soft);border-color:var(--ok)}
+.qopt.bad{background:var(--bad-soft);border-color:var(--bad)}
+.qopt:disabled{cursor:default}
+.score{font-family:var(--f-display);font-size:3rem;color:var(--moss)}
+
+.foot{margin-top:60px;color:var(--ink-2);font-size:.85rem;max-width:70ch}
+
+@media (max-width:820px){
+  .top{position:static}
+  .hero{grid-template-columns:1fr}
+  #rings{max-width:300px}
+  .explore,.coral{grid-template-columns:1fr}
+  .pyr .lv{grid-template-columns:110px minmax(0,1fr) 80px}
+  .gl div{grid-template-columns:1fr;gap:2px}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .ex{padding:16px}
+}
+
+/* oefenarena (spellen) */
+.ar-top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between}
+.ar-pts{display:flex;gap:8px;flex-wrap:wrap}
+.ar-pill{background:var(--sheet);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.ar-pill b{color:var(--moss)}
+.ar-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-top:26px}
+.ar-tabs button{border:1px solid var(--line);background:var(--sheet);padding:7px 14px;border-radius:999px;cursor:pointer;font-size:.95rem}
+.ar-tabs button[aria-selected="true"]{background:var(--moss);border-color:var(--moss);color:var(--sheet)}
+.ar-game{margin-top:16px;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;max-width:1000px}
+.ar-head{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:baseline}
+.ar-head p{flex-basis:100%;color:var(--ink-2);max-width:68ch;margin-top:6px}
+.ar-meta{color:var(--ink-2);font-variant-numeric:tabular-nums;font-weight:700;font-size:.95rem}
+.ar-fb{min-height:1.5em;font-weight:700;margin-top:10px;font-size:.95rem}
+.ar-fb.ok{color:var(--ok)} .ar-fb.no{color:var(--bad)}
+.ar-mem{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+@media (max-width:620px){.ar-mem{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ar-card{min-height:108px;border-radius:8px;border:1px solid var(--line);background:var(--ink);color:transparent;cursor:pointer;padding:8px;font-size:.86rem;line-height:1.3;position:relative}
+.ar-card::after{content:"?";position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-size:1.8rem;color:color-mix(in srgb,var(--paper) 45%,transparent)}
+.ar-card.open,.ar-card.done{background:var(--paper);color:var(--ink);cursor:default}
+.ar-card.open::after,.ar-card.done::after{content:none}
+.ar-card.term{font-family:var(--f-display);font-size:1.02rem}
+.ar-card.done{background:var(--ok-soft);border-color:var(--ok)}
+.ar-card.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.ar-pool{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border:1.5px dashed var(--line);border-radius:8px;margin-top:14px}
+.ar-chip{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:7px 12px;cursor:pointer;text-align:left;max-width:100%;font-size:.93rem}
+.ar-chip.sel{border-color:var(--water);background:var(--water-soft)}
+.ar-chip.placed{cursor:default;background:var(--ok-soft);border-color:transparent;font-size:.88rem;padding:5px 9px}
+.ar-buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:12px}
+.ar-bucket{border:1.5px solid var(--moss);border-radius:8px;padding:10px;min-height:100px;background:transparent;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ar-bucket h4{margin:0 0 4px;font-family:var(--f-display);font-weight:400;font-size:1.05rem;color:var(--moss)}
+.ar-bucket.flash{border-color:var(--bad);background:var(--bad-soft)}
+@keyframes ar-shake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.ar-shake{animation:ar-shake .3s}
+.ar-riddle{background:var(--moss-soft);border-radius:8px;padding:14px 16px;margin-top:14px}
+.ar-riddle ol{margin:0;padding-left:1.4em;display:grid;gap:6px}
+.ar-riddle li.hid{color:transparent;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--moss) 30%,transparent) 0 10px,transparent 10px 14px);border-radius:4px;list-style:none;margin-left:-1.4em;padding-left:1.4em}
+.ar-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:12px}
+.ar-opts button{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:11px;cursor:pointer;font-weight:700}
+.ar-opts button.ok{border-color:var(--ok);background:var(--ok-soft)}
+.ar-opts button.no{border-color:var(--bad);background:var(--bad-soft)}
+.ar-chain{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px;counter-reset:s}
+.ar-chain li{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--paper)}
+.ar-chain li .n{counter-increment:s;font-family:var(--f-display);color:var(--moss);width:1.6em;text-align:center;flex:none}
+.ar-chain li .n::before{content:counter(s)}
+.ar-chain li .t{flex:1;min-width:0}
+.ar-chain li.ok{border-color:var(--ok);background:var(--ok-soft)}
+.ar-chain li.no{border-color:var(--bad)}
+.ar-mv{border:1px solid var(--line);background:var(--sheet);border-radius:7px;width:38px;height:38px;cursor:pointer;flex:none}
+.ar-mv:disabled{opacity:.3;cursor:default}
+.chap.arena{border-color:var(--moss);background:var(--moss-soft)}
+@media (prefers-reduced-motion:reduce){.ar-shake{animation:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* thema 6 extra's */
+.top .wrap{align-items:center}
+.teacher{font-family:var(--f-display);font-size:clamp(1.5rem,3.4vw,2.4rem);line-height:1.1;color:var(--ink);margin-left:auto;text-align:right}
+.brand{white-space:normal}
+.cyc{max-width:460px;width:100%;margin:auto}
+#cyc{width:100%;height:auto;display:block}
+#cyc .ph1{fill:var(--water-soft)} #cyc .ph2{fill:var(--moss-soft)}
+#cyc .pl{font-family:var(--f-body);font-size:12px;fill:var(--ink-2)}
+#cyc .ax{stroke:var(--ink-2);stroke-width:1.2}
+#cyc .wall{fill:#E9B8B0;stroke:#B0442D;stroke-width:1.5;opacity:.85}
+#cyc .mens{fill:var(--bad);opacity:.18}
+#cyc .cur{stroke:var(--ink);stroke-width:2;stroke-dasharray:5 4}
+#cyc .fol{fill:var(--water-soft);stroke:var(--water);stroke-width:2;transition:r .2s}
+#cyc .burst{fill:var(--sheet);stroke:var(--bad);stroke-width:3;stroke-dasharray:4 3}
+#cyc .gl{fill:#F2D06B;stroke:#B07A3A;stroke-width:2}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.88rem;color:var(--ink-2);margin-top:6px}
+.legend i{display:inline-block;width:14px;height:6px;border-radius:3px;margin-right:6px;vertical-align:2px}
+.cal{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:6px;margin-top:12px;max-width:560px}
+.dy{border:1px solid var(--line);background:var(--sheet);border-radius:8px;min-height:40px;cursor:pointer;font:inherit;color:var(--ink)}
+.dy.ov{box-shadow:inset 0 0 0 2px var(--ink)}
+.dy.c-r{background:var(--bad);color:#fff;border-color:var(--bad)}
+.dy.c-o{background:#F0A35B;border-color:#C9772B;color:#2a1600}
+.dy.bad{outline:3px solid var(--bad);outline-offset:1px}
+.seg{flex-wrap:wrap}
+
+.pregt{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:.95rem;cursor:pointer}
+
+</style>
+<style>.home-link{font-family:var(--f-body);font-size:.92rem;color:var(--ink-2);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:2px 11px;white-space:nowrap;margin-right:auto}.home-link:hover{color:var(--ink);border-color:var(--moss);background:var(--moss-soft)}</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#start">Thema 6 <span>Voortplanting bij de mens · 2 lesuren</span></a>
+    <a class="home-link" href="index.html">Alle thema’s</a>
+    <span class="teacher">P. Vandenheede</span>
+    <nav class="tabs" id="tabs" aria-label="Hoofdstukken"></nav>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<script>
+const CH = [
+/* ---------------- HOOFDSTUK 1 ---------------- */
+{ id:"h1", num:"1", title:"De geslachtskenmerken", short:"Biologisch geslacht, primaire en secundaire geslachtskenmerken, puberteit",
+  lead:"Wat bepaalt je biologisch geslacht, en welke hormonen zorgen tijdens de puberteit voor de grote veranderingen?",
+  summary:`
+  <h3>1.1 Biologisch geslacht</h3>
+  <p>Het <dfn>geslacht</dfn> of de sekse is het onderscheid tussen organismen op basis van de voortplantingscellen die ze maken. Bij de mens ligt het biologische geslacht vast in het DNA en wordt het bepaald door twee <dfn>geslachtschromosomen</dfn>: <b>XX</b> bij vrouwen (eicellen) en <b>XY</b> bij mannen (zaadcellen).</p>
+  <p>Sommige mensen worden geboren met een DNA- of chromosoomvariatie waardoor het biologische geslacht niet eenduidig is: ze hebben een <dfn>intersekse</dfn> lichaam, met een variatie van mannelijke én vrouwelijke geslachtskenmerken. Dat stel je soms vast bij de geboorte, soms pas later (bv. als de menstruatie uitblijft). Ongeveer 1,7 % van de mensen is intersekse: ongeveer evenveel als mensen met groene ogen.</p>
+  <p><i>In de cursus gebruiken we ‘vrouw’ voor mensen met een baarmoeder en vagina die menstrueren, en ‘man’ voor mensen met een penis en eventueel functionele teelballen, ook al identificeert niet iedereen met die kenmerken zich zo.</i></p>
+  <h3>1.2 Primaire geslachtskenmerken</h3>
+  <p><dfn>Primaire geslachtskenmerken</dfn> zijn lichamelijke kenmerken die al bij de geboorte aanwezig zijn.</p>
+  <ul>
+    <li><b>Man – uitwendig:</b> balzak met teelballen en bijballen, penis met eikel en voorhuid. <b>Inwendig:</b> zaadleiders, zaadblaasjes, prostaatklier, urogenitale buis.</li>
+    <li><b>Vrouw – uitwendig:</b> schaamlippen, clitoris, geslachtsopening. <b>Inwendig:</b> eierstokken, eileiders met eitrechters, baarmoeder met baarmoederhals, vagina.</li>
+  </ul>
+  <h3>1.3 Puberteit en secundaire geslachtskenmerken</h3>
+  <p>De <dfn>puberteit</dfn> is de periode waarin kinderen zich ontwikkelen tot volwassenen. <dfn>Secundaire geslachtskenmerken</dfn> ontstaan tijdens de puberteit onder invloed van de geslachtshormonen uit de geslachtsklieren of <dfn>gonaden</dfn>.</p>
+  <p>Vóór de puberteit wordt de <b>hypothalamus</b> geremd. Rond 10 à 12 jaar valt die remming weg: de hypothalamus maakt meer <dfn>GnRH</dfn> (gonadotrofine-releasing hormoon). Daardoor maakt de <b>hypofyse</b> <dfn>LH</dfn> (luteïniserend hormoon) en <dfn>FSH</dfn> (follikelstimulerend hormoon). Via het bloed activeren die de geslachtsklieren.</p>
+  <ul>
+    <li><b>Jongens:</b> LH stimuleert de teelballen om <dfn>testosteron</dfn> te maken; FSH versterkt dat en start de aanmaak van zaadcellen. Kenmerken: beharing, bredere schouders, groei van penis en balzak, meer spieren en een sterker skelet, stemverlaging, aanmaak van zaadcellen en zaadlozing.</li>
+    <li><b>Meisjes:</b> FSH laat follikels groeien in de eierstokken; FSH en LH zorgen dat de eierstokken <dfn>oestrogeen</dfn> en <dfn>progesteron</dfn> maken. Kenmerken: breder bekken, rondere vormen door onderhuids vet, borstontwikkeling, lichte groei van de schaamlippen, eicelrijping en menstruatiecyclus.</li>
+  </ul>
+  <p><b>Feedbackmechanismen</b> regelen hoeveel LH en FSH er in het bloed is. Het samenspel heet de <dfn>hypothalamus-hypofyse-as</dfn>. Ook de bijnieren maken kleine hoeveelheden geslachtshormonen.</p>
+  <h3>1.4 Na de vruchtbare periode</h3>
+  <p>Vanaf ongeveer 42 jaar neemt de vruchtbaarheid bij vrouwen af. De <dfn>overgang</dfn> is het proces waarbij het lichaam van vruchtbaar naar onvruchtbaar gaat, omdat de oestrogeenproductie in de eierstokken wegvalt (klachten: onregelmatige cyclus, warmteopwellingen). De <dfn>menopauze</dfn> markeert de laatste menstruatiecyclus. Bij mannen daalt het testosteron geleidelijk; ook in die <dfn>andropauze</dfn> kunnen overgangsverschijnselen optreden.</p>`,
+  cards:[["Geslachtschromosomen","XX bij vrouwen, XY bij mannen."],["Intersekse","Variatie in DNA of chromosomen waardoor het biologisch geslacht niet eenduidig is."],["Primaire geslachtskenmerken","Lichamelijke kenmerken die al bij de geboorte aanwezig zijn."],["Secundaire geslachtskenmerken","Kenmerken die ontstaan tijdens de puberteit onder invloed van geslachtshormonen."],["Gonaden","Geslachtsklieren: teelballen en eierstokken."],["GnRH","Hormoon van de hypothalamus dat de hypofyse aanzet tot LH en FSH."],["LH en FSH","Hormonen van de hypofyse die de geslachtsklieren activeren."],["Overgang","Het lichaam gaat van vruchtbaar naar onvruchtbaar."],["Menopauze","De periode die de laatste menstruatiecyclus markeert."]],
+  exercises:[
+    { type:"classify", title:"Man of vrouw?", q:"Is dit een voortplantingsorgaan van de man of van de vrouw?",
+      buckets:["man","vrouw"],
+      items:[{t:"zaadblaasje",b:0},{t:"eileider",b:1},{t:"prostaatklier",b:0},{t:"baarmoederhals",b:1},{t:"bijbal",b:0},{t:"eitrechter",b:1},{t:"urogenitale buis",b:0},{t:"clitoris",b:1}]},
+    { type:"classify", title:"Primair of secundair?", buckets:["primair geslachtskenmerk","secundair geslachtskenmerk"],
+      items:[{t:"eierstokken",b:0},{t:"stemverlaging",b:1},{t:"penis",b:0},{t:"borstontwikkeling",b:1},{t:"breder bekken",b:1},{t:"zaadleiders",b:0},{t:"bredere schouders",b:1},{t:"schaamlippen",b:0}]},
+    { type:"classify", title:"Secundaire kenmerken", q:"Hoort dit inwendig geslachtskenmerk bij mannen of bij vrouwen?",
+      buckets:["man","vrouw"],
+      items:[{t:"verhoogde spierontwikkeling",b:0},{t:"eicelrijping",b:1},{t:"stemverlaging",b:0},{t:"sterker skelet",b:0},{t:"aanmaak zaadcellen",b:0},{t:"menstruatiecyclus",b:1},{t:"zaadlozing",b:0}]},
+    { type:"order", title:"De start van de puberteit", q:"Zet de stappen in de juiste volgorde.",
+      items:["Rond 10 à 12 jaar valt de remming van de hypothalamus weg.","De hypothalamus maakt meer GnRH.","De hypofyse maakt LH en FSH.","LH en FSH activeren via het bloed de geslachtsklieren.","De geslachtsklieren maken geslachtshormonen: secundaire geslachtskenmerken ontstaan."]},
+    { type:"match", title:"Welk hormoon, welke klier?", q:"Welke klier maakt dit hormoon?",
+      options:["hypothalamus","hypofyse","teelballen","eierstokken"],
+      items:[{t:"GnRH",a:0},{t:"LH en FSH",a:1},{t:"testosteron",a:2},{t:"oestrogeen en progesteron",a:3}]},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"De geslachtschromosomen bepalen altijd of je tot het mannelijke of tot het vrouwelijke geslacht behoort.",a:false,e:"Bij intersekse mensen is het biologische geslacht niet eenduidig."},
+        {s:"Tijdens de puberteit worden adolescenten geslachtsrijp.",a:true,e:"Kinderen ontwikkelen zich dan tot volwassenen."},
+        {s:"De hypofyse heeft een rechtstreekse invloed op de productie van testosteron, oestrogeen en progesteron.",a:true,e:"De hypofyse maakt LH en FSH, die de geslachtsklieren aanzetten tot de productie van geslachtshormonen."},
+        {s:"Feedbackmechanismen regelen het gehalte aan geslachtshormonen in het bloed.",a:true,e:"Dat is de hypothalamus-hypofyse-as."},
+        {s:"Alle hormonen worden aangemaakt in de hypofyse.",a:false,e:"Veel hormonen komen uit de hypofyse, maar ook andere endocriene klieren maken hormonen, zoals de teelballen, de eierstokken en de bijnieren."}
+    ]},
+    { type:"open", title:"Primair en secundair", q:"Wat is het verschil tussen primaire en secundaire geslachtskenmerken? Welk orgaan maakt de geslachtshormonen bij mannen en bij vrouwen?",
+      model:"Primaire geslachtskenmerken zijn al bij de geboorte aanwezig; secundaire ontstaan pas tijdens de puberteit door veranderingen in de hormoonbalans. Bij mannen maken de teelballen testosteron, bij vrouwen maken de eierstokken oestrogeen en progesteron."}
+  ]},
+
+/* ---------------- FOCUS GESLACHT VS GENDER ---------------- */
+{ id:"gen", num:"Focus", title:"Geslacht versus gender", short:"Genderidentiteit, genderexpressie en genderoriëntatie",
+  lead:"Je biologisch geslacht is één ding. Hoe je je voelt, je uit en tot wie je je aangetrokken voelt, is nog iets anders.",
+  summary:`
+  <p>Het <dfn>biologische geslacht</dfn> is het totaal van de lichamelijke kenmerken die bepalen of je een man of een vrouw bent. Geslachtshormonen beïnvloeden ook de ontwikkeling van de hersenen. <b>Tertiaire geslachtskenmerken</b> gaan over hoe we denken, doen en ons voelen.</p>
+  <p><dfn>Gender</dfn> omvat de ideeën en normen in de samenleving over wat mannelijk of vrouwelijk is: geen biologische, maar maatschappelijke, sociale en culturele aspecten. Die verschillen van plaats tot plaats en veranderen in de tijd: vandaag vinden we blauw een jongenskleur en roze een meisjeskleur, vóór 1940 was dat net omgekeerd.</p>
+  <ul>
+    <li><dfn>Genderidentiteit</dfn> (psychologisch geslacht): hoe je je eigen geslacht beleeft: man, vrouw, allebei of geen van beide. Komt ze overeen met je biologisch geslacht, dan ben je <b>cisgender</b>. Anderen voelen zich bv. agender, genderneutraal, non-binair, genderfluïde of transgender. <b>Genderdiversiteit</b> is de overkoepelende term. Bij een diep gevoel van onbehagen spreek je van <b>genderdysforie</b>.</li>
+    <li><dfn>Genderexpressie</dfn>: hoe je genderidentiteit tot uiting komt, bv. door kleding, spraak en gedrag. <b>Gender-non-conform</b> gedrag gaat in tegen de maatschappelijke verwachtingen.</li>
+    <li><dfn>Genderoriëntatie</dfn>: de seksuele en romantische aantrekking die je voelt tot anderen. Vaak vallen die samen, maar niet bij iedereen.</li>
+  </ul>
+  <p>Het letterwoord <b>LGBTQIA+</b> toont de diversiteit in gender en seksuele oriëntatie.</p>`,
+  cards:[["Biologisch geslacht","De lichamelijke kenmerken die bepalen of je man of vrouw bent."],["Gender","Ideeën en normen in de samenleving over wat mannelijk of vrouwelijk is."],["Genderidentiteit","Hoe je je eigen geslacht beleeft."],["Cisgender","Genderidentiteit komt overeen met het biologisch geslacht."],["Genderexpressie","Hoe je genderidentiteit tot uiting komt: kleding, spraak, gedrag."],["Genderoriëntatie","Seksuele en romantische aantrekking tot anderen."]],
+  exercises:[
+    { type:"classify", title:"Biologisch geslacht of gender?", buckets:["biologisch geslacht","gender"],
+      items:[{t:"geslachtschromosomen XX of XY",b:0},{t:"het idee dat blauw een jongenskleur is",b:1},{t:"het hebben van eierstokken",b:0},{t:"normen over hoe een ‘echte man’ zich gedraagt",b:1},{t:"de primaire geslachtskenmerken",b:0},{t:"hoe je je voelt: man, vrouw, allebei of geen van beide",b:1}]},
+    { type:"classify", title:"Identiteit, expressie of oriëntatie?", buckets:["genderidentiteit","genderexpressie","genderoriëntatie"],
+      items:[{t:"Alex voelt zich geen man en geen vrouw.",b:0},{t:"Sam draagt graag maatpakken.",b:1},{t:"Robin wordt verliefd op jongens.",b:2},{t:"Een jongen draagt graag rokjes.",b:1},{t:"Iemand voelt zich zoals het geslacht waarmee hij geboren werd (cisgender).",b:0}]},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Het begrip gender bevat veel meer dan enkel hoe je je als man of vrouw voelt.",a:true,e:"Gender omvat ook maatschappelijke, sociale en culturele ideeën en normen, en je expressie en oriëntatie."},
+        {s:"Genderstereotypen zorgen ervoor dat de hersenen anders evolueren.",a:false,e:"Genderstereotypen zijn ideeën en normen in de samenleving; het zijn de geslachtshormonen die de ontwikkeling van de hersenen beïnvloeden."}
+    ]},
+    { type:"open", title:"Geslacht en gender", q:"Zowel het biologische geslacht als het gender bepalen wie je bent als persoon. Leg beide begrippen uit en noem drie aspecten die een rol spelen bij de persoonlijke beleving van gender.",
+      model:"Biologisch geslacht: vanaf de geboorte aanwezig; de lichamelijke kenmerken waardoor je man of vrouw bent, bepaald door de geslachtschromosomen. Gender: ontwikkelt zich tijdens het leven; de sociale, culturele en maatschappelijke invloeden. Drie aspecten: genderidentiteit, genderexpressie en genderoriëntatie."}
+  ]},
+
+/* ---------------- HOOFDSTUK 2.1 ---------------- */
+{ id:"zaad", num:"2.1", title:"De zaadcel", short:"Hormonale regeling bij mannen, bouw van de zaadcel, ejaculatie",
+  lead:"Hoe regelen hormonen de aanmaak van zaadcellen, en hoe is een zaadcel gebouwd voor haar taak?",
+  summary:`
+  <h3>Aanmaak van zaadcellen</h3>
+  <p>Zaadcellen worden aangemaakt in de <b>teelballen</b> (testes). Vanaf de puberteit maakt de hypothalamus GnRH, waardoor de hypofyse LH en FSH maakt. Het bloed brengt ze naar de teelballen. Elke teelbal bestaat uit lobben met dunne <b>zaadbuisjes</b>.</p>
+  <ul>
+    <li>Tussen de zaadbuisjes liggen de <dfn>cellen van Leydig</dfn>: onder invloed van <b>LH</b> maken ze <b>testosteron</b>.</li>
+    <li>In de wand van de zaadbuisjes liggen de <dfn>cellen van Sertoli</dfn>: <b>FSH</b> zet ze aan tot het maken van <b>bindingseiwitten</b>.</li>
+  </ul>
+  <p>Testosteron en bindingseiwitten regelen de aanmaak van zaadcellen via <dfn>negatieve terugkoppeling</dfn>: is er genoeg, dan remmen ze de hypothalamus en de hypofyse, zodat er minder LH en FSH wordt gemaakt.</p>
+  <p>De aanmaak start bij <b>kiemcellen</b> in de wand van de zaadbuisjes. De bindingseiwitten zorgen dat testosteron aan de kiemcellen bindt. Kiemcellen delen razendsnel in vier nieuwe cellen, die een zwemstaart krijgen. Ze zwemmen naar de <b>bijballen</b>, waar ze uitrijpen. De zaadcelvorming verloopt best bij <b>35 °C</b>: spiertjes in de balzak brengen de teelballen dichter bij of verder van het lichaam.</p>
+  <h3>Bouw van de zaadcel</h3>
+  <p>Een zaadcel is maar 0,005 mm groot, een van de kleinste cellen van de mens. Ze bestaat uit drie delen:</p>
+  <ul>
+    <li>de <b>kop</b> met de <b>celkern</b> (erfelijk materiaal) en vooraan het <b>acrosomaal blaasje</b> met enzymen om de eicel binnen te dringen;</li>
+    <li>het <b>middenstuk</b>, rijk aan <b>mitochondriën</b> die energie leveren (het centriool vormt de overgang);</li>
+    <li>de <b>zweepstaart</b> die de zaadcel vooruitstuwt.</li>
+  </ul>
+  <h3>Ejaculatie</h3>
+  <p>De zaadcellen blijven in de bijbal tot de <dfn>zaadlozing</dfn> of ejaculatie. De twee zaadleiders verbinden de bijballen met de urogenitale buis. Onderweg komen er <b>zaadvocht</b> (uit de zaadblaasjes) en <b>prostaatvocht</b> (uit de prostaatklier) bij. Zaadcellen + zaadvocht + prostaatvocht = <dfn>sperma</dfn>. Per zaadlozing komen gemiddeld zo’n 142 miljoen zaadcellen via de baarmoederhals in de baarmoeder; ze zwemmen naar de eileiders. Gezonde zaadcellen overleven drie tot vijf dagen.</p>
+  <p><i>Anabole steroïden zijn van testosteron afgeleide hormonen die spieropbouw bevorderen, maar ook acne, onvruchtbaarheid, een lager libido en depressie kunnen veroorzaken.</i></p>`,
+  cards:[["Cellen van Leydig","Maken testosteron onder invloed van LH."],["Cellen van Sertoli","Maken bindingseiwitten onder invloed van FSH."],["Negatieve terugkoppeling","Genoeg hormoon remt de verdere aanmaak van de sturende hormonen."],["Acrosomaal blaasje","Bevat enzymen om de eicel binnen te dringen."],["Middenstuk","Rijk aan mitochondriën die energie leveren."],["Sperma","Zaadcellen + zaadvocht + prostaatvocht."]],
+  exercises:[
+    { type:"match", title:"Hormonale regeling bij mannen", q:"Vul het schema aan: wat hoort bij elke beschrijving?",
+      options:["GnRH","LH","FSH","cellen van Leydig","cellen van Sertoli","testosteron","bindingseiwitten"],
+      items:[{t:"hormoon van de hypothalamus",a:0},{t:"hypofysehormoon dat de cellen van Leydig stimuleert",a:1},{t:"hypofysehormoon dat de cellen van Sertoli stimuleert",a:2},{t:"cellen tussen de zaadbuisjes",a:3},{t:"cellen in de wand van de zaadbuisjes",a:4},{t:"hormoon dat de cellen van Leydig maken",a:5},{t:"stoffen die de cellen van Sertoli maken",a:6}]},
+    { type:"match", title:"Bouw van de zaadcel", q:"Welk deel van de zaadcel heeft deze functie?",
+      options:["celkern","acrosomaal blaasje","mitochondriën in het middenstuk","zweepstaart"],
+      items:[{t:"bevat het erfelijk materiaal",a:0},{t:"bevat enzymen om de eicel binnen te dringen",a:1},{t:"levert energie om te bewegen",a:2},{t:"stuwt de zaadcel vooruit",a:3}]},
+    { type:"order", title:"De weg van een zaadcel", q:"Zet de organen in de volgorde die een zaadcel aflegt, van aanmaak tot zaadlozing.",
+      items:["teelbal (aanmaak in de zaadbuisjes)","bijbal (uitrijpen)","zaadleider (zaadvocht en prostaatvocht komen erbij)","urogenitale buis (zaadlozing)"]},
+    { type:"match", title:"Waaruit bestaat sperma?", q:"Waar komt elk bestanddeel vandaan?",
+      options:["bijbal (aangemaakt in de teelbal)","zaadblaasjes","prostaatklier"],
+      items:[{t:"rijpe zaadcellen",a:0},{t:"zaadvocht",a:1},{t:"prostaatvocht",a:2}]},
+    { type:"tf", title:"Juist of fout?", items:[
+        {s:"Testosteron komt enkel voor bij mannen.",a:false,e:"Ook vrouwen hebben testosteron; het wordt bij hen aangemaakt in de bijnieren."},
+        {s:"Een overmaat aan testosteron is steeds van natuurlijke oorsprong.",a:false,e:"Het kan ook kunstmatig zijn, bv. door inspuitingen met anabole steroïden."},
+        {s:"Bij de aanmaak van zaadcellen zijn zowel testosteron als bindingseiwitten nodig.",a:true,e:"De bindingseiwitten zorgen dat testosteron aan de kiemcellen bindt."},
+        {s:"Zaadcellen zijn vele malen kleiner dan een eicel.",a:true,e:"Een zaadcel is 0,005 mm, een eicel ongeveer 0,1 mm."}
+    ]},
+    { type:"open", title:"Negatieve terugkoppeling", q:"Leg uit hoe testosteron en bindingseiwitten de aanmaak van zaadcellen regelen.",
+      model:"Is er voldoende testosteron of bindingseiwit, dan remmen die de hypothalamus en de hypofyse, zodat er minder GnRH, LH en FSH vrijkomt. Daalt hun concentratie, dan valt de remming weg en stijgt de productie opnieuw. Dat is negatieve terugkoppeling."}
+  ]},
+
+/* ---------------- HOOFDSTUK 2.2 ---------------- */
+{ id:"eicel", num:"2.2", title:"De eicel en de menstruatiecyclus", short:"Eicelrijping, eisprong en de 28-daagse cyclus",
+  lead:"Hoe rijpt een eicel, en welke hormonen sturen de menstruatiecyclus?",
+  summary:`
+  <h3>Aanmaak en bouw van de eicel</h3>
+  <p>Al bij de ongeboren baby delen kiemcellen in de eierstokken tot <b>onrijpe eicellen</b>, omgeven door follikelcellen: <dfn>primaire follikels</dfn>. Bij de geboorte zijn er een miljoen; door degeneratie blijven er bij de start van de puberteit nog zo’n 250 000 over.</p>
+  <p>Vanaf de puberteit rijpt er maandelijks één primaire follikel uit. Die maakt <b>oestrogeen</b>, het aantal follikelcellen neemt toe en er ontstaat een holte met follikelvocht: een rijpe of <dfn>graafse follikel</dfn>. Bij de <dfn>eisprong</dfn> (ovulatie) barst de follikel open en vloeit de eicel mee in de eitrechter. De overblijvende follikelcellen vormen het <dfn>geel lichaam</dfn>, dat oestrogeen en vooral <b>progesteron</b> maakt.</p>
+  <p>Met 0,1 mm is de eicel een van de grootste cellen van de mens: veel cytoplasma met centraal het erfelijk materiaal, een beschermende laag (<b>zona pellucida</b>) en een voedende laag (<b>corona radiata</b>). Ze beweegt niet zelf, maar door trilhaartjes en de peristaltiek van de eileider. Na de eisprong is de eicel ongeveer <b>12 uur</b> zeer vruchtbaar; wordt ze niet bevrucht, dan sterft ze af. Het geel lichaam blijft twee weken bestaan en krimpt tot een litteken.</p>
+  <h3>De menstruatiecyclus (gemiddeld 28 dagen)</h3>
+  <p>Er zijn drie deelcycli: de hypothalamus-hypofysecyclus, de eierstokcyclus en de baarmoedercyclus. Bekijk ze samen in de interactieve cyclus op de startpagina.</p>
+  <p><b>Folliculaire fase (dag 1–14).</b> De oestrogeenconcentratie is laag, dus de hypothalamus maakt GnRH en de hypofyse meer FSH dan LH: één primaire follikel rijpt. De follikelcellen maken steeds meer oestrogeen: het baarmoederslijmvlies wordt dikker en krijgt meer bloedvaten (<b>groeifase</b>). Rond <b>dag 10</b> remt oestrogeen via negatieve terugkoppeling de FSH-productie, zodat er geen nieuwe eicel begint te rijpen. Rond <b>dag 12</b> bereikt oestrogeen een <b>drempelwaarde</b>: positieve terugkoppeling naar de hypothalamus geeft extra GnRH en een piek van LH en FSH. De <b>LH-piek</b> veroorzaakt de eisprong.</p>
+  <p><b>Luteale fase (dag 14–28).</b> Er is meer LH dan FSH. Het geel lichaam maakt oestrogeen en steeds meer progesteron. Progesteron doet de lichaamstemperatuur met gemiddeld 0,5 °C stijgen en laat het dikke slijmvlies voedingsrijk vocht afscheiden (<b>secretiefase</b>); de baarmoederwand is nu zo’n 8 mm dik. Oestrogeen en progesteron remmen de hypothalamus. Zonder bevruchting krimpt het geel lichaam, dalen de hormonen en breekt rond dag 28 het slijmvlies af.</p>
+  <p><b>Menstruatiefase (dag 1–5).</b> Minimale oestrogeen- en progesteronconcentraties; het slijmvlies breekt af met bloedverlies. De eerste dag van het bloedverlies is dag 1 van de cyclus.</p>`,
+  cards:[["Primaire follikel","Onrijpe eicel omgeven door follikelcellen."],["Graafse follikel","Rijpe follikel met een holte vol follikelvocht."],["Eisprong (ovulatie)","De rijpe follikel barst open en de eicel komt vrij."],["Geel lichaam","Resten van de graafse follikel; maakt oestrogeen en vooral progesteron."],["Zona pellucida","Beschermende laag rond de eicel."],["Corona radiata","Voedende laag van follikelcellen rond de eicel."],["Folliculaire fase","Dag 1–14: rijping van de eicel."],["Luteale fase","Dag 14–28: na de eisprong, geel lichaam actief."],["Positieve terugkoppeling","Oestrogeen boven de drempelwaarde stimuleert extra GnRH, LH en FSH."]],
+  exercises:[
+    { type:"order", title:"De menstruatiecyclus in volgorde", q:"Zet de gebeurtenissen in de juiste volgorde.",
+      items:["De hypofyse produceert FSH.","Een follikel begint te rijpen.","De oestrogeenproductie neemt toe.","Er ontstaat een graafse follikel.","Eisprong.","De progesteronproductie neemt toe.","Geen bevruchting: het baarmoederslijmvlies breekt af.","Menstruatie."]},
+    { type:"match", title:"Fasen van de baarmoedercyclus", q:"Welke fase hoort bij de beschrijving?",
+      options:["menstruatiefase","groeifase","secretiefase"],
+      items:[{t:"dag 1–5: het slijmvlies breekt af met bloedverlies",a:0},{t:"onder invloed van oestrogeen wordt het slijmvlies dikker",a:1},{t:"progesteron laat het slijmvlies voedingsrijk vocht afscheiden",a:2}]},
+    { type:"classify", title:"Negatieve of positieve terugkoppeling?", buckets:["negatieve terugkoppeling","positieve terugkoppeling"],
+      items:[{t:"Rond dag 10 remt oestrogeen de FSH-productie.",b:0},{t:"Rond dag 12 bereikt oestrogeen de drempelwaarde: extra GnRH.",b:1},{t:"In de luteale fase remmen oestrogeen en progesteron de hypothalamus.",b:0},{t:"Er volgt een piek van LH en FSH en de eisprong.",b:1}]},
+    { type:"checks", title:"Welk hormoon?", q:"Duid aan welk(e) hormoon/hormonen beschreven worden. Er kunnen meerdere vakjes juist zijn.",
+      cols:["oestrogeen","progesteron","hCG"],
+      rows:[{t:"belangrijk voor de ontwikkeling van de vrouwelijke geslachtskenmerken",a:[1,0,0]},{t:"aangemaakt in de eierstokken",a:[1,1,0]},{t:"maakt de baarmoeder klaar voor de innesteling",a:[0,1,0]},{t:"aangemaakt door het geel lichaam",a:[1,1,0]},{t:"aangemaakt door het embryo",a:[0,0,1]},{t:"bescherming van de zwangerschap",a:[0,1,1]}]},
+    { type:"match", title:"Hormonale regeling bij vrouwen", q:"Wat is het gevolg? Kies het juiste effect.",
+      options:["er rijpt geen nieuwe eicel","er rijpt een nieuwe eicel","eisprong","het slijmvlies breekt af: menstruatie"],
+      items:[{t:"hoge oestrogeen- en progesteronwaarde remt GnRH, LH en FSH",a:0},{t:"lage oestrogeen- en progesteronwaarde stimuleert GnRH, LH en FSH",a:1},{t:"oestrogeen boven de drempelwaarde: positieve terugkoppeling",a:2},{t:"geen bevruchting: oestrogeen en progesteron dalen",a:3}]},
+    { type:"fertile", title:"Vruchtbare dagen", q:"Een cyclus duurt 29 dagen; de eisprong is op dag 15. Kies een kleur en klik de dagen aan. Kleur eerst de menstruatie rood (dag 1–5), daarna alle dagen met een kans op bevruchting oranje." },
+    { type:"tf", title:"Juist of fout?", items:[
+        {s:"Het geel lichaam bestaat uit de resten van de graafse follikel.",a:true,e:"Na de eisprong vormen de overblijvende follikelcellen het geel lichaam."},
+        {s:"Zowel FSH als LH zorgen voor de rijping van de eicel.",a:false,e:"FSH laat de eicel rijpen tot een graafse follikel; LH zorgt voor de eisprong."},
+        {s:"Het hormoon LH piekt op het moment van de eisprong.",a:true,e:"De LH-piek is verantwoordelijk voor de eisprong."}
+    ]},
+    { type:"open", title:"Waarom maar één eicel?", q:"Leg uit waarom er per cyclus normaal maar één eicel rijpt, en wat de oorzaak is van de eisprong.",
+      model:"Rond dag 10 remt de stijgende oestrogeenconcentratie via negatieve terugkoppeling de FSH-productie van de hypofyse, zodat er geen nieuwe follikel begint te rijpen. Rond dag 12 bereikt oestrogeen de drempelwaarde: via positieve terugkoppeling maakt de hypothalamus extra GnRH en ontstaat een piek van LH en FSH. De LH-piek veroorzaakt de eisprong."}
+  ]},
+
+/* ---------------- HOOFDSTUK 2.3 ---------------- */
+{ id:"zwang", num:"2.3", title:"Bevruchting en zwangerschap", short:"Zygote, innesteling, hCG en placenta",
+  lead:"Wat gebeurt er als een zaadcel een eicel bevrucht, en welke hormonen houden de zwangerschap in stand?",
+  summary:`
+  <p>Zijn er zaadcellen in de eileider op het moment van de eisprong, dan kan er een <dfn>bevruchting</dfn> plaatsvinden, binnen de 24 uur na de eisprong. Slechts één zaadcel dringt de eicel binnen; meteen verandert de zona pellucida in een ondoordringbaar <b>bevruchtingsmembraan</b>. De kern van de zaadcel versmelt met die van de eicel: een bevruchte eicel of <dfn>zygote</dfn>.</p>
+  <p>Zo’n 24 uur later deelt de zygote een eerste keer; daarna volgen de delingen elkaar steeds sneller op. Na drie à vier dagen komt het hoopje stamcellen in de baarmoeder aan. De buitenste cellaag zorgt voor de <dfn>innesteling</dfn> in het baarmoederslijmvlies: vanaf dan spreek je van een <dfn>embryo</dfn>. Lukt de innesteling, dan blijft de menstruatie uit: een zwangerschap.</p>
+  <p>Het embryo maakt <dfn>hCG</dfn> (humaan choriongonadotrofine). Dat zorgt dat het geel lichaam progesteron en oestrogeen blijft maken, zodat het baarmoederslijmvlies niet afbreekt. Een zwangerschapstest meet hCG in de urine; hCG veroorzaakt ook ochtendmisselijkheid.</p>
+  <p>Na <b>10 weken</b> zijn alle organen gevormd: een <dfn>foetus</dfn>. Rond <b>12 weken</b> zijn navelstreng en <dfn>placenta</dfn> voldoende ontwikkeld en neemt de placenta de productie van progesteron en oestrogeen over. Ongeveer 38 weken na de bevruchting wordt de baby geboren; artsen rekenen met 40 weken (de eicelrijping meegeteld).</p>
+  <p><i>Bij een buitenbaarmoederlijke zwangerschap nestelt de zygote zich in de eileider in plaats van in de baarmoeder.</i></p>`,
+  cards:[["Zygote","Bevruchte eicel."],["Innesteling","Het embryo nestelt zich in het baarmoederslijmvlies."],["hCG","Hormoon van het embryo dat het geel lichaam laat doorwerken."],["Foetus","Embryo vanaf 10 weken, als alle organen gevormd zijn."],["Placenta","Neemt rond 12 weken de productie van progesteron en oestrogeen over."]],
+  exercises:[
+    { type:"order", title:"Van eicel tot foetus", q:"Zet de stappen in de juiste volgorde.",
+      items:["Eisprong","Bevruchting in de eileider: er ontstaat een zygote.","De zygote deelt een eerste keer.","Het hoopje stamcellen komt aan in de baarmoeder.","Innesteling: het embryo maakt hCG.","Na 10 weken zijn alle organen gevormd: een foetus.","Rond 12 weken neemt de placenta de hormoonproductie over."]},
+    { type:"match", title:"Wie maakt het hormoon?", q:"Wie zorgt op dat moment voor de productie van progesteron en oestrogeen?",
+      options:["geel lichaam","placenta"],
+      items:[{t:"tijdens de luteale fase van de cyclus",a:0},{t:"in de eerste weken van de zwangerschap, gestimuleerd door hCG",a:0},{t:"vanaf ongeveer 12 weken zwangerschap",a:1}]},
+    { type:"classify", title:"Lees de hormoongrafiek", q:"Tijdens de zwangerschap verandert wie de hormonen maakt. Waar hoort elke uitspraak bij?",
+      buckets:["geel lichaam (tot ± 10 weken)","placenta (vanaf ± 12 weken)"],
+      items:[{t:"wordt aangezet door hCG van het embryo",b:0},{t:"productie stijgt tot het einde van de zwangerschap",b:1},{t:"ontstaan uit de resten van de graafse follikel",b:0},{t:"ontwikkelt zich samen met de navelstreng",b:1}]},
+    { type:"mc", title:"De innesteling", q:"Welk hormoon speelt een cruciale rol bij de innesteling van de zygote?",
+      o:["oestrogeen","progesteron","hCG","testosteron"], a:1, e:"Progesteron maakt het baarmoederslijmvlies klaar voor de innesteling. hCG wordt pas na de innesteling gemaakt."},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"hCG stopt de productie van progesteron in het geel lichaam.",a:false,e:"Omgekeerd: hCG zorgt ervoor dat het geel lichaam progesteron en oestrogeen blijft maken."},
+        {s:"Oestrogeen zorgt voor de bescherming van de foetus.",a:false,e:"Progesteron, en niet oestrogeen, zorgt voor de bescherming van de zwangerschap."},
+        {s:"Een zwangerschapstest meet de aanwezigheid van hCG in de urine.",a:true,e:"hCG wordt via de nieren uitgescheiden."},
+        {s:"Bij een buitenbaarmoederlijke zwangerschap nestelt de zygote zich in de eileider.",a:true,e:"In plaats van in de baarmoeder."}
+    ]},
+    { type:"open", title:"Embryo en placenta", q:"Progesteron en oestrogeen houden de zwangerschap in stand. Leg de rol van het embryo en van de placenta bij de productie van beide hormonen uit.",
+      model:"In het begin van de zwangerschap (tot ongeveer 10 weken) maakt het embryo hCG, dat het geel lichaam aanzet om progesteron en oestrogeen te blijven maken. Vanaf ongeveer 12 weken is de placenta volledig functioneel en maakt ze zelf genoeg van beide hormonen."}
+  ]},
+/* ---------------- MENU ANTICONCEPTIE ---------------- */
+{ id:"anti", num:"Menu", title:"Jongeren en anticonceptie", short:"Hoe voorkom je een zwangerschap en een soa?",
+  lead:"Met wat je weet over de hormonale regeling begrijp je ook hoe anticonceptiemiddelen werken.",
+  summary:`
+  <p><dfn>Anticonceptie</dfn> zijn alle middelen en methodes om een zwangerschap te voorkomen. Ze werken op een van drie manieren: ze <b>verhinderen de eisprong</b>, ze <b>houden de zaadcellen tegen</b> of ze <b>verhinderen de innesteling</b>.</p>
+  <h3>Hormonale middelen</h3>
+  <ul>
+    <li><b>Anticonceptiepil (combinatiepil)</b>: bevat synthetisch oestrogeen en progestageen (een stof die werkt zoals progesteron). Net zoals in de luteale fase remmen die hormonen de hypothalamus en de hypofyse via <b>negatieve terugkoppeling</b>: er komt weinig FSH en LH vrij, er rijpt geen follikel en er is <b>geen eisprong</b>. Het slijm in de baarmoederhals wordt ook dikker. Je neemt ze elke dag; in de stopweek dalen de hormonen en volgt een onttrekkingsbloeding. Vergeten, braken of diarree maken de pil minder betrouwbaar.</li>
+    <li>Dezelfde hormonen kunnen ook via een <b>vaginale ring</b>, een <b>pleister</b>, een <b>prikpil</b> of een <b>staafje (implantaat)</b> in de bovenarm worden toegediend.</li>
+    <li><b>Hormoonspiraal</b>: een T-vormig plastic spiraaltje in de baarmoeder dat jarenlang een kleine hoeveelheid progestageen afgeeft; het slijm in de baarmoederhals laat geen zaadcellen meer door.</li>
+  </ul>
+  <h3>Niet-hormonale middelen</h3>
+  <ul>
+    <li><b>Condoom</b>: een barrière die het sperma opvangt. Het is het <b>enige middel dat ook beschermt tegen seksueel overdraagbare aandoeningen (soa’s)</b>.</li>
+    <li><b>Koperspiraal</b>: koper is schadelijk voor zaadcellen en verhindert de innesteling. Geen hormonen.</li>
+    <li><b>Natuurlijke methodes</b> zoals de kalendermethode of ‘terugtrekken’ zijn <b>weinig betrouwbaar</b>: de eisprong valt niet altijd op dezelfde dag, zaadcellen overleven tot 5 dagen en voorvocht kan al zaadcellen bevatten.</li>
+  </ul>
+  <h3>Noodanticonceptie</h3>
+  <p>Na onbeschermd vrijen of een gescheurd condoom kan de <dfn>morning-afterpil</dfn> (noodpil). Neem ze zo snel mogelijk, ten laatste enkele dagen na het vrijen (afhankelijk van het type 3 tot 5 dagen). Ze <b>stelt de eisprong uit</b>. Het is geen abortuspil en geen gewoon anticonceptiemiddel.</p>
+  <p>Wie zowel een zwangerschap als een soa wil vermijden, combineert een condoom met de pil: <b>dubbele bescherming</b>. Een arts, apotheker of het CLB helpt je de juiste keuze maken.</p>
+  <p class="note"><i>Dit menu staat niet uitgeschreven in het leerwerkboek; de leerstof sluit aan bij het doel ‘het correct gebruik van anticonceptiemiddelen illustreren’.</i></p>`,
+  cards:[["Anticonceptie","Middelen en methodes om een zwangerschap te voorkomen."],["Combinatiepil","Oestrogeen + progestageen: remt FSH en LH, dus geen eisprong."],["Condoom","Vangt het sperma op; beschermt ook tegen soa’s."],["Hormoonspiraal","Geeft progestageen af in de baarmoeder; slijm laat geen zaadcellen door."],["Koperspiraal","Zonder hormonen: koper schaadt zaadcellen en verhindert innesteling."],["Morning-afterpil","Noodpil die de eisprong uitstelt; zo snel mogelijk innemen."],["Dubbele bescherming","Condoom + pil: tegen zwangerschap én soa’s."]],
+  exercises:[
+    { type:"classify", title:"Hormonaal of niet?", buckets:["hormonaal","niet-hormonaal"],
+      items:[{t:"anticonceptiepil",b:0},{t:"condoom",b:1},{t:"hormoonspiraal",b:0},{t:"koperspiraal",b:1},{t:"vaginale ring",b:0},{t:"implantaat in de arm",b:0},{t:"kalendermethode",b:1}]},
+    { type:"match", title:"Hoe werkt het?", q:"Koppel het middel aan de manier waarop het werkt.",
+      options:["verhindert de eisprong","houdt de zaadcellen tegen","verhindert de innesteling"],
+      items:[{t:"combinatiepil",a:0},{t:"condoom",a:1},{t:"koperspiraal",a:2},{t:"morning-afterpil",a:0}]},
+    { type:"mc", title:"Bescherming tegen soa’s", q:"Welk middel beschermt ook tegen seksueel overdraagbare aandoeningen?",
+      o:["de anticonceptiepil","de hormoonspiraal","het condoom","de morning-afterpil"], a:2, e:"Enkel een barrière zoals het condoom voorkomt contact met lichaamsvochten."},
+    { type:"tf", title:"Waar of niet waar?", items:[
+        {s:"De pil verhindert de eisprong door de productie van FSH en LH te remmen.",a:true,e:"Dat is negatieve terugkoppeling, net zoals in de luteale fase."},
+        {s:"De morning-afterpil is een abortuspil.",a:false,e:"Ze stelt de eisprong uit en werkt niet meer na een innesteling."},
+        {s:"Terugtrekken voor de zaadlozing is een betrouwbare methode.",a:false,e:"Voorvocht kan al zaadcellen bevatten."},
+        {s:"Op de vruchtbare dagen ‘veilig’ zijn met de kalendermethode is moeilijk, omdat zaadcellen tot 5 dagen overleven.",a:true,e:"En de eisprong valt niet altijd op dezelfde dag."}
+    ]},
+    { type:"open", title:"Dubbele bescherming", q:"Lotte neemt de pil. Haar vriend vindt een condoom dan overbodig. Wat antwoord jij? Gebruik je kennis over hormonen en soa’s.",
+      model:"De pil remt via negatieve terugkoppeling de productie van FSH en LH, zodat er geen eisprong is: ze beschermt goed tegen een zwangerschap (als ze correct genomen wordt). Maar de pil beschermt niet tegen soa’s; enkel een condoom doet dat. Bovendien werkt de pil minder goed na vergeten, braken of diarree. Condoom + pil geeft dubbele bescherming."}
+  ]}
+];
+
+const GLOSS = [
+ ["Geslachtschromosomen","XX bij vrouwen, XY bij mannen.","1"],
+ ["Intersekse","Biologisch geslacht niet eenduidig door een DNA- of chromosoomvariatie.","1"],
+ ["Primaire geslachtskenmerken","Lichamelijke kenmerken die al bij de geboorte aanwezig zijn.","1"],
+ ["Secundaire geslachtskenmerken","Kenmerken die tijdens de puberteit ontstaan door geslachtshormonen.","1"],
+ ["Puberteit","Periode waarin kinderen zich ontwikkelen tot volwassenen.","1"],
+ ["Gonaden","Geslachtsklieren: teelballen en eierstokken.","1"],
+ ["GnRH","Gonadotrofine-releasing hormoon van de hypothalamus.","1"],
+ ["LH","Luteïniserend hormoon van de hypofyse.","1"],
+ ["FSH","Follikelstimulerend hormoon van de hypofyse.","1"],
+ ["Testosteron","Mannelijk geslachtshormoon uit de teelballen.","1"],
+ ["Oestrogeen","Vrouwelijk geslachtshormoon uit de eierstokken (follikels, geel lichaam).","1"],
+ ["Progesteron","Geslachtshormoon uit het geel lichaam en later de placenta.","1"],
+ ["Hypothalamus-hypofyse-as","Samenspel van hypothalamus en hypofyse met feedbackmechanismen.","1"],
+ ["Overgang","Het lichaam gaat van vruchtbaar naar onvruchtbaar.","1"],
+ ["Menopauze","Periode die de laatste menstruatiecyclus markeert.","1"],
+ ["Andropauze","Geleidelijke daling van testosteron bij mannen.","1"],
+ ["Gender","Ideeën en normen in de samenleving over wat mannelijk of vrouwelijk is.","Focus"],
+ ["Genderidentiteit","Persoonlijke beleving van je geslacht.","Focus"],
+ ["Cisgender","Genderidentiteit komt overeen met het biologisch geslacht.","Focus"],
+ ["Genderexpressie","Hoe je genderidentiteit tot uiting komt.","Focus"],
+ ["Genderoriëntatie","Seksuele en romantische aantrekking tot anderen.","Focus"],
+ ["Genderdysforie","Diep gevoel van onbehagen met het biologisch geslacht.","Focus"],
+ ["Cellen van Leydig","Maken testosteron onder invloed van LH.","2"],
+ ["Cellen van Sertoli","Maken bindingseiwitten onder invloed van FSH.","2"],
+ ["Negatieve terugkoppeling","Genoeg hormoon remt de productie van de sturende hormonen.","2"],
+ ["Positieve terugkoppeling","Oestrogeen boven de drempelwaarde stimuleert extra GnRH, LH en FSH.","2"],
+ ["Sperma","Zaadcellen, zaadvocht en prostaatvocht.","2"],
+ ["Acrosomaal blaasje","Blaasje met enzymen in de kop van de zaadcel.","2"],
+ ["Primaire follikel","Onrijpe eicel met follikelcellen.","2"],
+ ["Graafse follikel","Rijpe follikel met follikelholte.","2"],
+ ["Eisprong","Ovulatie: de graafse follikel barst open.","2"],
+ ["Geel lichaam","Resten van de graafse follikel; maakt oestrogeen en progesteron.","2"],
+ ["Zona pellucida","Beschermende laag rond de eicel.","2"],
+ ["Corona radiata","Voedende laag rond de eicel.","2"],
+ ["Folliculaire fase","Dag 1–14 van de cyclus: eicelrijping.","2"],
+ ["Luteale fase","Dag 14–28 van de cyclus: na de eisprong.","2"],
+ ["Zygote","Bevruchte eicel.","2"],
+ ["Embryo","Na de innesteling, tot 10 weken.","2"],
+ ["Foetus","Vanaf 10 weken, alle organen gevormd.","2"],
+ ["hCG","Humaan choriongonadotrofine, gemaakt door het embryo.","2"],
+ ["Placenta","Neemt rond 12 weken de productie van progesteron en oestrogeen over.","2"],
+ ["Anticonceptie","Middelen en methodes om een zwangerschap te voorkomen.","Menu"],
+ ["Combinatiepil","Oestrogeen en progestageen; remt FSH en LH: geen eisprong.","Menu"],
+ ["Condoom","Barrièremiddel; beschermt ook tegen soa’s.","Menu"],
+ ["Hormoonspiraal","Spiraaltje dat progestageen afgeeft in de baarmoeder.","Menu"],
+ ["Koperspiraal","Hormoonvrij spiraaltje; koper schaadt zaadcellen en verhindert innesteling.","Menu"],
+ ["Morning-afterpil","Noodpil die de eisprong uitstelt.","Menu"]
+];
+
+const POOL = [
+ {q:"Welke geslachtschromosomen hebben mannen?",o:["XX","XY","YY","X"],a:1},
+ {q:"Hoeveel procent van de mensen is ongeveer intersekse?",o:["0,01 %","1,7 %","10 %","25 %"],a:1},
+ {q:"Welk kenmerk is een primair geslachtskenmerk?",o:["stemverlaging","eierstokken","borstontwikkeling","bredere schouders"],a:1},
+ {q:"Welk kenmerk is een secundair geslachtskenmerk?",o:["prostaatklier","baarmoeder","breder bekken","penis"],a:2},
+ {q:"Welke klier maakt GnRH?",o:["hypofyse","hypothalamus","teelbal","eierstok"],a:1},
+ {q:"Welke hormonen maakt de hypofyse onder invloed van GnRH?",o:["LH en FSH","oestrogeen en progesteron","testosteron","hCG"],a:0},
+ {q:"De periode die de laatste menstruatiecyclus markeert, is de …",o:["puberteit","menopauze","ovulatie","andropauze"],a:1},
+ {q:"Iemand wiens genderidentiteit overeenkomt met het biologisch geslacht, is …",o:["cisgender","transgender","non-binair","intersekse"],a:0},
+ {q:"Hoe je genderidentiteit tot uiting komt via kleding en gedrag, heet …",o:["genderoriëntatie","genderexpressie","genderdysforie","biologisch geslacht"],a:1},
+ {q:"Welke cellen maken testosteron?",o:["cellen van Sertoli","cellen van Leydig","kiemcellen","follikelcellen"],a:1},
+ {q:"FSH stimuleert bij mannen de …",o:["cellen van Leydig","cellen van Sertoli","prostaatklier","zaadblaasjes"],a:1},
+ {q:"Bij welke temperatuur verloopt de zaadcelvorming optimaal?",o:["30 °C","35 °C","37 °C","40 °C"],a:1},
+ {q:"Waar rijpen de zaadcellen verder uit?",o:["in de bijballen","in de prostaat","in de zaadblaasjes","in de urogenitale buis"],a:0},
+ {q:"Wat bevat het middenstuk van een zaadcel?",o:["de celkern","veel mitochondriën","enzymen","follikelvocht"],a:1},
+ {q:"Sperma bestaat uit …",o:["enkel zaadcellen","zaadcellen, zaadvocht en prostaatvocht","zaadcellen en urine","zaadvocht en bloed"],a:1},
+ {q:"Hoelang overleven gezonde zaadcellen?",o:["12 uur","3 tot 5 dagen","2 weken","1 maand"],a:1},
+ {q:"Een rijpe follikel heet …",o:["primaire follikel","graafse follikel","geel lichaam","zygote"],a:1},
+ {q:"Wat maakt het geel lichaam vooral?",o:["FSH","progesteron","testosteron","hCG"],a:1},
+ {q:"Welk hormoon veroorzaakt met een piek de eisprong?",o:["FSH","LH","oestrogeen","progesteron"],a:1},
+ {q:"Wat gebeurt er rond dag 12 als oestrogeen de drempelwaarde bereikt?",o:["negatieve terugkoppeling","positieve terugkoppeling naar de hypothalamus","menstruatie","innesteling"],a:1},
+ {q:"In welke fase wordt het baarmoederslijmvlies dikker onder invloed van oestrogeen?",o:["menstruatiefase","groeifase","secretiefase","luteale fase"],a:1},
+ {q:"Hoelang is een eicel na de eisprong zeer vruchtbaar?",o:["ongeveer 12 uur","3 dagen","een week","twee weken"],a:0},
+ {q:"De beschermende laag rond de eicel heet …",o:["corona radiata","zona pellucida","acrosoom","placenta"],a:1},
+ {q:"Een bevruchte eicel heet een …",o:["embryo","foetus","zygote","follikel"],a:2},
+ {q:"Welk hormoon maakt het embryo na de innesteling?",o:["hCG","LH","FSH","testosteron"],a:0},
+ {q:"Wat meet een zwangerschapstest?",o:["oestrogeen","hCG in de urine","progesteron in het bloed","LH"],a:1},
+ {q:"Vanaf wanneer spreek je van een foetus?",o:["na de bevruchting","na de innesteling","na 10 weken","na 20 weken"],a:2},
+ {q:"Wat neemt rond 12 weken de productie van progesteron en oestrogeen over?",o:["de placenta","de hypofyse","het embryo","de eierstok"],a:0},
+ {q:"Hoe verhindert de combinatiepil een zwangerschap?",o:["ze doodt de zaadcellen","ze remt FSH en LH zodat er geen eisprong is","ze verhindert de menstruatie","ze maakt hCG"],a:1},
+ {q:"Welk middel beschermt ook tegen soa’s?",o:["pil","koperspiraal","condoom","hormoonspiraal"],a:2},
+ {q:"Wat doet de morning-afterpil?",o:["ze stelt de eisprong uit","ze breekt een zwangerschap af","ze beschermt tegen soa’s","ze maakt het embryo los"],a:0}
+];
+
+const AR_MEM=[
+ ["intersekse","Biologisch geslacht niet eenduidig"],
+ ["primair geslachtskenmerk","Al aanwezig bij de geboorte"],
+ ["secundair geslachtskenmerk","Ontstaat tijdens de puberteit"],
+ ["GnRH","Hormoon van de hypothalamus"],
+ ["FSH","Laat follikels groeien"],
+ ["LH","Piek veroorzaakt de eisprong"],
+ ["menopauze","Laatste menstruatiecyclus"],
+ ["genderidentiteit","Hoe je je eigen geslacht beleeft"],
+ ["genderexpressie","Kleding, spraak en gedrag"],
+ ["cellen van Leydig","Maken testosteron"],
+ ["cellen van Sertoli","Maken bindingseiwitten"],
+ ["sperma","Zaadcellen + zaadvocht + prostaatvocht"],
+ ["graafse follikel","Rijpe follikel met vocht"],
+ ["geel lichaam","Maakt vooral progesteron"],
+ ["zona pellucida","Beschermende laag rond de eicel"],
+ ["zygote","Bevruchte eicel"],
+ ["hCG","Hormoon van het embryo"],
+ ["foetus","Vanaf 10 weken"],
+ ["placenta","Neemt de hormoonproductie over vanaf 12 weken"],
+ ["condoom","Beschermt ook tegen soa’s"],
+ ["morning-afterpil","Stelt de eisprong uit"]
+];
+const AR_SETS=[
+ {t:"Primair of secundair?",c:["primair","secundair"],i:[["teelballen",0],["stemverlaging",1],["eierstokken",0],["borstontwikkeling",1],["baarmoeder",0],["meer beharing",1]]},
+ {t:"Man of vrouw?",c:["man","vrouw"],i:[["prostaatklier",0],["eitrechter",1],["bijbal",0],["baarmoederhals",1],["zaadblaasje",0],["eierstok",1]]},
+ {t:"Welke klier?",c:["hypothalamus","hypofyse","teelbal","eierstok"],i:[["GnRH",0],["LH",1],["FSH",1],["testosteron",2],["oestrogeen",3],["progesteron",3]]},
+ {t:"Identiteit, expressie of oriëntatie?",c:["identiteit","expressie","oriëntatie"],i:[["voelt zich non-binair",0],["draagt graag rokjes",1],["wordt verliefd op meisjes",2],["cisgender",0],["spraak en gedrag",1]]},
+ {t:"Folliculaire of luteale fase?",c:["folliculaire fase","luteale fase"],i:[["follikel rijpt",0],["geel lichaam actief",1],["meer FSH dan LH",0],["meer LH dan FSH",1],["progesteron stijgt",1],["oestrogeen stijgt naar de drempel",0]]},
+ {t:"Hormonaal of niet-hormonaal?",c:["hormonaal","niet-hormonaal"],i:[["pil",0],["condoom",1],["hormoonspiraal",0],["koperspiraal",1],["vaginale ring",0],["implantaat",0]]},
+ {t:"Geel lichaam of placenta?",c:["geel lichaam","placenta"],i:[["luteale fase",0],["eerste weken zwangerschap (hCG)",0],["vanaf 12 weken",1]]}
+];
+const AR_WHO=[
+ {a:"hypothalamus",o:["hypothalamus","hypofyse","teelbal","eierstok"],h:["Ik ben een deel van de hersenen.","Vóór de puberteit word ik geremd.","Ik maak GnRH."]},
+ {a:"hypofyse",o:["hypofyse","hypothalamus","bijnier","placenta"],h:["Ik ben een endocriene klier.","Ik word aangestuurd door GnRH.","Ik maak LH en FSH."]},
+ {a:"zaadcel",o:["zaadcel","eicel","zygote","kiemcel"],h:["Ik ben 0,005 mm groot.","Ik heb een acrosomaal blaasje.","Ik zwem met een zweepstaart."]},
+ {a:"eicel",o:["eicel","zaadcel","geel lichaam","zygote"],h:["Ik ben een van de grootste cellen van de mens.","Ik ben omgeven door de zona pellucida en de corona radiata.","Na de eisprong ben ik ongeveer 12 uur zeer vruchtbaar."]},
+ {a:"geel lichaam",o:["geel lichaam","graafse follikel","placenta","hypofyse"],h:["Ik ontsta uit de resten van een follikel.","Ik maak oestrogeen en vooral progesteron.","Zonder bevruchting krimp ik tot een litteken."]},
+ {a:"hCG",o:["hCG","LH","progesteron","FSH"],h:["Ik ben een hormoon.","Ik word gemaakt door het embryo.","Een zwangerschapstest spoort mij op in de urine."]},
+ {a:"placenta",o:["placenta","geel lichaam","navelstreng","baarmoeder"],h:["Ik ben rond 12 weken zwangerschap volledig ontwikkeld.","Ik verbind moeder en kind.","Ik neem de productie van progesteron en oestrogeen over."]},
+ {a:"testosteron",o:["testosteron","oestrogeen","LH","bindingseiwit"],h:["Ik ben een geslachtshormoon.","Ik word gemaakt door de cellen van Leydig.","Ook vrouwen hebben mij, uit de bijnieren."]}
+];
+const AR_CHAINS=[
+ {t:"Start van de puberteit",q:"Zet in volgorde.",s:["de remming van de hypothalamus valt weg","de hypothalamus maakt meer GnRH","de hypofyse maakt LH en FSH","de geslachtsklieren maken geslachtshormonen","secundaire geslachtskenmerken ontstaan"]},
+ {t:"De weg van een zaadcel",q:"Van aanmaak tot zaadlozing.",s:["teelbal","bijbal","zaadleider","urogenitale buis"]},
+ {t:"De menstruatiecyclus",q:"Zet de gebeurtenissen in volgorde.",s:["de hypofyse maakt FSH","een follikel rijpt","oestrogeen stijgt","LH-piek en eisprong","het geel lichaam maakt progesteron","geen bevruchting: menstruatie"]},
+ {t:"Van eicel tot foetus",q:"Zet in volgorde.",s:["eisprong","bevruchting: zygote","celdelingen","innesteling: embryo maakt hCG","na 10 weken: foetus","rond 12 weken: placenta neemt over"]}
+];
+
+const TABS = {h1:"Geslachtskenmerken",gen:"Geslacht & gender",zaad:"Zaadcel",eicel:"Eicel & cyclus",zwang:"Zwangerschap",anti:"Anticonceptie"};
+const KEY = "bio-thema6-2u-v1";
+let P = {};
+try { P = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e) { P = {}; }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(P)); } catch(e) {} }
+
+const $ = (s, r=document) => r.querySelector(s);
+function h(html){ const t=document.createElement("template"); t.innerHTML=html.trim(); return t.content.firstElementChild; }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+const fmt = n => n.toLocaleString("nl-BE");
+
+function chProgress(ch){ const n=ch.exercises.length; let d=0; ch.exercises.forEach((_,i)=>{ if(P[ch.id+"-"+i]) d++; }); return {d,n}; }
+function ringSVG(f){ const c=2*Math.PI*6; return `<svg class="ring" viewBox="0 0 16 16" aria-hidden="true"><circle class="bg" cx="8" cy="8" r="6"/><circle class="fg" cx="8" cy="8" r="6" stroke-dasharray="${(c*f).toFixed(2)} ${c.toFixed(2)}"/></svg>`; }
+
+function renderTabs(cur){
+  const nav = $("#tabs");
+  let s = `<a href="#start" ${cur==="start"?'aria-current="page"':""}>Start</a>`;
+  CH.forEach(ch=>{ const p=chProgress(ch); s += `<a href="#${ch.id}" ${cur===ch.id?'aria-current="page"':""}>${ringSVG(p.d/p.n)}${ch.num==="Focus"?"":ch.num+" "}${TABS[ch.id]}</a>`; });
+  s += `<a href="#arena" ${cur==="arena"?'aria-current="page"':""}>Oefenarena</a><a href="#begrippen" ${cur==="begrippen"?'aria-current="page"':""}>Begrippen</a><a href="#toets" ${cur==="toets"?'aria-current="page"':""}>Eindtoets</a>`;
+  nav.innerHTML = s;
+}
+
+/* ---------- START: interactieve menstruatiecyclus ---------- */
+const G=(d,m,s,a)=>a*Math.exp(-((d-m)*(d-m))/(2*s*s));
+const HORM={
+  FSH:{c:"var(--water)",f:d=>0.18+G(d,3,4,0.25)+G(d,13.5,0.9,0.42)+G(d,28,2,0.15)},
+  LH:{c:"var(--bad)",f:d=>0.15+G(d,13.6,0.7,0.85)+G(d,21,6,0.08)},
+  oestrogeen:{c:"var(--moss)",f:d=>0.1+G(d,12.3,2.2,0.72)+G(d,21,3.2,0.38)},
+  progesteron:{c:"#B07A3A",f:d=>0.04+G(d,21,3.4,0.8)}
+};
+let PREG=false;
+const P0=21; // innesteling ± dag 21
+function hv(k,d){ const o=HORM[k]; if(!PREG||d<=P0) return o.f(d);
+  if(k==="progesteron") return Math.min(0.98,o.f(P0)+0.02*(d-P0));
+  if(k==="oestrogeen") return o.f(P0)+0.012*(d-P0);
+  return Math.min(o.f(d),o.f(P0)); }
+function wall(d){ if(PREG&&d>P0) return Math.min(0.95,0.845+0.015*(d-P0)); if(d<=5) return 0.55-0.4*(d-1)/4; if(d<=14) return 0.15+0.45*(d-5)/9; if(d<=24) return 0.6+0.35*(d-14)/10; return 0.95-0.05*(d-24)/4; }
+function dayInfo(d){
+  if(PREG&&d>=19&&d<=P0) return ["Bevruchting en weg naar de baarmoeder","De eicel werd binnen 24 uur na de eisprong bevrucht in de eileider: een zygote. Ze deelt steeds sneller en komt na 3 à 4 dagen als hoopje stamcellen in de baarmoeder aan.","geel lichaam"];
+  if(PREG&&d>P0) return ["Innesteling: zwangerschap","Het embryo nestelt zich in het slijmvlies en maakt hCG. hCG laat het geel lichaam doorwerken: oestrogeen en progesteron blijven hoog, het slijmvlies breekt niet af en de menstruatie blijft uit. Rond 12 weken neemt de placenta de hormoonproductie over.","geel lichaam blijft actief (hCG)"];
+  if(d<=5) return ["Menstruatiefase · folliculaire fase","Minimale oestrogeen- en progesteronconcentratie: het baarmoederslijmvlies breekt af met bloedverlies. Lage oestrogeen zet de hypothalamus aan tot GnRH; de hypofyse maakt meer FSH dan LH en een primaire follikel begint te rijpen.","primaire follikel rijpt"];
+  if(d<10) return ["Groeifase · folliculaire fase","De follikelcellen maken steeds meer oestrogeen. Het baarmoederslijmvlies wordt dikker en krijgt meer fijne bloedvaten.","follikel groeit"];
+  if(d<12) return ["Groeifase · negatieve terugkoppeling","Rond dag 10 remt de hoge oestrogeenconcentratie de FSH-productie van de hypofyse: er begint geen nieuwe eicel te rijpen.","graafse follikel"];
+  if(d<14) return ["Positieve terugkoppeling","Rond dag 12 bereikt oestrogeen de drempelwaarde. De hypothalamus maakt extra GnRH: er volgt een piek van LH en FSH.","graafse follikel"];
+  if(d===14) return ["Eisprong","De LH-piek veroorzaakt de eisprong: de graafse follikel barst open en de eicel komt in de eitrechter. Ze is nu ongeveer 12 uur zeer vruchtbaar.","eisprong"];
+  if(d<26) return ["Secretiefase · luteale fase","Het geel lichaam maakt oestrogeen en steeds meer progesteron. De temperatuur stijgt met ongeveer 0,5 °C en het slijmvlies (± 8 mm) scheidt voedingsrijk vocht af. Oestrogeen en progesteron remmen de hypothalamus.","geel lichaam"];
+  return ["Einde luteale fase","Zonder bevruchting krimpt het geel lichaam tot een litteken. Oestrogeen en progesteron dalen; rond dag 28 breekt het slijmvlies af en begint een nieuwe cyclus.","geel lichaam krimpt"];
+}
+function renderStart(app){
+  const v = h(`<section class="view">
+    <div class="hero">
+      <div>
+        <h1>De menstruatiecyclus in 28 dagen</h1>
+        <p class="lead">Schuif door de cyclus en volg wat de hormonen, de eierstok en de baarmoeder doen. Zet daarna bevruchting aan en kijk wat er verandert. Werk vervolgens per hoofdstuk door de leerstof van thema 6.</p>
+        <label for="day" class="note" style="display:block;border:none;padding:0;margin-top:22px">Dag <b id="dv"></b> van 28</label>
+        <input type="range" id="day" min="1" max="28" value="1" style="margin-top:6px">
+        <label class="pregt"><input type="checkbox" id="preg"> Met bevruchting en innesteling</label>
+        <div class="lvinfo" id="lvinfo" aria-live="polite"></div>
+      </div>
+      <div class="cyc">
+        <svg id="cyc" viewBox="0 0 440 330" role="img" aria-label="Schematische grafiek van de hormonen, de eierstok en het baarmoederslijmvlies doorheen de cyclus"></svg>
+        <div class="legend">${Object.entries(HORM).map(([k,o])=>`<span><i style="background:${o.c}"></i>${k}</span>`).join("")}</div>
+        <p class="note" style="margin-top:6px">Schematische voorstelling, geen meetwaarden.</p>
+      </div>
+    </div>
+    <div class="chapters" id="chaps"></div>
+    <div class="howto">
+      <h3>Zo werk je</h3>
+      <p>Lees in elk hoofdstuk eerst de samenvatting. Draai daarna de begripkaarten om en maak de oefeningen: je krijgt meteen feedback. Een oefening die volledig juist is, krijgt een groen vinkje en telt mee in de voortgangsring bovenaan. Je voortgang wordt alleen in deze browser bewaard. Oefen daarna spelenderwijs in de oefenarena en test jezelf op het einde met de eindtoets.</p>
+    </div>
+  </section>`);
+  app.appendChild(v);
+  const svg=$("#cyc",v), X0=40, W=380, sx=d=>X0+(d-1)/27*W;
+  const yH=d=>150, H1=120; // hormone panel: y from 30 to 150
+  function draw(){
+  let s=`<rect x="${sx(1)}" y="20" width="${sx(14)-sx(1)}" height="14" class="ph1"/><rect x="${sx(14)}" y="20" width="${sx(28)-sx(14)}" height="14" class="ph2"/>
+    <text x="${(sx(1)+sx(14))/2}" y="31" class="pl" text-anchor="middle">folliculaire fase</text><text x="${(sx(14)+sx(28))/2}" y="31" class="pl" text-anchor="middle">luteale fase</text>`;
+  Object.entries(HORM).forEach(([k,o])=>{ let p=""; for(let d=1;d<=28;d+=0.25) p+=(d===1?"M":"L")+sx(d).toFixed(1)+" "+(160-hv(k,d)*H1).toFixed(1)+" "; s+=`<path d="${p}" fill="none" stroke="${o.c}" stroke-width="3"/>`; });
+  s+=`<line x1="${X0}" y1="160" x2="${X0+W}" y2="160" class="ax"/><text x="${X0-6}" y="100" class="pl" text-anchor="end" transform="rotate(-90 ${X0-14} 100)">hormonen</text>`;
+  // eierstok strip
+  s+=`<text x="${X0}" y="185" class="pl">eierstok</text><g id="ovary"></g>`;
+  // baarmoederwand
+  let wp="M"+sx(1)+" 320 "; for(let d=1;d<=28;d+=0.25) wp+="L"+sx(d).toFixed(1)+" "+(320-wall(d)*80).toFixed(1)+" "; wp+="L"+sx(28)+" 320 Z";
+  s+=`<text x="${X0}" y="232" class="pl">baarmoederslijmvlies</text><path d="${wp}" class="wall"/><rect x="${sx(1)}" y="${320-0.6*80}" width="${sx(5)-sx(1)}" height="${0.6*80}" class="mens"/>${PREG?`<text x="${sx(24.5)}" y="312" class="pl" text-anchor="middle">innesteling + hCG</text>`:""}
+     <text x="${(sx(1)+sx(5))/2}" y="316" class="pl" text-anchor="middle">menstruatie</text>`;
+  s+=`<line id="cur" x1="0" y1="18" x2="0" y2="322" class="cur"/>`;
+  svg.innerHTML=s;
+  }
+  draw();
+  function upd(){ const d=+$("#day",v).value; $("#dv",v).textContent=d; const c=$("#cur",svg); c.setAttribute("x1",sx(d)); c.setAttribute("x2",sx(d));
+    const I=dayInfo(d); $("#lvinfo",v).innerHTML=`<h3>${I[0]}</h3><p>${I[1]}</p><p class="lvex">Eierstok: ${I[2]}.</p>`;
+    let r, cls="fol"; if(d<=5) r=6; else if(d<14) r=6+(d-5)*1.6; else if(d===14){ r=22; cls="burst"; } else { r=PREG?18:Math.max(5,18-(d-15)*0.9); cls="gl"; }
+    $("#ovary",svg).innerHTML=`<circle cx="${sx(d)}" cy="205" r="${r}" class="${cls}"/>`; }
+  $("#day",v).addEventListener("input",upd); upd();
+  $("#preg",v).addEventListener("change",e=>{ PREG=e.target.checked; draw(); upd(); });
+  const cg=$("#chaps",v);
+  CH.forEach(ch=>{ const p=chProgress(ch); cg.appendChild(h(`<a class="chap" href="#${ch.id}"><div class="num">${ch.num}</div><h3>${ch.title}</h3><p>${ch.short}</p><div class="bar" aria-label="${p.d} van ${p.n} oefeningen juist"><i style="width:${100*p.d/p.n}%"></i></div></a>`)); });
+  cg.appendChild(h(`<a class="chap arena" href="#arena"><div class="num">Spel</div><h3>Oefenarena</h3><p>Memory, sorteerrace, wie ben ik? en kettingreactie over het hele thema.</p></a>`));
+}
+
+/* ---------- EXTRA OEFENTYPES THEMA 6 (2u) ---------- */
+const BUILD2 = {
+  checks(ex,w,body){
+    const t=h(`<div class="tbl"><table><thead><tr><th>Beschrijving</th>${ex.cols.map(c=>`<th class="c">${c}</th>`).join("")}</tr></thead><tbody></tbody></table></div>`);
+    ex.rows.forEach((r,k)=>{ $("tbody",t).appendChild(h(`<tr><td>${r.t}</td>${ex.cols.map((c,j)=>`<td class="c"><input type="checkbox" id="${w.id}-${k}-${j}" aria-label="${r.t}, ${c}"></td>`).join("")}</tr>`)); });
+    body.appendChild(t);
+    t.addEventListener("change",e=>{ const td=e.target.closest("td"); if(td) td.classList.remove("ok","bad"); });
+    actions(w, m=>{ let g=0,n=0; ex.rows.forEach((r,k)=>ex.cols.forEach((c,j)=>{ const cb=document.getElementById(`${w.id}-${k}-${j}`); const ok=cb.checked===!!r.a[j]; n++; if(ok) g++; cb.parentElement.classList.toggle("ok",ok&&cb.checked); cb.parentElement.classList.toggle("bad",!ok); }));
+      if(setMsg(m,g,n)) w.done(); });
+  },
+  fertile(ex,w,body){
+    const N=29, RED=[1,2,3,4,5], OR=[9,10,11,12,13,14,15,16,17];
+    const g=h(`<div><div class="seg" role="group" aria-label="Kleur kiezen"><button type="button" aria-pressed="true" data-c="r">rood: menstruatie</button><button type="button" aria-pressed="false" data-c="o">oranje: kans op bevruchting</button><button type="button" aria-pressed="false" data-c="x">gom</button></div>
+      <div class="cal"></div><p class="note" style="margin-top:8px">Eisprong op dag 15 (omcirkeld).</p></div>`);
+    body.appendChild(g);
+    let col="r"; const st={};
+    $(".seg",g).addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; col=b.dataset.c; $(".seg",g).querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b)); });
+    const cal=$(".cal",g);
+    for(let d=1;d<=N;d++){ const b=h(`<button type="button" class="dy${d===15?" ov":""}" data-d="${d}" aria-label="dag ${d}">${d}</button>`); b.addEventListener("click",()=>{ st[d]=col==="x"?undefined:col; b.className="dy"+(d===15?" ov":"")+(st[d]?" c-"+st[d]:""); }); cal.appendChild(b); }
+    actions(w, m=>{ let g2=0; for(let d=1;d<=N;d++){ const want=RED.includes(d)?"r":OR.includes(d)?"o":undefined; const ok=st[d]===want; if(ok) g2++; cal.children[d-1].classList.toggle("bad",!ok); }
+      if(setMsg(m,g2,N,"Zaadcellen overleven tot 5 dagen (+ 1 dag veiligheidsmarge): vanaf dag 9. De eicel kan tot 24 uur na de eisprong bevrucht worden (+ 1 dag marge): tot dag 17.")) w.done();
+      else m.textContent+=" Tip: zaadcellen overleven tot 5 dagen, de eicel tot 24 uur; tel telkens 1 dag veiligheidsmarge bij."; },
+      ()=>{ for(let d=1;d<=N;d++){ st[d]=undefined; cal.children[d-1].className="dy"+(d===15?" ov":""); } });
+  }
+};
+
+/* ---------- CHAPTER ---------- */
+function renderChapter(app, ch){
+  const v = h(`<section class="view">
+    <div class="chead"><div class="num">${ch.num==="Focus"?"Focus":"Hoofdstuk "+ch.num}</div><h1>${ch.title}</h1><p>${ch.lead}</p>
+      <div class="subnav"><a href="#${ch.id}" data-jump="sum">Samenvatting</a><a href="#${ch.id}" data-jump="cards">Begripkaarten</a><a href="#${ch.id}" data-jump="oef">Oefeningen</a></div></div>
+    <div class="block" id="sum"><h2>Samenvatting</h2><div class="sum">${ch.summary}</div></div>
+    <div class="block" id="cards" style="max-width:1000px"><h2>Begripkaarten</h2><p class="note">Denk eerst zelf na over de betekenis. Klik daarna om de kaart om te draaien.</p><div class="cards"></div></div>
+    <div class="block" id="oef" style="max-width:1000px"><h2>Oefeningen</h2><div class="ex-list"></div></div>
+    <p class="foot">Gebaseerd op Focus Biologie 4.2 (Pelckmans), thema 6 Voortplanting bij de mens. Samenvattingen en oefeningen zijn bewerkt voor eigen gebruik in de les.</p>
+  </section>`);
+  app.appendChild(v);
+  v.querySelector(".subnav").addEventListener("click",e=>{ const a=e.target.closest("[data-jump]"); if(a){ e.preventDefault(); const t=v.querySelector("#"+a.dataset.jump); t.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); } });
+  const cards=$(".cards",v);
+  ch.cards.forEach(c=>{ const b=h(`<button type="button" class="card" aria-label="${c[0]}: klik om om te draaien"><span class="in"><span class="f">${c[0]}<small>klik om om te draaien</small></span><span class="b">${c[1]}</span></span></button>`); b.addEventListener("click",()=>b.classList.toggle("flip")); cards.appendChild(b); });
+  const list=$(".ex-list",v);
+  ch.exercises.forEach((ex,i)=> list.appendChild(buildEx(ex, ch.id+"-"+i, (ch.num==="Focus"?"F":ch.num)+"."+(i+1))));
+}
+
+function shell(ex,id,label){
+  const w = h(`<article class="ex${P[id]?" done":""}" id="ex-${id}">
+    <div class="exh"><h3><span class="tag">Oefening ${label}</span>${ex.title}</h3><span class="chip">${P[id]?"Juist":"Te doen"}</span></div>
+    ${ex.q?`<p class="q">${ex.q}</p>`:""}<div class="ex-body"></div></article>`);
+  w.done = () => { P[id]=true; save(); w.classList.add("done"); $(".chip",w).textContent="Juist"; renderTabs(current); };
+  return w;
+}
+function actions(w, onCheck, onReset){
+  const a = h(`<div class="actions"><button type="button" class="btn">Controleer</button>${onReset?'<button type="button" class="btn ghost">Opnieuw</button>':""}<span class="msg" aria-live="polite"></span></div>`);
+  a.children[0].addEventListener("click",()=>onCheck($(".msg",a)));
+  if(onReset) a.children[1].addEventListener("click",()=>{ $(".msg",a).textContent=""; $(".msg",a).className="msg"; onReset(); });
+  w.appendChild(a); return a;
+}
+function setMsg(m, good, total, okText){
+  const all = good===total;
+  m.className = "msg " + (all?"ok":"bad");
+  m.textContent = all ? ("Alles juist! " + (okText||"")) : (good + " van " + total + " juist. Pas de rode antwoorden aan.");
+  return all;
+}
+
+function buildEx(ex,id,label){
+  const w = shell(ex,id,label), body=$(".ex-body",w);
+  const T = BUILD[ex.type]; T(ex,w,body); return w;
+}
+
+const BUILD = {
+  classify(ex,w,body){
+    const items = shuffle(ex.items);
+    items.forEach((it,k)=>{
+      const r = h(`<div class="row"><div class="t">${it.t}</div><div class="opts" role="group"></div></div>`);
+      ex.buckets.forEach((b,j)=>{ const btn=h(`<button type="button" class="opt" aria-pressed="false">${b}</button>`); btn.addEventListener("click",()=>{ r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); btn.setAttribute("aria-pressed","true"); r.dataset.c=j; r.classList.remove("ok","bad"); const f=$(".fb",r); if(f) f.remove(); }); $(".opts",r).appendChild(btn); });
+      r.it=it; body.appendChild(r);
+    });
+    actions(w, m=>{
+      let g=0; body.querySelectorAll(".row").forEach(r=>{ const ok = r.dataset.c!==undefined && +r.dataset.c===r.it.b; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok); if(ok) g++; });
+      if(setMsg(m,g,items.length,ex.ok)) w.done();
+    }, ()=>{ body.querySelectorAll(".row").forEach(r=>{ delete r.dataset.c; r.classList.remove("ok","bad"); r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); }); });
+  },
+  match(ex,w,body){
+    ex.items.forEach((it,k)=>{
+      const sid = w.id+"-s"+k;
+      const r = h(`<div class="row"><label class="t" for="${sid}">${it.t}</label><select id="${sid}"><option value="">Kies …</option>${ex.options.map((o,j)=>`<option value="${j}">${o}</option>`).join("")}</select></div>`);
+      r.it=it; $("select",r).addEventListener("change",()=>r.classList.remove("ok","bad")); body.appendChild(r);
+    });
+    actions(w, m=>{ let g=0; body.querySelectorAll(".row").forEach(r=>{ const v=$("select",r).value; const ok = v!=="" && +v===r.it.a; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok); if(ok) g++; }); if(setMsg(m,g,ex.items.length)) w.done(); });
+  },
+  tf(ex,w,body){
+    const state = ex.items.map(()=>null);
+    ex.items.forEach((it,k)=>{
+      const r = h(`<div class="row"><div class="t">${k+1}. ${it.s}</div><div class="opts"><button type="button" class="opt" aria-pressed="false" data-v="1">Waar</button><button type="button" class="opt" aria-pressed="false" data-v="0">Niet waar</button></div></div>`);
+      r.addEventListener("click",e=>{ const b=e.target.closest(".opt"); if(!b) return;
+        r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");
+        const ok = (b.dataset.v==="1")===it.a; state[k]=ok; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok);
+        let f=$(".fb",r); if(!f){ f=h(`<div class="fb"></div>`); r.appendChild(f); }
+        f.className="fb "+(ok?"ok":"bad"); f.innerHTML = (ok?"<b>Juist.</b> ":"<b>Niet juist.</b> Denk nog eens na. ") + (ok?it.e:"");
+        if(state.every(s=>s===true)) w.done();
+      });
+      body.appendChild(r);
+    });
+  },
+  mc(ex,w,body){
+    const multi = Array.isArray(ex.a); const sel=new Set();
+    const box = h(`<div class="qopts" role="group"></div>`);
+    ex.o.forEach((o,j)=>{ const b=h(`<button type="button" class="qopt" aria-pressed="false">${String.fromCharCode(97+j)}&ensp;${o}</button>`);
+      b.addEventListener("click",()=>{ if(!multi){ sel.clear(); box.querySelectorAll(".qopt").forEach(x=>x.setAttribute("aria-pressed","false")); }
+        if(sel.has(j)){ sel.delete(j); b.setAttribute("aria-pressed","false"); } else { sel.add(j); b.setAttribute("aria-pressed","true"); }
+        box.querySelectorAll(".qopt").forEach(x=>x.classList.remove("ok","bad")); });
+      box.appendChild(b); });
+    body.appendChild(box);
+    const css = `.qopt[aria-pressed="true"]{border-color:var(--water);box-shadow:inset 0 0 0 1px var(--water)}`;
+    if(!document.getElementById("mccss")){ const s=document.createElement("style"); s.id="mccss"; s.textContent=css; document.head.appendChild(s); }
+    actions(w, m=>{
+      const want = new Set(multi?ex.a:[ex.a]);
+      const ok = sel.size===want.size && [...sel].every(x=>want.has(x));
+      box.querySelectorAll(".qopt").forEach((b,j)=>{ b.classList.remove("ok","bad"); if(sel.has(j)) b.classList.add(want.has(j)?"ok":"bad"); });
+      m.className="msg "+(ok?"ok":"bad");
+      m.textContent = sel.size===0 ? "Kies eerst een antwoord." : ok ? "Juist! "+(ex.e||"") : (multi?"Nog niet helemaal juist. Let op: er kunnen meerdere antwoorden juist zijn.":"Niet juist. Probeer opnieuw.");
+      if(ok) w.done();
+    });
+  },
+  multi(ex,w,body){
+    const t = h(`<div class="tbl"><table><thead><tr><th>Proces</th>${ex.cols.map(c=>`<th class="c">${c} waterkringloop</th>`).join("")}</tr></thead><tbody></tbody></table></div>`);
+    ex.rows.forEach((r,k)=>{ const tr=h(`<tr><td>${r.t}</td>${ex.cols.map((c,j)=>`<td class="c"><input type="checkbox" id="${w.id}-${k}-${j}" aria-label="${r.t}, ${c}"></td>`).join("")}</tr>`); $("tbody",t).appendChild(tr); });
+    body.appendChild(t);
+    t.addEventListener("change",e=>{ const td=e.target.closest("td"); if(td) td.classList.remove("ok","bad"); });
+    actions(w, m=>{ let g=0,n=0; ex.rows.forEach((r,k)=>ex.cols.forEach((c,j)=>{ const cb=document.getElementById(`${w.id}-${k}-${j}`); const ok=cb.checked===!!r.a[j]; n++; if(ok) g++; cb.parentElement.classList.toggle("ok",ok&&cb.checked); cb.parentElement.classList.toggle("bad",!ok); })); if(setMsg(m,g,n,"In de korte kringloop komt het water niet op het land terecht.")) w.done(); });
+  },
+  order(ex,w,body){
+    const pool=h(`<div class="pool"></div>`), ans=h(`<ol class="answer" style="list-style:none;margin:10px 0 0"></ol>`);
+    body.append(pool,ans);
+    function reset(){ pool.innerHTML=""; ans.innerHTML=""; shuffle(ex.items.map((t,i)=>i)).forEach(i=>pool.appendChild(tok(i))); }
+    function tok(i){ const b=h(`<button type="button" class="tok" data-i="${i}"><span class="i"></span><span>${ex.items[i]}</span></button>`); return b; }
+    function renum(){ ans.querySelectorAll(".tok").forEach((b,k)=>{ $(".i",b).textContent=(k+1)+"."; }); pool.querySelectorAll(".i").forEach(s=>s.textContent=""); }
+    pool.addEventListener("click",e=>{ const b=e.target.closest(".tok"); if(b){ const li=document.createElement("li"); li.appendChild(b); ans.appendChild(li); ans.querySelectorAll(".tok").forEach(x=>x.classList.remove("ok","bad")); renum(); } });
+    ans.addEventListener("click",e=>{ const b=e.target.closest(".tok"); if(b){ const li=b.parentElement; pool.appendChild(b); li.remove(); ans.querySelectorAll(".tok").forEach(x=>x.classList.remove("ok","bad")); renum(); } });
+    reset();
+    actions(w, m=>{ const toks=[...ans.querySelectorAll(".tok")]; if(toks.length<ex.items.length){ m.className="msg bad"; m.textContent="Zet eerst alle stappen in je volgorde."; return; }
+      let g=0; toks.forEach((b,k)=>{ const ok=+b.dataset.i===k; b.classList.toggle("ok",ok); b.classList.toggle("bad",!ok); if(ok) g++; }); if(setMsg(m,g,toks.length)) w.done(); }, reset);
+  },
+  open(ex,w,body){
+    const id=w.id+"-ta";
+    body.appendChild(h(`<div><label for="${id}" class="note" style="display:block;margin-bottom:6px;border:none;padding:0">Schrijf eerst je eigen antwoord.</label><textarea id="${id}"></textarea></div>`));
+    const a=h(`<div class="actions"><button type="button" class="btn">Toon modelantwoord</button></div>`); w.appendChild(a);
+    a.children[0].addEventListener("click",()=>{ if(!$(".model",w)){ w.appendChild(h(`<div class="model"><b>Modelantwoord</b>${ex.model}<br><span style="color:var(--ink-2);font-size:.9rem">Vergelijk met je eigen antwoord. Staan alle kernwoorden erin?</span></div>`)); w.done(); } });
+  },
+  explore(ex,w,body){
+    const g=h(`<div class="explore"><div class="list" role="group"></div><div class="panel" aria-live="polite"></div></div>`); body.appendChild(g);
+    const seen=new Set();
+    ex.items.forEach((it,k)=>{ const b=h(`<button type="button" class="opt" aria-pressed="false" style="text-align:left">${it.n}</button>`);
+      b.addEventListener("click",()=>{ g.querySelectorAll(".list .opt").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");
+        $(".panel",g).innerHTML=`<h4>${it.n}</h4><dl>${it.d.map(d=>`<dt>${d[0]}</dt><dd>${d[1]}</dd>`).join("")}</dl>`; seen.add(k); if(seen.size===ex.items.length) w.done(); });
+      $(".list",g).appendChild(b); });
+    g.querySelector(".list .opt").click();
+  },
+};
+Object.assign(BUILD, BUILD2);
+
+/* ---------- GLOSSARY ---------- */
+function renderGloss(app){
+  const v=h(`<section class="view"><div class="chead"><h1>Begrippenlijst</h1><p>Alle kernbegrippen van thema 6. Zoek een woord of filter op hoofdstuk.</p></div>
+    <div class="gl-tools"><input type="search" id="gl-q" placeholder="Zoek een begrip, bv. geel lichaam" aria-label="Zoek een begrip"><select id="gl-c" aria-label="Filter op hoofdstuk"><option value="">Alle hoofdstukken</option><option value="1">1 De geslachtskenmerken</option><option value="Focus">Focus geslacht versus gender</option><option value="2">2 De hormonale regulatie</option><option value="Menu">Menu anticonceptie</option></select><button type="button" class="btn ghost" id="gl-hide" aria-pressed="false">Verberg betekenissen</button></div>
+    <dl class="gl"></dl></section>`);
+  app.appendChild(v);
+  const dl=$(".gl",v), q=$("#gl-q",v), c=$("#gl-c",v), hide=$("#gl-hide",v); let hidden=false;
+  function draw(){ const s=q.value.trim().toLowerCase(); const rows=GLOSS.filter(g=>(!c.value||g[2]===c.value)&&(!s||(g[0]+" "+g[1]).toLowerCase().includes(s))).sort((a,b)=>a[0].localeCompare(b[0],"nl"));
+    dl.innerHTML = rows.length ? rows.map(g=>`<div><dt>${g[0]}<br><span class="h">${g[2]==="Focus"?"Focus":"hoofdstuk "+g[2]}</span></dt><dd ${hidden?'style="filter:blur(6px);cursor:pointer" title="Klik om te tonen"':""}>${g[1]}</dd></div>`).join("") : `<p class="note" style="margin-top:12px">Geen begrip gevonden. Probeer een ander woord of kies ‘Alle hoofdstukken’.</p>`; }
+  q.addEventListener("input",draw); c.addEventListener("change",draw);
+  hide.addEventListener("click",()=>{ hidden=!hidden; hide.setAttribute("aria-pressed",hidden); hide.textContent=hidden?"Toon betekenissen":"Verberg betekenissen"; draw(); });
+  dl.addEventListener("click",e=>{ const d=e.target.closest("dd"); if(d) d.style.filter="none"; });
+  draw();
+}
+
+/* ---------- QUIZ ---------- */
+function renderQuiz(app){
+  const v=h(`<section class="view quiz"><div class="chead"><h1>Eindtoets thema 6</h1><p>Tien willekeurige vragen over het hele thema. Elke keer dat je start, krijg je andere vragen.</p></div><div class="block" id="qz"></div></section>`);
+  app.appendChild(v); const box=$("#qz",v);
+  function intro(){ const best=P.best; box.innerHTML=`<div class="qcard"><h3>Klaar om jezelf te testen?</h3><p>${best!=null?`Je beste score tot nu toe: <b>${best}/10</b>.`:"Je hebt de toets nog niet gemaakt."}</p><div class="actions"><button type="button" class="btn" id="qstart">Start de toets</button></div></div>`; $("#qstart",box).addEventListener("click",start); }
+  let qs=[], i=0, score=0;
+  function start(){ qs=shuffle(POOL).slice(0,10).map(q=>{ const ord=shuffle(q.o.map((_,j)=>j)); return {q:q.q,o:ord.map(j=>q.o[j]),a:ord.indexOf(q.a)}; }); i=0; score=0; ask(); }
+  function ask(){ const q=qs[i];
+    box.innerHTML=`<div class="qcard"><div class="qn">Vraag ${i+1} van 10</div><div class="bar"><i style="width:${i*10}%"></i></div><h3>${q.q}</h3><div class="qopts">${q.o.map((o,j)=>`<button type="button" class="qopt" data-j="${j}">${o}</button>`).join("")}</div><div class="actions"><span class="msg" aria-live="polite"></span></div></div>`;
+    box.querySelector(".qopts").addEventListener("click",e=>{ const b=e.target.closest(".qopt"); if(!b||b.disabled) return; const j=+b.dataset.j; const ok=j===q.a; if(ok) score++;
+      box.querySelectorAll(".qopt").forEach((x,k)=>{ x.disabled=true; if(k===q.a) x.classList.add("ok"); }); if(!ok) b.classList.add("bad");
+      const m=$(".msg",box); m.className="msg "+(ok?"ok":"bad"); m.textContent= ok?"Juist!":"Niet juist. Het juiste antwoord is groen.";
+      const nb=h(`<button type="button" class="btn">${i<9?"Volgende vraag":"Bekijk je score"}</button>`); nb.addEventListener("click",()=>{ i++; i<10?ask():end(); }); $(".actions",box).prepend(nb); nb.focus(); });
+  }
+  function end(){ if(P.best==null||score>P.best){ P.best=score; save(); }
+    const t = score>=8?"Sterk gedaan. Je beheerst dit thema goed.":score>=5?"Goed bezig. Herhaal de hoofdstukken waar je twijfelde.":"Lees de samenvattingen nog eens en maak de oefeningen opnieuw.";
+    box.innerHTML=`<div class="qcard"><div class="score">${score}/10</div><p style="margin-top:6px">${t}</p><div class="actions"><button type="button" class="btn" id="qagain">Nieuwe toets</button><a class="btn ghost" href="#start" style="text-decoration:none">Terug naar start</a></div></div>`;
+    $("#qagain",box).addEventListener("click",start); }
+  intro();
+}
+
+/* ---------- OEFENARENA ---------- */
+let arTotal=0, arTab="mem";
+function renderArena(app){
+  const v=h(`<section class="view">
+    <div class="ar-top"><div class="chead"><div class="num">Oefenen</div><h1>Oefenarena</h1><p>Vier spellen over het hele thema. Verdien punten en verbeter je record. Je punten worden alleen in deze browser bewaard.</p></div>
+      <div class="ar-pts" aria-live="polite"><span class="ar-pill">Punten <b id="ar-total">0</b></span><span class="ar-pill">Record <b id="ar-best">0</b></span></div></div>
+    <div class="ar-tabs" role="tablist" aria-label="Spellen">
+      <button role="tab" data-g="mem">Begrippen-memory</button><button role="tab" data-g="sort">Sorteerrace</button>
+      <button role="tab" data-g="who">Wie ben ik?</button><button role="tab" data-g="chain">Kettingreactie</button></div>
+    <div id="ar-stage"></div>
+    <p class="foot">Gebaseerd op Focus Biologie 4.2 (Pelckmans), thema 6 Voortplanting bij de mens.</p></section>`);
+  app.appendChild(v);
+  const stage=$("#ar-stage",v);
+  function pts(n){ arTotal=Math.max(0,arTotal+n); $("#ar-total",v).textContent=arTotal; if(arTotal>(P.arenaBest||0)){ P.arenaBest=arTotal; save(); } $("#ar-best",v).textContent=P.arenaBest||0; }
+  pts(0);
+  let timer=null;
+  function fb(el,ok,t){ el.className="ar-fb "+(ok?"ok":"no"); el.textContent=t; }
+  const GAMES={
+    mem(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2>Begrippen-memory</h2><span class="ar-meta" id="m-meta"></span><p>Draai telkens twee kaarten om en zoek bij elk begrip de juiste omschrijving. Hoe minder beurten, hoe meer punten.</p></div><div class="ar-mem" id="m-grid"></div><div class="actions"><button type="button" class="btn" id="m-new">Nieuw spel</button></div><div class="ar-fb" id="m-fb" aria-live="polite"></div></div>`;
+      let st;
+      function meta(){ $("#m-meta",stage).textContent=`Beurten: ${st.turns} · Paren: ${st.found}/8`; }
+      function start(){
+        const pick=shuffle(AR_MEM).slice(0,8);
+        st={cards:shuffle(pick.flatMap((g,i)=>[{id:i,t:g[0],term:true},{id:i,t:g[1],term:false}])),open:[],turns:0,found:0,lock:false};
+        const grid=$("#m-grid",stage); grid.innerHTML=""; $("#m-fb",stage).textContent="";
+        st.cards.forEach((c,k)=>{ const b=document.createElement("button"); b.type="button"; b.className="ar-card"+(c.term?" term":""); b.textContent=c.t; b.setAttribute("aria-label","Kaart "+(k+1)+", omgedraaid"); b.addEventListener("click",()=>flip(k,b)); c.el=b; grid.appendChild(b); });
+        meta();
+      }
+      function flip(k,b){
+        const c=st.cards[k]; if(st.lock||c.done||st.open.includes(k)) return;
+        b.classList.add("open"); b.setAttribute("aria-label",c.t); st.open.push(k); if(st.open.length<2) return;
+        st.turns++; const [a,z]=st.open.map(i=>st.cards[i]); const m=$("#m-fb",stage);
+        if(a.id===z.id&&a.term!==z.term){ a.done=z.done=true; a.el.classList.add("done"); z.el.classList.add("done"); st.open=[]; st.found++; fb(m,true,"Juist paar!");
+          if(st.found===8){ const p=Math.max(4,20-Math.max(0,st.turns-8)); pts(p); fb(m,true,`Alle paren gevonden in ${st.turns} beurten: +${p} punten.`); } }
+        else { st.lock=true; a.el.classList.add("wrong"); z.el.classList.add("wrong"); fb(m,false,"Geen paar. Onthoud waar ze liggen.");
+          setTimeout(()=>{ [a,z].forEach(c=>{ c.el.classList.remove("open","wrong"); c.el.setAttribute("aria-label","Omgedraaide kaart"); }); st.open=[]; st.lock=false; },1300); }
+        meta();
+      }
+      $("#m-new",stage).addEventListener("click",start); start();
+    },
+    sort(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2 id="s-title">Sorteerrace</h2><span class="ar-meta" id="s-meta"></span><p>Tik op een kaartje en daarna op de juiste kolom. Elke fout kost een punt; ben je binnen de minuut klaar, dan krijg je 2 bonuspunten.</p></div>
+        <div class="actions"><label for="s-pick" class="ar-meta">Onderwerp</label><select id="s-pick"></select><button type="button" class="btn" id="s-next">Volgende ronde</button></div>
+        <div class="ar-pool" id="s-pool" aria-label="Te sorteren kaartjes"></div><div class="ar-buckets" id="s-buckets"></div><div class="ar-fb" id="s-fb" aria-live="polite"></div></div>`;
+      const sel=$("#s-pick",stage); AR_SETS.forEach((s,i)=>sel.appendChild(h(`<option value="${i}">${s.t}</option>`)));
+      let st={idx:-1};
+      function meta(){ $("#s-meta",stage).textContent=`Nog ${st.left} · Fouten ${st.err} · ${Math.round((Date.now()-st.t0)/1000)} s`; }
+      function start(idx){
+        if(idx===undefined) idx=(st.idx+1)%AR_SETS.length;
+        const s=AR_SETS[idx]; st={idx,set:s,left:s.i.length,err:0,sel:null,t0:Date.now()}; sel.value=idx;
+        $("#s-title",stage).textContent=s.t; $("#s-fb",stage).textContent="";
+        const pool=$("#s-pool",stage); pool.innerHTML="";
+        shuffle(s.i).forEach(it=>{ const b=document.createElement("button"); b.type="button"; b.className="ar-chip"; b.textContent=it[0]; b.dataset.c=it[1];
+          b.addEventListener("click",()=>{ if(b.classList.contains("placed")) return; stage.querySelectorAll(".ar-chip.sel").forEach(x=>x.classList.remove("sel")); b.classList.add("sel"); st.sel=b; }); pool.appendChild(b); });
+        const bk=$("#s-buckets",stage); bk.innerHTML="";
+        s.c.forEach((c,ci)=>{ const d=document.createElement("button"); d.type="button"; d.className="ar-bucket"; d.innerHTML=`<h4>${c}</h4>`; d.setAttribute("aria-label","Kolom "+c); d.addEventListener("click",()=>drop(ci,d)); bk.appendChild(d); });
+        clearInterval(timer); timer=setInterval(()=>{ if(!document.body.contains(stage)) return clearInterval(timer); meta(); },500); meta();
+      }
+      function drop(ci,d){
+        const b=st.sel, m=$("#s-fb",stage); if(!b){ fb(m,false,"Tik eerst op een kaartje."); return; }
+        if(+b.dataset.c===ci){ b.classList.remove("sel"); b.classList.add("placed"); d.appendChild(b); st.sel=null; st.left--; fb(m,true,"Juist!");
+          if(st.left===0){ clearInterval(timer); const sec=Math.round((Date.now()-st.t0)/1000); const p=Math.max(1,st.set.i.length-st.err+(sec<60?2:0)); pts(p);
+            fb(m,true,`Ronde klaar in ${sec} s met ${st.err} fout(en): +${p} punten.${sec<60?" (snelheidsbonus +2)":""}`); } }
+        else { st.err++; d.classList.add("flash","ar-shake"); b.classList.add("ar-shake"); setTimeout(()=>{ d.classList.remove("flash","ar-shake"); b.classList.remove("ar-shake"); },400);
+          fb(m,false,`‘${b.textContent}’ hoort niet bij ${st.set.c[ci]}. Probeer opnieuw.`); }
+        meta();
+      }
+      sel.addEventListener("change",()=>start(+sel.value)); $("#s-next",stage).addEventListener("click",()=>start()); start(0);
+    },
+    who(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2>Wie ben ik?</h2><span class="ar-meta" id="w-meta"></span><p>Raad het organisme, proces of begrip. Na één hint verdien je 3 punten, na twee hints 2 punten, na drie hints 1 punt.</p></div>
+        <div class="ar-riddle"><ol id="w-hints"></ol></div><div class="actions"><button type="button" class="btn ghost" id="w-hint">Volgende hint</button></div>
+        <div class="ar-opts" id="w-opts"></div><div class="ar-fb" id="w-fb" aria-live="polite"></div><div class="actions"><button type="button" class="btn" id="w-next">Volgend raadsel</button></div></div>`;
+      let st={order:[],k:-1,shown:1,done:false};
+      function draw(){ const r=AR_WHO[st.order[st.k]]; $("#w-hints",stage).innerHTML=r.h.map((x,i)=>i<st.shown?`<li>${x}</li>`:`<li class="hid" aria-hidden="true">verborgen hint</li>`).join("");
+        $("#w-hint",stage).disabled=st.done||st.shown>=3; $("#w-meta",stage).textContent=`Raadsel ${st.k+1}/${AR_WHO.length} · waard ${4-st.shown} pt`; }
+      function next(){
+        if(!st.order.length||st.k>=st.order.length-1){ st.order=shuffle(AR_WHO.map((_,i)=>i)); st.k=-1; }
+        st.k++; st.shown=1; st.done=false; const r=AR_WHO[st.order[st.k]]; $("#w-fb",stage).textContent=""; draw();
+        const o=$("#w-opts",stage); o.innerHTML="";
+        shuffle(r.o).forEach(t=>{ const b=document.createElement("button"); b.type="button"; b.textContent=t; b.addEventListener("click",()=>answer(b,t,r)); o.appendChild(b); });
+      }
+      function answer(b,t,r){ if(st.done) return; const m=$("#w-fb",stage);
+        if(t===r.a){ st.done=true; b.classList.add("ok"); const p=4-st.shown; pts(p); st.shown=3; draw(); fb(m,true,`Juist, het is ${r.a}! +${p} punten.`); }
+        else { b.classList.add("no"); b.disabled=true;
+          if(st.shown<3){ st.shown++; draw(); fb(m,false,"Niet juist. Je krijgt een extra hint."); }
+          else { st.done=true; stage.querySelectorAll("#w-opts button").forEach(x=>{ if(x.textContent===r.a) x.classList.add("ok"); }); draw(); fb(m,false,`Helaas, het juiste antwoord is ${r.a}.`); } } }
+      $("#w-hint",stage).addEventListener("click",()=>{ if(st.shown<3){ st.shown++; draw(); } });
+      $("#w-next",stage).addEventListener("click",next); next();
+    },
+    chain(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2 id="c-title">Kettingreactie</h2><span class="ar-meta" id="c-meta"></span><p id="c-q"></p></div>
+        <ol class="ar-chain" id="c-list"></ol><div class="actions"><button type="button" class="btn" id="c-check">Controleer</button><button type="button" class="btn ghost" id="c-next">Volgende ketting</button></div><div class="ar-fb" id="c-fb" aria-live="polite"></div></div>`;
+      let st={k:-1,cur:[],checked:false};
+      function draw(marks){ const ol=$("#c-list",stage); ol.innerHTML="";
+        st.cur.forEach((s,i)=>{ const li=document.createElement("li"); if(marks) li.className=marks[i]?"ok":"no";
+          li.innerHTML=`<span class="n" aria-hidden="true"></span><span class="t"></span>`; $(".t",li).textContent=s;
+          const up=h(`<button type="button" class="ar-mv">↑</button>`), dn=h(`<button type="button" class="ar-mv">↓</button>`);
+          up.setAttribute("aria-label","Omhoog: "+s); dn.setAttribute("aria-label","Omlaag: "+s); up.disabled=i===0||st.checked; dn.disabled=i===st.cur.length-1||st.checked;
+          up.addEventListener("click",()=>{ [st.cur[i-1],st.cur[i]]=[st.cur[i],st.cur[i-1]]; draw(); ol.children[i-1].querySelector(".ar-mv").focus(); });
+          dn.addEventListener("click",()=>{ [st.cur[i+1],st.cur[i]]=[st.cur[i],st.cur[i+1]]; draw(); ol.children[i+1].querySelectorAll(".ar-mv")[1].focus(); });
+          li.append(up,dn); ol.appendChild(li); }); }
+      function next(){ st.k=(st.k+1)%AR_CHAINS.length; const c=AR_CHAINS[st.k]; let cur; do{ cur=shuffle(c.s); }while(cur.every((x,i)=>x===c.s[i]));
+        st.cur=cur; st.checked=false; $("#c-title",stage).textContent=c.t; $("#c-q",stage).textContent=c.q+" Zet de stappen in de juiste volgorde met de pijltjes en controleer. Elke stap op de juiste plaats = 1 punt.";
+        $("#c-fb",stage).textContent=""; $("#c-check",stage).disabled=false; $("#c-meta",stage).textContent=`Ketting ${st.k+1}/${AR_CHAINS.length}`; draw(); }
+      $("#c-check",stage).addEventListener("click",()=>{ if(st.checked) return; const c=AR_CHAINS[st.k]; const marks=st.cur.map((s,i)=>s===c.s[i]); const n=marks.filter(Boolean).length;
+        st.checked=true; draw(marks); pts(n); $("#c-check",stage).disabled=true;
+        fb($("#c-fb",stage),n===c.s.length, n===c.s.length?`Perfect! +${n} punten.`:`${n} van de ${c.s.length} stappen staan juist: +${n} punten. Juiste volgorde: ${c.s.join(" → ")}`); });
+      $("#c-next",stage).addEventListener("click",next); next();
+    }
+  };
+  const tabs=v.querySelectorAll(".ar-tabs button");
+  function open(g){ arTab=g; clearInterval(timer); tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.g===g)); GAMES[g](); }
+  v.querySelector(".ar-tabs").addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) open(b.dataset.g); });
+  open(arTab);
+}
+
+/* ---------- ROUTER ---------- */
+let current="start";
+function route(){
+  const id=(location.hash||"#start").slice(1);
+  const ch=CH.find(c=>c.id===id);
+  current = ch?id:(["begrippen","toets","arena"].includes(id)?id:"start");
+  const app=$("#app"); app.innerHTML="";
+  if(ch) renderChapter(app,ch); else if(current==="begrippen") renderGloss(app); else if(current==="toets") renderQuiz(app); else if(current==="arena") renderArena(app); else renderStart(app);
+  renderTabs(current); window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+route();
+</script>
+<script>try{localStorage.setItem("bio42-last","6")}catch(e){}</script>
+</body>
+</html>

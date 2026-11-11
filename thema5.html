@@ -1,0 +1,1074 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Micro-organismen – Thema 5 (2 lesuren)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Young+Serif&display=swap">
+<style>
+/* Layout: veldschrift — één hoofdstuk tegelijk, smalle leeskolom, oefeningen als losse werkbladen eronder */
+:root{
+  --paper:#EAF0EC; --sheet:#F8FBF9; --ink:#12302A; --ink-2:#4B6761; --line:#C6D6CE;
+  --moss:#4C7D27; --moss-soft:#DAE8CC; --water:#2A6C84; --water-soft:#D3E6ED;
+  --ok:#2C7A47; --ok-soft:#D5EDDC; --bad:#B0442D; --bad-soft:#F5DCD5;
+  --bone:#F3F1EA; --dead:#8D8676;
+  --f-display:"Young Serif", "Iowan Old Style", Georgia, serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0D1A17; --sheet:#132420; --ink:#E1ECE6; --ink-2:#9BB3AB; --line:#29423B;
+  --moss:#9CCB6B; --moss-soft:#22371B; --water:#74B5CA; --water-soft:#17313A;
+  --ok:#7ACB91; --ok-soft:#163322; --bad:#EC8F77; --bad-soft:#3B1E17;
+  --bone:#E9E6DC; --dead:#7A7466; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0D1A17; --sheet:#132420; --ink:#E1ECE6; --ink-2:#9BB3AB; --line:#29423B;
+  --moss:#9CCB6B; --moss-soft:#22371B; --water:#74B5CA; --water-soft:#17313A;
+  --ok:#7ACB91; --ok-soft:#163322; --bad:#EC8F77; --bad-soft:#3B1E17;
+  --bone:#E9E6DC; --dead:#7A7466; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;margin:0}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,5vw,3.6rem)}
+h2{font-size:clamp(1.6rem,3.4vw,2.3rem)}
+h3{font-size:1.3rem}
+p{margin:0}
+b,strong{font-weight:700}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--water);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:20px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 18px;padding-block:10px}
+.teacher{font-family:var(--f-display);font-size:1.15rem;color:var(--ink)}
+.brand{font-family:var(--f-display);font-size:1.15rem;white-space:nowrap;text-decoration:none;color:var(--ink)}
+.brand span{color:var(--moss)}
+nav.tabs{display:flex;flex-wrap:wrap;gap:4px;min-width:0;flex-basis:100%;margin-left:-11px}
+nav.tabs a{flex:none;display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;text-decoration:none;color:var(--ink-2);font-size:.92rem;white-space:nowrap}
+nav.tabs a:hover{background:var(--moss-soft);color:var(--ink)}
+nav.tabs a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+.ring{width:16px;height:16px;flex:none}
+.ring circle{fill:none;stroke-width:3}
+.ring .bg{stroke:var(--line)}
+.ring .fg{stroke:var(--moss);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%}
+nav.tabs a[aria-current="page"] .ring .bg{stroke:color-mix(in srgb,var(--paper) 35%,transparent)}
+
+main{padding-block:36px 80px}
+.view[hidden]{display:none}
+
+/* hero ladder */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:36px;align-items:center}
+.hero .lead{font-size:1.15rem;color:var(--ink-2);max-width:52ch;margin-top:14px}
+.ladder{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px;counter-reset:lv}
+.ladder button{border:1px solid var(--line);background:var(--sheet);padding:6px 12px;border-radius:999px;cursor:pointer;font-size:.95rem;display:flex;gap:7px;align-items:baseline}
+.ladder button .n{font-variant-numeric:tabular-nums;color:var(--ink-2);font-size:.8rem}
+.ladder button[aria-pressed="true"]{background:var(--moss);border-color:var(--moss);color:var(--sheet)}
+.ladder button[aria-pressed="true"] .n{color:inherit;opacity:.8}
+.lvinfo{margin-top:18px;min-height:7.5em;border-left:3px solid var(--moss);padding:4px 0 4px 16px;max-width:60ch}
+.lvinfo h3{font-size:1.5rem}
+.lvinfo .lvex{color:var(--ink-2);margin-top:6px;font-style:italic}
+#rings{width:100%;max-width:420px;height:auto;display:block;margin:auto}
+#rings circle{fill:transparent;stroke:var(--line);stroke-width:1.5;transition:fill .35s,stroke .35s;cursor:pointer}
+#rings circle.in{fill:color-mix(in srgb,var(--moss) 9%,transparent);stroke:color-mix(in srgb,var(--moss) 55%,var(--line))}
+#rings circle.on{stroke:var(--moss);stroke-width:3.5}
+#rings text{font-family:var(--f-body);font-size:13px;fill:var(--ink);text-anchor:middle;pointer-events:none}
+
+.chapters{margin-top:56px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.chap{display:block;text-decoration:none;color:inherit;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.chap:hover{border-color:var(--moss)}
+.chap .num{font-family:var(--f-display);font-size:1.9rem;color:var(--moss);line-height:1}
+.chap h3{margin-top:8px;font-size:1.15rem}
+.chap p{color:var(--ink-2);font-size:.92rem;margin-top:4px}
+.bar{height:5px;background:var(--line);border-radius:3px;margin-top:12px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--moss);border-radius:3px;width:0;transition:width .4s}
+.howto{margin-top:44px;max-width:64ch;color:var(--ink-2)}
+.howto h3{color:var(--ink);margin-bottom:6px}
+
+/* chapter */
+.chead{max-width:760px}
+.chead .num{font-family:var(--f-display);color:var(--moss);font-size:1.1rem}
+.chead p{font-size:1.12rem;color:var(--ink-2);margin-top:12px}
+.subnav{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.subnav a{font-size:.9rem;color:var(--water);text-decoration:none;border-bottom:1px solid currentColor}
+.block{margin-top:44px;max-width:760px}
+.block > h2{margin-bottom:6px}
+.sum{margin-top:22px;display:grid;gap:12px}
+.sum h3{margin-top:14px}
+.sum p,.sum li{max-width:68ch}
+.sum ul{margin:0;padding-left:1.2em;display:grid;gap:4px}
+dfn{font-style:normal;font-weight:700;background:linear-gradient(transparent 62%,var(--moss-soft) 62%)}
+.note{font-size:.95rem;color:var(--ink-2);border-left:3px solid var(--water);padding-left:12px}
+
+/* flashcards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:16px;max-width:1000px}
+.card{perspective:900px;border:none;background:none;padding:0;cursor:pointer;min-height:132px;text-align:left}
+.card .in{position:relative;display:block;width:100%;height:100%;min-height:132px;transition:transform .45s;transform-style:preserve-3d}
+.card.flip .in{transform:rotateY(180deg)}
+.card .f,.card .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;justify-content:center}
+.card .f{background:var(--sheet);border:1px solid var(--line);font-family:var(--f-display);font-size:1.2rem}
+.card .f small{font-family:var(--f-body);font-size:.78rem;color:var(--ink-2);margin-top:8px}
+.card .b{background:var(--moss-soft);border:1px solid var(--moss);transform:rotateY(180deg);font-size:.93rem;line-height:1.45}
+
+/* exercises */
+.ex-list{display:grid;gap:18px;margin-top:18px;max-width:1000px}
+.ex{min-width:0;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.ex.done{border-color:var(--ok)}
+.exh{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.exh h3{font-size:1.18rem;max-width:62ch}
+.exh .tag{font-size:.8rem;color:var(--ink-2);display:block;font-family:var(--f-body);margin-bottom:2px}
+.chip{font-size:.8rem;padding:3px 10px;border-radius:999px;background:var(--paper);color:var(--ink-2);white-space:nowrap;border:1px solid var(--line)}
+.ex.done .chip{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
+.ex .q{margin-top:8px;color:var(--ink-2);max-width:68ch}
+.ex-body{margin-top:14px}
+.row{display:flex;gap:10px 16px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:10px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:none}
+.row .t{flex:1 1 280px;min-width:0}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opt{border:1px solid var(--line);background:var(--paper);padding:5px 12px;border-radius:7px;cursor:pointer;font-size:.92rem}
+.opt:hover{border-color:var(--water)}
+.opt[aria-pressed="true"]{background:var(--water);color:var(--sheet);border-color:var(--water)}
+.row.ok .opt[aria-pressed="true"]{background:var(--ok);border-color:var(--ok)}
+.row.bad .opt[aria-pressed="true"]{background:var(--bad);border-color:var(--bad)}
+.fb{flex-basis:100%;font-size:.92rem;padding:6px 10px;border-radius:7px}
+.fb.ok{background:var(--ok-soft);color:var(--ink)}
+.fb.bad{background:var(--bad-soft);color:var(--ink)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.btn{border:none;background:var(--ink);color:var(--paper);padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.95rem}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:400}
+.btn:hover{opacity:.9}
+.msg{font-size:.95rem}
+.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+select{font:inherit;font-size:.93rem;padding:5px 8px;border-radius:7px;border:1px solid var(--line);background:var(--paper);color:var(--ink);max-width:100%}
+.row.ok select{border-color:var(--ok);background:var(--ok-soft)}
+.row.bad select{border-color:var(--bad);background:var(--bad-soft)}
+textarea{width:100%;min-height:90px;font:inherit;font-size:.95rem;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);resize:vertical}
+.model{margin-top:12px;background:var(--moss-soft);border-radius:8px;padding:12px 14px;font-size:.95rem}
+.model b{display:block;margin-bottom:2px}
+
+/* order */
+.pool,.answer{display:flex;flex-wrap:wrap;gap:8px;min-height:48px;padding:10px;border-radius:8px}
+.pool{background:var(--paper)}
+.answer{border:1.5px dashed var(--line);margin-top:10px;flex-direction:column;align-items:stretch}
+.answer:empty::before{content:"Tik de stappen hierboven aan in de juiste volgorde.";color:var(--ink-2);font-size:.92rem}
+.tok{border:1px solid var(--line);background:var(--sheet);padding:6px 12px;border-radius:7px;cursor:pointer;text-align:left;font-size:.93rem}
+.answer .tok{display:flex;gap:10px}
+.answer .tok .i{font-variant-numeric:tabular-nums;color:var(--ink-2);min-width:1.2em}
+.answer .tok.ok{border-color:var(--ok);background:var(--ok-soft)}
+.answer .tok.bad{border-color:var(--bad);background:var(--bad-soft)}
+
+/* table */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:380px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{font-weight:700;font-size:.9rem;color:var(--ink-2)}
+td.c,th.c{text-align:center}
+td.ok{background:var(--ok-soft)} td.bad{background:var(--bad-soft)}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--water)}
+
+/* explore */
+.explore{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:16px}
+.explore .list{display:flex;flex-direction:column;gap:6px}
+.explore .panel{background:var(--paper);border-radius:8px;padding:14px 16px;min-height:120px}
+.explore .panel h4{font-family:var(--f-display);font-weight:400;font-size:1.2rem;margin:0 0 6px}
+.explore .panel dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.explore .panel dt{color:var(--ink-2);font-size:.9rem}
+.explore .panel dd{margin:0}
+
+/* pyramid */
+.pyr{display:grid;gap:6px;margin-top:12px}
+.pyr .lv{display:grid;grid-template-columns:150px minmax(0,1fr) 110px;gap:10px;align-items:center;font-size:.92rem}
+.pyr .lv .bw{display:flex;justify-content:center}
+.pyr .lv .b{height:30px;background:var(--moss);border-radius:4px;min-width:3px;transition:width .3s}
+.pyr .lv:nth-child(2) .b{background:color-mix(in srgb,var(--moss) 75%,var(--water))}
+.pyr .lv:nth-child(3) .b{background:color-mix(in srgb,var(--moss) 45%,var(--water))}
+.pyr .lv:nth-child(4) .b{background:var(--water)}
+.pyr .lv .v{font-variant-numeric:tabular-nums;text-align:right}
+input[type=range]{width:100%;accent-color:var(--moss)}
+input[type=number]{font:inherit;width:9em;padding:5px 8px;border-radius:7px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+
+/* svg diagrams */
+.diagram{overflow-x:auto}
+.diagram svg{display:block;width:100%;min-width:560px;height:auto}
+.node rect{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+.node text{font-family:var(--f-body);font-size:14px;fill:var(--ink);text-anchor:middle}
+.arr{cursor:pointer}
+.arr line{stroke-width:3.5}
+.arr .hit{stroke:transparent;stroke-width:22}
+.arr text{font-family:var(--f-body);font-size:13px;font-weight:700;paint-order:stroke;stroke:var(--sheet);stroke-width:5px;stroke-linejoin:round}
+.arr.dim{opacity:.25}
+.arr.hl line{stroke-width:6}
+.k-fix{stroke:var(--water);fill:var(--water)}
+.k-ass{stroke:var(--moss);fill:var(--moss)}
+.k-nit{stroke:#C98A1B;fill:#C98A1B}
+.k-amm{stroke:var(--bad);fill:var(--bad)}
+.k-dood{stroke:var(--ink-2);fill:var(--ink-2)}
+.arr text.k-fix,.arr text.k-ass,.arr text.k-nit,.arr text.k-amm,.arr text.k-dood{stroke:var(--sheet)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:none;background:transparent;padding:6px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.infobox{margin-top:12px;background:var(--paper);border-radius:8px;padding:12px 14px;min-height:72px}
+
+/* coral */
+.coral{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:20px;align-items:center}
+.coral svg{width:100%;max-width:300px;height:auto}
+.coral .st{font-family:var(--f-display);font-size:1.5rem}
+.c-branch{transition:stroke .6s}
+.state-gezond .c-branch{stroke:var(--moss)}
+.state-gezond .c-pol{fill:#E0A33A;opacity:1}
+.state-verbleekt .c-branch{stroke:var(--bone)}
+.state-verbleekt .c-pol{fill:var(--bone);opacity:.7}
+.state-dood .c-branch{stroke:var(--dead)}
+.state-dood .c-pol{opacity:0}
+.c-alg{opacity:0;transition:opacity .6s;fill:var(--moss)}
+.state-dood .c-alg{opacity:.8}
+.c-pol{transition:fill .6s,opacity .6s}
+
+/* glossary */
+.gl-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.gl-tools input{font:inherit;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--sheet);color:var(--ink);flex:1 1 240px;min-width:0}
+.gl{margin-top:16px;display:grid;gap:0;max-width:820px}
+.gl div{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}
+.gl dt{font-weight:700}
+.gl dd{margin:0}
+.gl .h{font-size:.8rem;color:var(--ink-2)}
+
+/* toets */
+.quiz{max-width:760px}
+.qcard{background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.qcard .qn{color:var(--ink-2);font-size:.9rem;font-variant-numeric:tabular-nums}
+.qcard h3{margin:6px 0 14px}
+.qopts{display:grid;gap:8px}
+.qopt{border:1px solid var(--line);background:var(--paper);text-align:left;padding:10px 14px;border-radius:8px;cursor:pointer}
+.qopt:hover{border-color:var(--water)}
+.qopt.ok{background:var(--ok-soft);border-color:var(--ok)}
+.qopt.bad{background:var(--bad-soft);border-color:var(--bad)}
+.qopt:disabled{cursor:default}
+.score{font-family:var(--f-display);font-size:3rem;color:var(--moss)}
+
+.foot{margin-top:60px;color:var(--ink-2);font-size:.85rem;max-width:70ch}
+
+@media (max-width:820px){
+  .top{position:static}
+  .hero{grid-template-columns:1fr}
+  #rings{max-width:300px}
+  .explore,.coral{grid-template-columns:1fr}
+  .pyr .lv{grid-template-columns:110px minmax(0,1fr) 80px}
+  .gl div{grid-template-columns:1fr;gap:2px}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .ex{padding:16px}
+}
+
+/* oefenarena (spellen) */
+.ar-top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between}
+.ar-pts{display:flex;gap:8px;flex-wrap:wrap}
+.ar-pill{background:var(--sheet);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.ar-pill b{color:var(--moss)}
+.ar-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-top:26px}
+.ar-tabs button{border:1px solid var(--line);background:var(--sheet);padding:7px 14px;border-radius:999px;cursor:pointer;font-size:.95rem}
+.ar-tabs button[aria-selected="true"]{background:var(--moss);border-color:var(--moss);color:var(--sheet)}
+.ar-game{margin-top:16px;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;max-width:1000px}
+.ar-head{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:baseline}
+.ar-head p{flex-basis:100%;color:var(--ink-2);max-width:68ch;margin-top:6px}
+.ar-meta{color:var(--ink-2);font-variant-numeric:tabular-nums;font-weight:700;font-size:.95rem}
+.ar-fb{min-height:1.5em;font-weight:700;margin-top:10px;font-size:.95rem}
+.ar-fb.ok{color:var(--ok)} .ar-fb.no{color:var(--bad)}
+.ar-mem{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+@media (max-width:620px){.ar-mem{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ar-card{min-height:108px;border-radius:8px;border:1px solid var(--line);background:var(--ink);color:transparent;cursor:pointer;padding:8px;font-size:.86rem;line-height:1.3;position:relative}
+.ar-card::after{content:"?";position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-size:1.8rem;color:color-mix(in srgb,var(--paper) 45%,transparent)}
+.ar-card.open,.ar-card.done{background:var(--paper);color:var(--ink);cursor:default}
+.ar-card.open::after,.ar-card.done::after{content:none}
+.ar-card.term{font-family:var(--f-display);font-size:1.02rem}
+.ar-card.done{background:var(--ok-soft);border-color:var(--ok)}
+.ar-card.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.ar-pool{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border:1.5px dashed var(--line);border-radius:8px;margin-top:14px}
+.ar-chip{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:7px 12px;cursor:pointer;text-align:left;max-width:100%;font-size:.93rem}
+.ar-chip.sel{border-color:var(--water);background:var(--water-soft)}
+.ar-chip.placed{cursor:default;background:var(--ok-soft);border-color:transparent;font-size:.88rem;padding:5px 9px}
+.ar-buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:12px}
+.ar-bucket{border:1.5px solid var(--moss);border-radius:8px;padding:10px;min-height:100px;background:transparent;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ar-bucket h4{margin:0 0 4px;font-family:var(--f-display);font-weight:400;font-size:1.05rem;color:var(--moss)}
+.ar-bucket.flash{border-color:var(--bad);background:var(--bad-soft)}
+@keyframes ar-shake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.ar-shake{animation:ar-shake .3s}
+.ar-riddle{background:var(--moss-soft);border-radius:8px;padding:14px 16px;margin-top:14px}
+.ar-riddle ol{margin:0;padding-left:1.4em;display:grid;gap:6px}
+.ar-riddle li.hid{color:transparent;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--moss) 30%,transparent) 0 10px,transparent 10px 14px);border-radius:4px;list-style:none;margin-left:-1.4em;padding-left:1.4em}
+.ar-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:12px}
+.ar-opts button{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:11px;cursor:pointer;font-weight:700}
+.ar-opts button.ok{border-color:var(--ok);background:var(--ok-soft)}
+.ar-opts button.no{border-color:var(--bad);background:var(--bad-soft)}
+.ar-chain{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px;counter-reset:s}
+.ar-chain li{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--paper)}
+.ar-chain li .n{counter-increment:s;font-family:var(--f-display);color:var(--moss);width:1.6em;text-align:center;flex:none}
+.ar-chain li .n::before{content:counter(s)}
+.ar-chain li .t{flex:1;min-width:0}
+.ar-chain li.ok{border-color:var(--ok);background:var(--ok-soft)}
+.ar-chain li.no{border-color:var(--bad)}
+.ar-mv{border:1px solid var(--line);background:var(--sheet);border-radius:7px;width:38px;height:38px;cursor:pointer;flex:none}
+.ar-mv:disabled{opacity:.3;cursor:default}
+.chap.arena{border-color:var(--moss);background:var(--moss-soft)}
+@media (prefers-reduced-motion:reduce){.ar-shake{animation:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* thema 5 extra's */
+.top .wrap{align-items:center}
+.teacher{font-family:var(--f-display);font-size:clamp(1.5rem,3.4vw,2.4rem);line-height:1.1;color:var(--ink);margin-left:auto;text-align:right}
+#cell{width:100%;max-width:440px;height:auto;display:block;margin:auto}
+#cell .cw{fill:var(--moss-soft);stroke:var(--moss);stroke-width:4}
+#cell .cm{fill:var(--sheet);stroke:var(--ink-2);stroke-width:2}
+#cell .dna{fill:none;stroke:var(--bad);stroke-width:3;stroke-linecap:round}
+#cell .pl{fill:none;stroke:var(--bad);stroke-width:2.5}
+#cell .pi,#cell .sp{stroke:var(--ink-2);stroke-width:2.5;stroke-linecap:round}
+#cell .fl{fill:none;stroke:var(--ink-2);stroke-width:2.5}
+#cell .nu{fill:var(--water-soft);stroke:var(--water);stroke-width:3}
+#cell .mi{fill:#E8C9A0;stroke:#B07A3A;stroke-width:2}
+#cell .ch{fill:var(--moss);opacity:.75}
+#cell .cap{fill:var(--water-soft);stroke:var(--water);stroke-width:4}
+#cell .env{fill:none;stroke:var(--ink-2);stroke-width:2;stroke-dasharray:6 5}
+#cell .spk{fill:var(--moss)}
+#cell .lb{font-family:var(--f-body);font-size:14px;fill:var(--ink-2)}
+.ladder button .n{font-size:.7rem}
+.dlist{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:8px 0 0}
+.dlist dt{color:var(--ink-2);font-size:.92rem}
+.dlist dd{margin:0}
+.growbox{background:var(--paper);border-radius:8px;padding:12px 14px;margin-top:10px}
+.growbox .dots{display:flex;flex-wrap:wrap;gap:3px;min-height:16px}
+.growbox .dots i{width:10px;height:6px;border-radius:3px;background:var(--moss)}
+.growbox .gcount{margin-top:8px}
+.row input[type=text]{font:inherit;width:7em;padding:5px 8px;border-radius:7px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+.row .u{color:var(--ink-2);font-size:.9rem}
+.brand{white-space:normal}
+
+#cell .vac{fill:var(--water-soft);opacity:.7;stroke:var(--water);stroke-width:1.5}
+
+</style>
+<style>.home-link{font-family:var(--f-body);font-size:.92rem;color:var(--ink-2);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:2px 11px;white-space:nowrap;margin-right:auto}.home-link:hover{color:var(--ink);border-color:var(--moss);background:var(--moss-soft)}</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#start">Thema 5 <span>Micro-organismen · 2 lesuren</span></a>
+    <a class="home-link" href="index.html">Alle thema’s</a>
+    <span class="teacher">P. Vandenheede</span>
+    <nav class="tabs" id="tabs" aria-label="Hoofdstukken"></nav>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<script>
+const MICRO = {
+  bac:{n:"Bacteriën en archaea",k:"pro",rows:[["celtype","prokaryoot: DNA vrij in het cytoplasma (+ plasmiden)"],["grootte","0,2 tot 5 µm"],["bouw","celmembraan, celwand, soms kapsel; zweephaar of pili"],["metabolisme","foto- of chemoautotroof, of heterotroof; aeroob of anaeroob"],["vermeerdering","ongeslachtelijk door celdeling (generatietijd soms 30 min)"]],ex:"Melkzuurbacteriën, cyanobacteriën, E. coli, methanogene archaea."},
+  vir:{n:"Virussen",k:"vir",rows:[["celtype","geen cel: DNA of RNA in een eiwitmantel (capside)"],["grootte","20 tot 300 nm: 100 tot 1000 keer kleiner dan een prokaryoot"],["bouw","capside met spikes, soms een enveloppe"],["metabolisme","geen eigen metabolisme: gebruikt de gastheercel"],["vermeerdering","enkel in een gastheercel"]],ex:"Coronavirus, hiv, poliovirus, bacteriofagen."},
+  gis:{n:"Gisten",k:"euk",rows:[["celtype","eukaryoot: eencellige schimmel met celkern"],["grootte","3 tot 40 µm"],["bouw","celwand uit chitine, geen bladgroenkorrels, vacuole, mitochondriën"],["metabolisme","heterotroof; aeroob (CO₂ + water) of anaeroob (alcohol + CO₂)"],["vermeerdering","ongeslachtelijk door knopvorming"]],ex:"Bakkersgist (Saccharomyces cerevisiae), Candida albicans."}
+};
+
+const CH = [
+/* ---------------- FOCUS ---------------- */
+{ id:"mic", num:"Focus", title:"De microkosmos", short:"Micro-organismen in je dagelijks leven",
+  lead:"Je ziet ze niet, maar ze zijn overal: in je koelkast, in het bos, in het water en op je huid.",
+  summary:`
+  <p>Micro-organismen zijn de talrijkste groep organismen op aarde: zo klein dat je ze enkel met een microscoop ziet. Ze helpen planten stikstof en water opnemen, zijn de reducenten in de voedselkringloop en we hebben ze nodig voor onze spijsvertering en bescherming.</p>
+  <p>Dankzij de microscoop van <b>Antoni van Leeuwenhoek</b> (1674) konden we micro-organismen ontdekken. Volgens sommige modellen bestaan er 100 miljoen soorten; minder dan 1 % is beschreven.</p>
+  <ul>
+    <li><b>In de koelkast</b>: bacteriën en schimmels voeden zich met ons voedsel en maken soms giftige stoffen: <b>voedselbederf</b>. Andere gebruiken we om voedsel te maken: melkzuurbacteriën voor yoghurt en kaas, gisten voor bier, wijn, brood en pizzadeeg: <dfn>gefermenteerde voedingsmiddelen</dfn>.</li>
+    <li><b>In het bos</b>: schimmels en bacteriën in de bodem breken organisch afval af. Schimmeldraden vormen een netwerk; waar ze compacter worden, ontstaan paddenstoelen. De aardse geur na regen komt van bodembacteriën (streptomyceten) die <b>geosmine</b> maken.</li>
+    <li><b>In het water</b>: algen en protozoa vormen het <b>plankton</b>, het begin van veel voedselketens. Algen maken het grootste deel van het zuurstofgas op aarde en vangen veel CO₂ op. Opgelet voor <b>cyanobacteriën</b> (misleidend ‘blauwalgen’): ze maken giftige stoffen.</li>
+    <li><b>’s Ochtends</b>: huidbacteriën veroorzaken lichaamsgeur; tandpasta bevat soms skeletjes van kiezelwieren; een kwart tot de helft van de biomassa in uitwerpselen zijn darmbacteriën; voetschimmel is een gistinfectie.</li>
+  </ul>
+  <p>Vijf groepen micro-organismen spelen een rol in ons dagelijks leven: <b>bacteriën, virussen, protozoa, schimmels (gisten) en algen</b>.</p>`,
+  cards:[["Micro-organisme","Organisme dat te klein is om met het blote oog te zien."],["Gefermenteerd voedingsmiddel","Ontstaan door de inwerking van micro-organismen, bv. yoghurt, kaas, brood."],["Plankton","Algen en protozoa in het water, begin van veel voedselketens."]],
+  exercises:[
+    { type:"classify", title:"Bederf of fermentatie?", buckets:["voedselbederf","gefermenteerd voedingsmiddel"],
+      items:[{t:"Schimmel groeit op een stuk fruit.",b:0},{t:"Melkzuurbacteriën veranderen melk in yoghurt.",b:1},{t:"Gisten laten pizzadeeg rijzen.",b:1},{t:"Kipfilet ruikt slecht na de vervaldatum.",b:0},{t:"Melk wordt kaas.",b:1},{t:"Bier en wijn worden gemaakt.",b:1}]},
+    { type:"match", title:"Welk micro-organisme?", q:"Koppel elke situatie aan het juiste micro-organisme.",
+      options:["streptomyceten (bodembacteriën)","cyanobacteriën","kiezelwieren","darmbacteriën","gisten"],
+      items:[{t:"de aardse geur van het bos na een regenbui",a:0},{t:"giftige stoffen in een meer",a:1},{t:"glasachtige skeletjes in tandpasta",a:2},{t:"een kwart tot de helft van de biomassa in je uitwerpselen",a:3},{t:"brood dat rijst",a:4}]},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Organismen die te klein zijn om met het blote oog te zien, zijn micro-organismen.",a:true,e:"Dat is de definitie."},
+        {s:"Gefermenteerde voedingsmiddelen ontstaan door de inwerking van micro-organismen.",a:true,e:"Bv. melkzuurbacteriën in yoghurt en gisten in brood."},
+        {s:"Blauwalgen zijn algen die in water leven en een giftige stof produceren.",a:false,e:"‘Blauwalgen’ is een misleidende naam: het zijn cyanobacteriën."}
+    ]}
+  ]},
+
+/* ---------------- 1 BACTERIËN EN ARCHAEA ---------------- */
+{ id:"h1", num:"1", title:"Bacteriën en archaea", short:"Bouw, vormen, metabolisme, conjugatie, groeicurve en belang",
+  lead:"Prokaryoten leven bijna overal. Hoe zijn ze gebouwd, hoe halen ze energie, en hoe groeit een kolonie?",
+  summary:`
+  <h3>1.1 Bouw</h3>
+  <p>Bacteriën en archaea zijn eencellige <b>prokaryoten</b> van meestal 0,2 tot 5 µm (de reus <i>Thiomargarita namibiensis</i> haalt 750 µm). Ze leven in en op bijna alles, en in bodem, water en ijs. Het meeste DNA ligt centraal in één grote keten; daarnaast zijn er één tot duizend kleine DNA-ringen: <dfn>plasmiden</dfn>. Pigmenten zoals chlorofyl liggen los in het cytoplasma. Het <b>celmembraan</b> regelt de stofuitwisseling, de <b>celwand</b> geeft stevigheid en bescherming; sommige hebben een <b>kapsel of slijmlaag</b>. Ze bewegen met een <b>zweephaar</b> of met <dfn>pili</dfn>.</p>
+  <p><b>Drie hoofdvormen:</b> ronde <dfn>kokken</dfn>, staafvormige <dfn>bacillen</dfn> en spiraalvormige <dfn>spirillen</dfn>. Afhankelijk van de celdeling: twee aan elkaar = <b>diplokokken/diplobacillen</b>, een lange keten = <b>streptokokken/streptobacillen</b>, willekeurige stapels = <b>stafylokokken</b>. <i>Staphylococcus aureus</i> leeft op je huid en kan bij een open wonde een infectie veroorzaken; streptokokken kunnen een keelontsteking geven.</p>
+  <h3>1.2 Metabolisme</h3>
+  <ul>
+    <li><b>Autotroof</b>: zelf organische stoffen maken. <dfn>Fotoautotrofen</dfn> gebruiken zonlicht (bacteriën met chlorofyl, archaea met een ander pigment), <dfn>chemoautotrofen</dfn> energie uit chemische verbindingen: nitrificerende bacteriën (stikstofverbindingen), zwavelbacteriën, ijzerbacteriën.</li>
+    <li><b>Heterotroof</b> (de meeste): ze laten enzymen vrij die organisch materiaal <b>uitwendig verteren</b>, nemen de vrijgekomen stoffen (bv. glucose) op en halen er energie uit via celademhaling.</li>
+    <li><b>Aeroob</b> (met zuurstofgas, celademhaling) of <b>anaeroob</b> (zonder, bv. vergisting tot ethanol of melkzuur). In zuurstofarm water met veel afval maken anaerobe bacteriën waterstofsulfide: de geur van rotte eieren.</li>
+    <li><dfn>Conjugatie</dfn>: twee prokaryoten van dezelfde soort verbinden zich met een holle <b>conjugatiepilus</b>; de <b>donor</b> geeft kopieën van plasmiden door aan de <b>receptor</b>, bv. antibioticaresistentie. Het is geen voortplanting, enkel overdracht van eigenschappen.</li>
+    <li><dfn>Cystevorming</dfn>: bij ongunstige omstandigheden vormen sommige prokaryoten een beschermende laag (cyste of endospore) en overleven zo extreme omstandigheden.</li>
+  </ul>
+  <h3>1.3 Vermeerdering en groeicurve</h3>
+  <p>Prokaryoten vermeerderen ongeslachtelijk door <dfn>celdeling</dfn>: DNA kopiëren, celmembraan en celwand groeien aan, de kopieën gaan naar beide uiteinden en de cel snoert in. De <dfn>generatietijd</dfn> is soms maar 30 minuten (<i>Clostridium perfringens</i>: 6,3 minuten). In een geschikte habitat ontstaat een <b>kolonie</b>. De <dfn>groeicurve</dfn> volgt vier fasen:</p>
+  <ol>
+    <li><b>lagfase</b>: aanpassen aan de nieuwe omgeving; geen toename;</li>
+    <li><b>exponentiële fase</b>: vermeerdering aan constante snelheid;</li>
+    <li><b>stationaire fase</b>: de draagkracht is bereikt; evenveel nieuwe als stervende prokaryoten;</li>
+    <li><b>afstervingsfase</b>: hulpbronnen raken op of het milieu wordt ongunstig; meer sterfte dan nieuwe cellen.</li>
+  </ol>
+  <p>Daarom vries je ontdooid vlees beter niet opnieuw in: bij elk ontdooien start de exponentiële fase opnieuw.</p>
+  <h3>1.4 Belang voor mens en milieu</h3>
+  <ul>
+    <li><b>Ecologie</b>: archaea in darmen van grazers maken methaangas (broeikasgas); cyanobacteriën zijn deel van het fytoplankton; reducenten maken mineralen vrij (ammonificatie, nitrificatie); ziekteverwekkers houden populaties binnen de perken.</li>
+    <li><b>Geneeskunde</b>: vaccins (tuberculose, cholera, kinkhoest), antibiotica (breedspectrum doodt ook goede bacteriën), probiotica, insuline door <i>E. coli</i> met een menselijk gen.</li>
+    <li><b>Voeding</b>: bederf (voedselinfectie of -vergiftiging) en bewaartechnieken (konfijten, pekelen, inleggen in zuur); fermentatie: melkzuurbacteriën maken melkzuur (lagere zuurgraad) en koolhydraten (dikkere yoghurt); azijnzuurbacteriën maken azijn lang houdbaar.</li>
+    <li><b>Industrie</b>: biogas uit mest, slib en huisvuil; bacteriën die plastic afbreken.</li>
+  </ul>`,
+  cards:[["Plasmide","Kleine DNA-ring bij prokaryoten."],["Pili","Haarachtige uitsteeksels om zich voort te trekken."],["Kokken / bacillen / spirillen","Ronde / staafvormige / spiraalvormige prokaryoten."],["Streptokokken","Kokken in een lange keten."],["Stafylokokken","Kokken in willekeurige stapels."],["Chemoautotroof","Energie uit chemische verbindingen (stikstof, zwavel, ijzer)."],["Conjugatie","Plasmiden doorgeven via een conjugatiepilus; geen voortplanting."],["Cyste","Beschermend, niet-actief stadium bij ongunstige omstandigheden."],["Generatietijd","Tijd om uit één cel twee dochtercellen te maken."],["Lagfase","Aanpassingsfase zonder toename."],["Stationaire fase","Evenveel nieuwe als stervende prokaryoten."]],
+  exercises:[
+    { type:"match", title:"Delen van een prokaryoot", q:"Welk deel voert deze functie uit?",
+      options:["pili","celwand","kapsel of slijmlaag","celmembraan","plasmide","zweephaar"],
+      items:[{t:"Hiermee kunnen sommige prokaryoten zich kruipend voorttrekken.",a:0},{t:"Geeft stevigheid en beschermt tegen invloeden van buitenaf.",a:1},{t:"Derde laag als extra bescherming.",a:2},{t:"Regelt de stofuitwisseling met het uitwendige milieu.",a:3},{t:"Kleine ring van DNA.",a:4},{t:"Lang aanhangsel om mee te zwemmen.",a:5}]},
+    { type:"classify", title:"Welke vorm?", buckets:["diplokokken","streptokokken","stafylokokken","bacillen","spirillen"],
+      items:[{t:"twee ronde cellen die aan elkaar blijven hangen",b:0},{t:"ronde cellen in een lange keten",b:1},{t:"ronde cellen in willekeurige stapels",b:2},{t:"staafvormige cellen",b:3},{t:"spiraalvormige cellen",b:4},{t:"Staphylococcus aureus",b:2}]},
+    { type:"classify", title:"Hoe halen ze energie?", buckets:["fotoautotroof","chemoautotroof","heterotroof"],
+      items:[{t:"bacteriën op kipfilet in de koelkast",b:2},{t:"cyanobacteriën met chlorofyl",b:0},{t:"bacteriën in zwavelrijk water zonder organisch materiaal",b:1},{t:"nitrificerende bacteriën",b:1},{t:"bacteriën die voedselbederf veroorzaken",b:2},{t:"melkzuurbacteriën in melk",b:2}]},
+    { type:"order", title:"Conjugatie", q:"Zet de stappen in de juiste volgorde.",
+      items:["Twee prokaryoten van dezelfde soort verbinden zich met een conjugatiepilus.","De donor maakt een kopie van een plasmide.","De kopie gaat via de holle pilus naar de receptor.","Het metabolisme van de receptor wijzigt, bv. hij wordt resistent tegen een antibioticum."]},
+    { type:"grow", title:"Hoe snel groeit een kolonie?", q:"Een bacterie heeft een generatietijd van 30 minuten. Verschuif de tijd en bekijk hoeveel bacteriën er zijn. Beantwoord daarna de vragen.",
+      items:[{t:"Hoeveel bacteriën zijn er na 2 uur, als je start met 1 bacterie?",a:16,u:"bacteriën"},{t:"Hoeveel bacteriën zijn er na 5 uur?",a:1024,u:"bacteriën"}]},
+    { type:"match", title:"Azijnzuurbacteriën in een fles wijn", q:"Welke fase van de groeicurve hoort bij elke periode?",
+      options:["lagfase","exponentiële fase","stationaire fase","afstervingsfase"],
+      items:[{t:"dag 0–3: de bacteriën wennen aan de nieuwe omgeving",a:0},{t:"dag 3–7: het aantal stijgt snel",a:1},{t:"dag 7–12: de populatie heeft haar maximale grootte",a:2},{t:"dag 12–18: er sterven meer bacteriën dan er bijkomen",a:3}]},
+    { type:"checks", title:"Kenmerken van de fasen", q:"Duid bij elke uitspraak de juiste fase aan.",
+      cols:["lag","exponentieel","stationair","afsterving"],
+      rows:[{t:"De prokaryoten doen niet aan celdeling.",a:[1,0,0,0]},{t:"Er sterven meer prokaryoten dan er nieuwe ontstaan.",a:[0,0,0,1]},{t:"Er ontstaan meer nieuwe prokaryoten dan er sterven.",a:[0,1,0,0]},{t:"Er sterven evenveel prokaryoten als er nieuwe ontstaan.",a:[0,0,1,0]}]},
+    { type:"mc", title:"Ontdooid vlees", q:"Waarom vries je ontdooid vlees beter niet opnieuw in?",
+      o:["Omdat de bacteriën dan sterven en giftig worden.","Omdat bij elk ontdooien de exponentiële fase opnieuw start, zodat er massaal veel bacteriën op komen.","Omdat het vlees dan uitdroogt.","Omdat bacteriën in de diepvries groeien."], a:1},
+    { type:"open", title:"Het belang van prokaryoten", q:"Geef een voorbeeld van het belang van bacteriën of archaea voor (a) ecologie, (b) geneeskunde, (c) voeding, (d) industrie.",
+      model:"(a) Reducenten maken mineralen vrij in de koolstof- en stikstofkringloop; cyanobacteriën zijn deel van het fytoplankton. (b) Vaccins, antibiotica, probiotica, insuline door E. coli. (c) Yoghurt door melkzuurbacteriën; azijn; bewaartechnieken tegen bederf. (d) Biogas uit mest en huisvuil; bacteriën die plastic afbreken."},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Alle bacteriën en archaea zijn eencellige prokaryote organismen.",a:true,e:"Ze hebben geen celkern en bestaan uit één cel."},
+        {s:"Tijdens de conjugatie wisselen prokaryoten genetisch materiaal uit.",a:true,e:"De donor geeft kopieën van plasmiden door aan de receptor."},
+        {s:"In de exponentiële fase blijft de populatiegrootte ongeveer constant.",a:false,e:"Dat is de stationaire fase. In de exponentiële fase stijgt het aantal snel."},
+        {s:"Alle bacteriën zijn schadelijke organismen die ziekten of voedselbederf veroorzaken.",a:false,e:"Veel bacteriën zijn nuttig: reducenten, melkzuurbacteriën, darmbacteriën …"},
+        {s:"Alle autotrofe prokaryoten gebruiken enkel zonlicht als energiebron.",a:false,e:"Chemoautotrofen halen energie uit chemische verbindingen."}
+    ]}
+  ]},
+
+/* ---------------- 2 VIRUSSEN ---------------- */
+{ id:"h2", num:"2", title:"Virussen", short:"Bouw, vormen, gastheren en vermeerdering",
+  lead:"Een virus is geen cel en heeft geen eigen stofwisseling. Hoe dringt het een cel binnen en hoe vermeerdert het zich?",
+  summary:`
+  <h3>2.1 Bouw</h3>
+  <p>Een virus bestaat uit genetisch materiaal met daarrond een eiwitmantel of <dfn>capside</dfn>. Het genetisch materiaal is <b>DNA</b> (twee strengen, dubbele helix) of <b>RNA</b> (één streng). De capside beschermt het en bevat <dfn>spikes</dfn> om zich vast te hechten op de gastheercel. Sommige virussen hebben een <dfn>enveloppe</dfn>, een extra membraan; de spikes zitten dan op de enveloppe. De meeste virussen zijn 20 tot 300 nm: 100 tot 1000 keer kleiner dan een gemiddelde prokaryoot.</p>
+  <p><b>Vier vormen:</b></p>
+  <ul>
+    <li><b>veelvlakkig</b>: capside uit driehoekige vlakken (adenovirus);</li>
+    <li><b>bolvormig</b>: veelvlakkig met een enveloppe (coronavirus);</li>
+    <li><b>spiraalvormig</b> of staafvormig: genetisch materiaal in een spiraal (ebolavirus, met enveloppe);</li>
+    <li><b>complex</b> of kop-staartvirus: een kop met het genetisch materiaal, een hals en een holle staart met staartvezels.</li>
+  </ul>
+  <h3>2.2 Metabolisme</h3>
+  <p>Virussen zijn geen cellen: geen organellen, geen enzymen, geen stofuitwisseling, dus <b>geen eigen metabolisme</b>. In een gastheercel gebruiken ze het metabolisme van die cel; ze kunnen de cel zelfs stoffen laten maken om met soortgenoten te ‘communiceren’ over het al dan niet doden van de gastheercel. Volgens de gastheer zijn er <b>dierlijke</b> en <b>plantaardige virussen</b> en <dfn>bacteriofagen</dfn> (die bacteriën infecteren). Alle virussen met een enveloppe zijn dierlijk; bacteriofagen hebben altijd de complexe vorm.</p>
+  <h3>2.3 Vermeerdering</h3>
+  <p>Virussen bewegen niet zelf: ze stromen mee met lucht of lichaamsvloeistoffen. Botsen de spikes tegen een passend receptoreiwit, dan hecht het virus zich vast volgens het <dfn>sleutel-slotprincipe</dfn> (bv. hiv past enkel op witte bloedcellen van mensen en apen). Het genetisch materiaal dringt binnen:</p>
+  <ul>
+    <li>virussen met een <b>enveloppe</b>: de enveloppe smelt samen met het celmembraan;</li>
+    <li>veelvlakkige en spiraalvormige virussen <b>zonder enveloppe</b>: opname door <dfn>endocytose</dfn> in een blaasje, daarna breekt de capside open;</li>
+    <li><b>complexe virussen</b>: landen met hun staartvezels en <b>injecteren</b> hun genetisch materiaal.</li>
+  </ul>
+  <p>De gastheercel maakt onderdelen van de capside en kopieert het genetisch materiaal talloze keren (hier kunnen mutaties ontstaan). Er worden tot honderden nieuwe virussen samengesteld. Ze verlaten de cel: sommige dierlijke virussen nemen een stukje celmembraan mee als enveloppe; bij virussen zonder enveloppe barst de cel open en sterft.</p>
+  <h3>2.4 Belang</h3>
+  <p>Alle virussen zijn ziekteverwekkers en houden zo grote populaties binnen de perken (bv. myxomatose bij konijnen). Toepassingen: <b>vaccins</b> met delen van het virus, en <b>faagtherapie</b> tegen resistente bacteriën.</p>`,
+  cards:[["Capside","Eiwitmantel rond het genetisch materiaal."],["Spikes","Eiwitten om zich vast te hechten op de gastheercel."],["Enveloppe","Extra membraan rond sommige (dierlijke) virussen."],["DNA / RNA","Dubbele streng / enkele streng."],["Complex virus","Kop-staartvirus, bv. een bacteriofaag."],["Bacteriofaag","Virus dat bacteriën infecteert."],["Sleutel-slotprincipe","Spikes passen enkel op de receptoren van de juiste gastheercel."],["Endocytose","Het celmembraan omsluit het virus in een blaasje."]],
+  exercises:[
+    { type:"match", title:"Delen van een virus", q:"Welk deel voert deze functie uit?",
+      options:["capside of eiwitmantel","spikes","enveloppe","DNA of RNA","staartvezels"],
+      items:[{t:"Beschermt het genetisch materiaal.",a:0},{t:"Hiermee hecht het virus zich vast op de gastheercel.",a:1},{t:"Extra membraan aan de buitenkant van dierlijke virussen.",a:2},{t:"Bevat de informatie om nieuwe virussen te maken.",a:3},{t:"Hiermee landt een complex virus op een bacterie.",a:4}]},
+    { type:"classify", title:"Welke vorm?", buckets:["veelvlakkig","bolvormig","spiraalvormig","complex"],
+      items:[{t:"adenovirus: capside uit driehoekige vlakken",b:0},{t:"coronavirus: veelvlakkig met enveloppe en een krans van spikes",b:1},{t:"ebolavirus: genetisch materiaal in een spiraal",b:2},{t:"bacteriofaag met kop, hals en staart",b:3}]},
+    { type:"classify", title:"Hoe komt het genetisch materiaal binnen?", buckets:["samensmelten van enveloppe en celmembraan","endocytose","injectie"],
+      items:[{t:"bolvormig dierlijk virus met enveloppe",b:0},{t:"veelvlakkig virus zonder enveloppe",b:1},{t:"bacteriofaag",b:2},{t:"spiraalvormig virus zonder enveloppe",b:1}]},
+    { type:"order", title:"De vermeerdering van een virus", q:"Zet de stappen in de juiste volgorde.",
+      items:["Het virus koppelt zich aan een gastheercel.","Het genetisch materiaal van het virus wordt in de gastheercel opgenomen.","De gastheercel kopieert het genetisch materiaal en maakt onderdelen van de capside.","Nieuwe virussen worden samengesteld.","De gastheercel barst open en de virussen komen vrij."]},
+    { type:"mc", title:"Welk soort virus?", q:"Een virus heeft een enveloppe met spikes. Wat weet je zeker?",
+      o:["Het is een bacteriofaag.","Het is een dierlijk virus.","Het is een plantaardig virus.","Het is een complex virus."], a:1, e:"Alle virussen met een enveloppe zijn dierlijke virussen."},
+    { type:"mc", title:"Mutaties", q:"Tijdens welke fase van de vermeerdering kunnen mutaties ontstaan?",
+      o:["Bij het vasthechten","Als de gastheercel het genetisch materiaal kopieert","Als de virussen vrijkomen","Nooit"], a:1},
+    { type:"mc", title:"Faagtherapie", q:"Virussen kunnen een alternatief zijn voor antibiotica. Welke uitleg past?",
+      o:["Staafvormige virussen doden schimmels.","Complexe virussen gebruiken bacteriën als gastheercel en doden zo bacteriën.","Bolvormige virussen voorkomen bacteriële infecties in dierlijke cellen.","Bacteriofagen laten goede bacteriën sneller groeien."], a:1},
+    { type:"open", title:"Myxomatose", q:"Als een konijnenpopulatie te groot wordt, breekt sneller myxomatose uit, een dodelijke virusziekte. Leg uit dat virussen een ecologische rol spelen.",
+      model:"Door myxomatose wordt de konijnenpopulatie kleiner. Zo helpt het virus overpopulatie te vermijden en het dynamisch evenwicht te behouden."},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Een virus kan bestaan uit niets meer dan genetisch materiaal omgeven door een enveloppe.",a:false,e:"Er zit altijd een capside rond het genetisch materiaal; de enveloppe is een extra laag."},
+        {s:"Virussen hebben een gastheer nodig om zich te vermeerderen omdat ze geen eigen metabolisme hebben.",a:true,e:"Ze gebruiken het metabolisme van de gastheercel."},
+        {s:"Alle virussen zijn ziekteverwekkers.",a:true,e:"Ze hebben allemaal een gastheercel nodig."}
+    ]}
+  ]},
+
+/* ---------------- 3 GISTEN ---------------- */
+{ id:"h3", num:"3", title:"Gisten", short:"Eencellige schimmels: bouw, vergisting en knopvorming",
+  lead:"Gisten laten brood rijzen en maken bier en wijn. Hoe zijn ze gebouwd en hoe vermeerderen ze zich?",
+  summary:`
+  <p><b>Bouw.</b> Gisten behoren tot het rijk van de <b>schimmels</b> (lagere zwammen of microfungi). Ze vormen maar 1 % van de schimmelsoorten, maar komen op veel plaatsen voor. Ze zijn <b>eencellig</b>: eukaryote cellen met een celwand uit <b>chitine</b>, zonder bladgroenkorrels, 3 tot 40 µm groot.</p>
+  <p><b>Metabolisme.</b> Gisten zijn <b>heterotroof</b>: ze leven van organisch afval of van een gastheer (parasitaire of mutualistische symbiose). Ze nemen opgeloste moleculen op; zijn die er niet, dan laten ze <b>enzymen</b> los die het materiaal uitwendig verteren. Ze leven <b>aeroob</b> (glucose → koolstofdioxide + water) of <b>anaeroob</b>: bij <dfn>vergisting</dfn> maken ze alcohol en koolstofdioxide.</p>
+  <p><b>Vermeerdering.</b> Meestal ongeslachtelijk door <dfn>knopvorming</dfn>: een uitstulping, het DNA wordt gekopieerd en gaat naar de knop, die afsnoert. De dochtercel is identiek; op de moedercel blijft een <b>litteken</b>.</p>
+  <p><b>Belang.</b> Brood (CO₂ doet het deeg rijzen), bier en wijn (alcohol en bubbels), biobrandstoffen zoals bio-ethanol en biomethaan. Bakkersgist is <i>Saccharomyces cerevisiae</i>. <i>Candida albicans</i> leeft in ons lichaam, maar kan infecties geven als de homeostase verstoord is.</p>`,
+  cards:[["Gist","Eencellige schimmel (microfungus)."],["Chitine","Stof waaruit de celwand van gisten bestaat."],["Vergisting","Anaerobe afbraak tot alcohol en koolstofdioxide."],["Knopvorming","Ongeslachtelijke vermeerdering met een knop die afsnoert."]],
+  exercises:[
+    { type:"classify", title:"Kenmerk van een gistcel?", buckets:["wel een kenmerk van gist","geen kenmerk van gist"],
+      items:[{t:"heterotroof",b:0},{t:"knopvorming",b:0},{t:"produceert enzymen",b:0},{t:"celwand uit chitine",b:0},{t:"bladgroenkorrels",b:1},{t:"spike-eiwitten",b:1},{t:"autotroof",b:1},{t:"heeft een gastheercel nodig om zich te vermeerderen",b:1},{t:"geslachtelijke voortplanting",b:1}]},
+    { type:"order", title:"Knopvorming", q:"Zet de stappen in de juiste volgorde.",
+      items:["De gistcel vormt een uitstulping.","Het DNA wordt gekopieerd.","De kopie van het DNA gaat naar de knop.","De knop snoert af: een identieke dochtercel, met een litteken op de moedercel."]},
+    { type:"classify", title:"Spelen gisten een rol?", q:"Bij welke productieprocessen spelen gisten een rol?",
+      buckets:["ja, gisten","nee"],
+      items:[{t:"biobrandstoffen",b:0},{t:"pizza",b:0},{t:"wijn",b:0},{t:"yoghurt",b:1},{t:"caramel",b:1},{t:"brood",b:0}]},
+    { type:"mc", title:"Bier brouwen", q:"Is de productie van bier door gisten een aeroob of anaeroob proces?",
+      o:["aeroob, want er ontstaat koolstofdioxide","anaeroob, want enkel bij vergisting ontstaat alcohol","aeroob, want gisten hebben altijd zuurstofgas nodig","geen van beide"], a:1},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Gisten zijn eencellige autotrofe micro-organismen.",a:false,e:"Gisten zijn heterotroof: ze hebben geen bladgroenkorrels."},
+        {s:"Gisten planten zich geslachtelijk voort door middel van knopvorming.",a:false,e:"Knopvorming is ongeslachtelijk: de dochtercel is identiek aan de moedercel."},
+        {s:"Dankzij vergisting ontstaan er op een natuurlijke wijze bubbels in alcoholische dranken.",a:true,e:"Bij vergisting maken gisten koolstofdioxide."}
+    ]}
+  ]},
+
+/* ---------------- 4 INTERACTIES MET DE MENS ---------------- */
+{ id:"h4", num:"4", title:"Interacties tussen micro-organismen en de mens", short:"Het microbioom: positief, negatief en neutraal",
+  lead:"In en op je lichaam leven miljarden micro-organismen. Wanneer helpen ze, wanneer schaden ze?",
+  summary:`
+  <h3>4.1 Positieve interacties</h3>
+  <p>De micro-organismen in en op ons lichaam zijn onze <dfn>microbiota</dfn>; samen met hun genetisch materiaal en hun omgeving vormen ze ons <dfn>microbioom</dfn>, uniek voor iedereen. Het bestaat vooral uit bacteriën, aangevuld met schimmels, archaea, mijten en virussen, met een <b>mutualistische of commensalistische</b> rol.</p>
+  <ul>
+    <li><b>Huid</b>: eerste verdediging tegen ziekteverwekkers (bij smeer-, talg- en zweetkliertjes). Beperk zeep bij je dagelijkse wasbeurt.</li>
+    <li><b>Spijsvertering</b>: voedingsstoffen uit voedsel halen, de darmwand herstellen. Het darmmicrobioom communiceert met de hersenen en beïnvloedt het humeur: het <b>tweede brein</b>. <i>Helicobacter pylori</i> regelt mee het maagzuur.</li>
+    <li><b>Vagina</b>: lactobacillen maken lactaat; het zure milieu beschermt. De samenstelling verandert tijdens de cyclus (veel lactobacillen rond de ovulatie).</li>
+    <li>Ook neus, mond en longen: slijmproductie en bescherming.</li>
+  </ul>
+  <p><b>Ontstaan.</b> Een eerste microbioom zit al in baarmoeder en moederkoek. Bij een vaginale geboorte en borstvoeding krijgt de baby het microbioom van de moeder; bij keizersnede of flesvoeding duurt het langer. Veel contact met mensen, dieren en plaatsen maakt het diverser. Rond 4 jaar is het gevormd.</p>
+  <h3>4.2 Negatieve interacties</h3>
+  <p>Een ongezonde levensstijl (voeding, stress, alcohol, roken, wisselende sekspartners) of een keizersnede kan leiden tot een <b>afwijkend microbioom</b>, met meer risico op obesitas, depressie, auto-immuunziekten of kanker. Schadelijke micro-organismen winnen dan sneller de competitie; de ontstekingen moeten vaak met antibiotica behandeld worden, die op hun beurt het microbioom beschadigen. Ziekteverwekkers leven vaak <b>parasitair</b>.</p>
+  <h3>4.3 Neutrale interacties</h3>
+  <p>Sommige soorten lactobacillen en streptokokken leven samen in ons lichaam zonder elkaar positief of negatief te beïnvloeden.</p>`,
+  cards:[["Microbiota","De micro-organismen in en op ons lichaam."],["Microbioom","Microbiota, hun genetisch materiaal en hun omgeving."],["Tweede brein","Het darmmicrobioom, dat communiceert met de hersenen."],["Probiotica","Nuttige bacteriën bij een aangetast microbioom."]],
+  exercises:[
+    { type:"match", title:"Wat doet het microbioom hier?", options:["eerste verdediging, ondersteunt het immuunsysteem","ondersteunt verteringsprocessen","lage zuurgraad als bescherming","voorkomt maagproblemen","slijmproductie en bescherming"],
+      items:[{t:"huid",a:0},{t:"darm",a:1},{t:"vagina",a:2},{t:"maag",a:3},{t:"neus",a:4}]},
+    { type:"classify", title:"Positief, negatief of neutraal?", buckets:["positieve interactie","negatieve interactie","neutrale interactie"],
+      items:[{t:"Lactobacillen maken de vagina zuur en beschermen tegen ziekteverwekkers.",b:0},{t:"Een ziekteverwekkende bacterie vergiftigt het lichaam.",b:1},{t:"Lactobacillen en streptokokken leven samen zonder elkaar te beïnvloeden.",b:2},{t:"Darmbacteriën helpen voedingsstoffen uit voedsel halen.",b:0},{t:"Een virus vermeerdert zich in een lichaamscel, die sterft.",b:1}]},
+    { type:"classify", title:"Goed of slecht voor je microbioom?", buckets:["bevordert een gezond microbioom","zorgt voor een afwijkend microbioom"],
+      items:[{t:"vaginale geboorte en borstvoeding",b:0},{t:"veel stress",b:1},{t:"opgroeien in een niet-steriele omgeving",b:0},{t:"roken en alcohol",b:1},{t:"veelvuldig antibacteriële gel gebruiken",b:1},{t:"veel contact met mensen en dieren",b:0}]},
+    { type:"open", title:"Aangepaste zeep", q:"Waarom gebruiken vrouwen voor hun intieme hygiëne best een neutrale of aangepaste zeep?",
+      model:"Zeep kan de zuurgraad van de vagina veranderen. Daardoor raakt het microbioom uit evenwicht en neemt de kans op infecties toe."},
+    { type:"open", title:"Darmflora en gezondheid", q:"Leg uit waarom de darmflora informatie kan geven over je gezondheidstoestand.",
+      model:"Bij een zwakkere gezondheid kunnen de goede micro-organismen zich niet ten volle ontwikkelen en nemen andere de bovenhand. Een afwijkend microbioom hangt zo samen met een minder goede gezondheid."},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Het microbioom heeft altijd voordelen voor de mens.",a:false,e:"Een afwijkend microbioom verhoogt het risico op ziekten."},
+        {s:"Veelvuldig gebruik van antibacteriële gels tast het microbioom van de huid aan.",a:true,e:"Daarom beperk je beter zeep en gels."},
+        {s:"Het microbioom wordt overgedragen van moeder op kind bij een vaginale bevalling en borstvoeding.",a:true,e:"Bij keizersnede of flesvoeding duurt het langer."}
+    ]}
+  ]}
+];
+
+const GLOSS = [
+ ["Micro-organisme","Organisme dat te klein is om met het blote oog te zien.","Focus"],
+ ["Gefermenteerd voedingsmiddel","Voedsel dat ontstaat door de inwerking van micro-organismen.","Focus"],
+ ["Plankton","Algen en protozoa in het water, begin van voedselketens.","Focus"],
+ ["Cyanobacteriën","Fotoautotrofe bacteriën, misleidend ‘blauwalgen’ genoemd.","Focus"],
+ ["Plasmide","Kleine DNA-ring bij prokaryoten.","1"],
+ ["Pili","Haarachtige uitsteeksels om zich voort te trekken.","1"],
+ ["Kokken","Ronde prokaryoten.","1"],
+ ["Bacillen","Staafvormige prokaryoten.","1"],
+ ["Spirillen","Spiraalvormige prokaryoten.","1"],
+ ["Streptokokken","Kokken in een lange keten.","1"],
+ ["Stafylokokken","Kokken in willekeurige stapels.","1"],
+ ["Fotoautotroof","Maakt organische stoffen met zonlicht.","1"],
+ ["Chemoautotroof","Maakt organische stoffen met energie uit chemische verbindingen.","1"],
+ ["Heterotroof","Neemt organische stoffen op, na uitwendige vertering met enzymen.","1"],
+ ["Conjugatie","Overdracht van plasmiden via een conjugatiepilus.","1"],
+ ["Cyste of endospore","Beschermend, niet-actief stadium.","1"],
+ ["Generatietijd","Tijd om uit één cel twee dochtercellen te vormen.","1"],
+ ["Groeicurve","Lagfase, exponentiële fase, stationaire fase, afstervingsfase.","1"],
+ ["Fermentatie","Gewenste bacteriën of schimmels werken in op voedsel of drank.","1"],
+ ["Probiotica","Nuttige bacteriën voor een aangetast microbioom.","1"],
+ ["Capside","Eiwitmantel van een virus.","2"],
+ ["Spikes","Eiwitten om zich vast te hechten op de gastheercel.","2"],
+ ["Enveloppe","Extra membraan rond sommige virussen.","2"],
+ ["Bacteriofaag","Virus dat bacteriën infecteert; altijd complexe vorm.","2"],
+ ["Sleutel-slotprincipe","Spikes passen enkel op receptoren van de juiste gastheercel.","2"],
+ ["Endocytose","Opname van een virus in een blaasje van het celmembraan.","2"],
+ ["Faagtherapie","Bacteriofagen inzetten tegen resistente bacteriën.","2"],
+ ["Gist","Eencellige schimmel.","3"],
+ ["Chitine","Bouwstof van de celwand van gisten.","3"],
+ ["Vergisting","Anaerobe afbraak tot alcohol en koolstofdioxide.","3"],
+ ["Knopvorming","Ongeslachtelijke vermeerdering van gisten.","3"],
+ ["Microbiota","De micro-organismen in en op ons lichaam.","4"],
+ ["Microbioom","Microbiota, hun genetisch materiaal en hun omgeving.","4"],
+ ["Tweede brein","Het darmmicrobioom.","4"]
+];
+
+const POOL = [
+ {q:"Wie ontdekte met een microscoop als eerste micro-organismen?",o:["Antoni van Leeuwenhoek","Alexander Fleming","Charles Darwin","Carl Woese"],a:0},
+ {q:"Welke vijf groepen micro-organismen spelen een rol in ons dagelijks leven?",o:["bacteriën, virussen, protozoa, schimmels en algen","bacteriën, planten, dieren, virussen en algen","enkel bacteriën en virussen","gisten, mossen, varens, algen en bacteriën"],a:0},
+ {q:"‘Blauwalgen’ zijn eigenlijk …",o:["algen","cyanobacteriën","virussen","gisten"],a:1},
+ {q:"Hoe groot zijn de meeste bacteriën en archaea?",o:["0,2 tot 5 µm","20 tot 300 nm","1 mm","3 tot 40 µm"],a:0},
+ {q:"Staafvormige prokaryoten heten …",o:["kokken","bacillen","spirillen","stafylokokken"],a:1},
+ {q:"Kokken in willekeurige stapels zijn …",o:["streptokokken","diplokokken","stafylokokken","spirillen"],a:2},
+ {q:"Zwavelbacteriën zijn …",o:["fotoautotroof","chemoautotroof","heterotroof","parasitair"],a:1},
+ {q:"Hoe nemen heterotrofe prokaryoten voedsel op?",o:["Ze verteren organisch materiaal uitwendig met enzymen en nemen de stoffen op","Ze eten andere bacteriën op","Via fotosynthese","Via een gastheercel"],a:0},
+ {q:"Wat gebeurt er bij conjugatie?",o:["voortplanting","plasmiden worden doorgegeven via een conjugatiepilus","de cel vormt een cyste","de cel deelt in twee"],a:1},
+ {q:"Wat doet een prokaryoot bij ongunstige omstandigheden?",o:["conjugatie","een cyste vormen","knopvorming","exponentieel groeien"],a:1},
+ {q:"In welke fase van de groeicurve neemt het aantal niet toe omdat de bacteriën zich aanpassen?",o:["lagfase","exponentiële fase","stationaire fase","afstervingsfase"],a:0},
+ {q:"In welke fase ontstaan er evenveel prokaryoten als er sterven?",o:["lagfase","exponentiële fase","stationaire fase","afstervingsfase"],a:2},
+ {q:"Met 1 bacterie en een generatietijd van 30 minuten: hoeveel bacteriën na 2 uur?",o:["4","8","16","32"],a:2},
+ {q:"Uit hoeveel strengen bestaat RNA?",o:["één","twee","drie","vier"],a:0},
+ {q:"Hoeveel kleiner zijn virussen dan een gemiddelde prokaryoot?",o:["2 tot 5 keer","100 tot 1000 keer","een miljoen keer","even groot"],a:1},
+ {q:"Een veelvlakkig virus met enveloppe is een …",o:["bolvormig virus","spiraalvormig virus","complex virus","bacteriofaag"],a:0},
+ {q:"Welke vorm hebben bacteriofagen altijd?",o:["bolvormig","spiraalvormig","complex","veelvlakkig"],a:2},
+ {q:"Een virus met een enveloppe is altijd een …",o:["dierlijk virus","plantaardig virus","bacteriofaag","complex virus"],a:0},
+ {q:"Hoe komt een veelvlakkig virus zonder enveloppe een cel binnen?",o:["door endocytose","door injectie","door samensmelting van de enveloppe","door conjugatie"],a:0},
+ {q:"Hoe komt het genetisch materiaal van een bacteriofaag binnen?",o:["door injectie","door endocytose","door samensmelting","door knopvorming"],a:0},
+ {q:"Tot welk rijk behoren gisten?",o:["planten","schimmels","bacteriën","protisten"],a:1},
+ {q:"Waaruit bestaat de celwand van gisten?",o:["cellulose","chitine","eiwitten","kalk"],a:1},
+ {q:"Wat maken gisten bij vergisting?",o:["alcohol en koolstofdioxide","zuurstofgas","melkzuur","methaangas"],a:0},
+ {q:"Hoe vermeerderen gisten zich meestal?",o:["knopvorming","celdeling","in een gastheercel","conjugatie"],a:0},
+ {q:"Welke bacteriën maken de vagina zuur?",o:["lactobacillen","streptokokken","E. coli","Helicobacter pylori"],a:0},
+ {q:"Welke interactie is neutraal?",o:["lactobacillen en streptokokken die samenleven zonder elkaar te beïnvloeden","darmbacteriën die helpen verteren","een ziekteverwekker in een cel","Candida-infectie"],a:0},
+ {q:"Op welke leeftijd is het persoonlijke microbioom gevormd?",o:["bij de geboorte","rond 4 jaar","rond 12 jaar","rond 18 jaar"],a:1}
+];
+
+const AR_MEM=[
+ ["plasmide","Kleine DNA-ring"],["pili","Haarachtige uitsteeksels"],["kokken","Ronde prokaryoten"],["bacillen","Staafvormige prokaryoten"],["spirillen","Spiraalvormige prokaryoten"],["conjugatie","Plasmiden doorgeven"],["cyste","Beschermend rustend stadium"],["lagfase","Aanpassen, geen toename"],["stationaire fase","Evenveel nieuw als dood"],["capside","Eiwitmantel van een virus"],["enveloppe","Extra membraan rond een virus"],["bacteriofaag","Virus van bacteriën"],["endocytose","Opname in een blaasje"],["chitine","Celwand van gisten"],["knopvorming","Vermeerdering van gisten"],["microbioom","Micro-organismen in en op je lichaam"],["tweede brein","Het darmmicrobioom"]
+];
+const AR_SETS=[
+ {t:"Bacterie, virus of gist?",c:["bacterie","virus","gist"],i:[["plasmide",0],["capside",1],["knopvorming",2],["pili",0],["spikes",1],["celwand uit chitine",2],["conjugatie",0],["geen eigen metabolisme",1]]},
+ {t:"Welke vorm?",c:["kokken","bacillen","spirillen"],i:[["rond",0],["staafvormig",1],["spiraalvormig",2],["streptokokken",0],["stafylokokken",0],["diplobacillen",1]]},
+ {t:"Groeicurve",c:["lagfase","exponentiële fase","stationaire fase","afstervingsfase"],i:[["aanpassen aan de omgeving",0],["snelle toename",1],["draagkracht bereikt",2],["hulpbronnen op",3],["geen celdeling",0],["evenveel geboren als gestorven",2]]},
+ {t:"Virusvormen",c:["veelvlakkig","bolvormig","spiraalvormig","complex"],i:[["adenovirus",0],["coronavirus",1],["ebolavirus",2],["bacteriofaag",3]]},
+ {t:"Positief, negatief of neutraal?",c:["positief","negatief","neutraal"],i:[["lactobacillen in de vagina",0],["ziekteverwekker",1],["lactobacillen + streptokokken",2],["darmbacteriën",0],["virus in een lichaamscel",1]]}
+];
+const AR_WHO=[
+ {a:"Antoni van Leeuwenhoek",o:["Antoni van Leeuwenhoek","Alexander Fleming","Carl Woese","Charles Darwin"],h:["Ik was een Nederlander.","Ik bouwde in 1674 een microscoop.","Ik zag als eerste micro-organismen."]},
+ {a:"Staphylococcus aureus",o:["Staphylococcus aureus","Lactobacillus bulgaricus","Clostridium perfringens","E. coli"],h:["Ik ben een bolvormige bacterie.","Ik leef in willekeurige stapels.","Ik leef op je huid en kan een open wonde infecteren."]},
+ {a:"Clostridium perfringens",o:["Clostridium perfringens","Staphylococcus aureus","Thiomargarita namibiensis","E. coli"],h:["Ik ben een bacterie die kadavers opruimt.","Mijn generatietijd is maar 6,3 minuten.","Ik kan voedselvergiftiging en gangreen veroorzaken."]},
+ {a:"Thiomargarita namibiensis",o:["Thiomargarita namibiensis","Clostridium perfringens","Helicobacter pylori","E. coli"],h:["Ik ben een bacterie.","Ik ben een reus onder de prokaryoten.","Ik kan 750 µm groot worden."]},
+ {a:"bacteriofaag",o:["bacteriofaag","coronavirus","adenovirus","ebolavirus"],h:["Ik ben een virus.","Ik heb een kop, een hals en een staart.","Ik injecteer mijn genetisch materiaal in bacteriën."]},
+ {a:"coronavirus",o:["coronavirus","ebolavirus","adenovirus","bacteriofaag"],h:["Ik ben een bolvormig, dierlijk virus.","Ik heb een enveloppe.","Mijn spikes vormen een krans of kroon."]},
+ {a:"bakkersgist",o:["bakkersgist","Candida albicans","melkzuurbacterie","E. coli"],h:["Ik ben een eencellige schimmel.","Mijn naam is Saccharomyces cerevisiae.","Ik laat brood rijzen."]},
+ {a:"Helicobacter pylori",o:["Helicobacter pylori","lactobacil","E. coli","Staphylococcus aureus"],h:["Ik ben een bacterie.","Ik overleef in een heel zure omgeving.","Bij stress maak ik meer signaalstoffen: kans op een maagzweer."]}
+];
+const AR_CHAINS=[
+ {t:"Groeicurve van een kolonie",q:"Zet de fasen in volgorde.",s:["lagfase: aanpassen","exponentiële fase: snelle groei","stationaire fase: draagkracht bereikt","afstervingsfase: meer sterfte"]},
+ {t:"Celdeling bij bacteriën",q:"Zet in volgorde.",s:["het genetisch materiaal wordt gekopieerd","celmembraan en celwand groeien aan","de kopieën gaan naar beide uiteinden","de cel snoert in: twee identieke dochtercellen"]},
+ {t:"Vermeerdering van een bacteriofaag",q:"Zet in volgorde.",s:["de faag landt met zijn staartvezels","injectie van het genetisch materiaal","de bacterie maakt bouwstenen van het virus","nieuwe virussen worden samengesteld","de bacterie barst open"]},
+ {t:"Knopvorming bij gisten",q:"Zet in volgorde.",s:["uitstulping","DNA kopiëren","kopie naar de knop","knop snoert af: litteken"]}
+];
+
+const TABS = {mic:"Microkosmos",h1:"Bacteriën & archaea",h2:"Virussen",h3:"Gisten",h4:"Mens & microben"};
+const KEY = "bio-thema5-2u-v1";
+let P = {};
+try { P = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e) { P = {}; }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(P)); } catch(e) {} }
+
+const $ = (s, r=document) => r.querySelector(s);
+function h(html){ const t=document.createElement("template"); t.innerHTML=html.trim(); return t.content.firstElementChild; }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+const fmt = n => n.toLocaleString("nl-BE");
+
+function chProgress(ch){ const n=ch.exercises.length; let d=0; ch.exercises.forEach((_,i)=>{ if(P[ch.id+"-"+i]) d++; }); return {d,n}; }
+function ringSVG(f){ const c=2*Math.PI*6; return `<svg class="ring" viewBox="0 0 16 16" aria-hidden="true"><circle class="bg" cx="8" cy="8" r="6"/><circle class="fg" cx="8" cy="8" r="6" stroke-dasharray="${(c*f).toFixed(2)} ${c.toFixed(2)}"/></svg>`; }
+
+function renderTabs(cur){
+  const nav = $("#tabs");
+  let s = `<a href="#start" ${cur==="start"?'aria-current="page"':""}>Start</a>`;
+  CH.forEach(ch=>{ const p=chProgress(ch); s += `<a href="#${ch.id}" ${cur===ch.id?'aria-current="page"':""}>${ringSVG(p.d/p.n)}${ch.num==="Focus"?"":ch.num+" "}${TABS[ch.id]}</a>`; });
+  s += `<a href="#arena" ${cur==="arena"?'aria-current="page"':""}>Oefenarena</a><a href="#begrippen" ${cur==="begrippen"?'aria-current="page"':""}>Begrippen</a><a href="#toets" ${cur==="toets"?'aria-current="page"':""}>Eindtoets</a>`;
+  nav.innerHTML = s;
+}
+
+/* ---------- START ---------- */
+const DSVG = {
+  pro:`<rect class="cw" x="70" y="80" width="280" height="150" rx="75"/><rect class="cm" x="80" y="90" width="260" height="130" rx="65"/>
+       <path class="dna" d="M150 150 q15 -25 30 0 t30 0 t30 0 t30 0"/><circle class="pl" cx="135" cy="185" r="10"/><circle class="pl" cx="290" cy="120" r="8"/>
+       ${[[70,130,40,120],[72,175,35,190],[110,85,95,55],[300,85,315,55],[350,150,385,140],[330,215,355,240]].map(p=>`<line class="pi" x1="${p[0]}" y1="${p[1]}" x2="${p[2]}" y2="${p[3]}"/>`).join("")}
+       <path class="fl" d="M210 230 q-10 25 10 40 t0 40"/>
+       <text x="210" y="300" class="lb" text-anchor="middle">DNA los in het cytoplasma · plasmiden · pili</text>`,
+  euk:`<ellipse class="cw" cx="210" cy="155" rx="150" ry="100"/><ellipse class="cm" cx="210" cy="155" rx="140" ry="90"/>
+       <circle class="nu" cx="210" cy="155" r="42"/><path class="dna" d="M190 155 q10 -15 20 0 t20 0"/>
+       <ellipse class="mi" cx="115" cy="110" rx="22" ry="11"/><ellipse class="mi" cx="300" cy="200" rx="22" ry="11"/>
+       <ellipse class="vac" cx="290" cy="110" rx="34" ry="24"/><circle class="cw" cx="352" cy="78" r="26"/><circle class="cm" cx="352" cy="78" r="19"/>
+       <text x="210" y="285" class="lb" text-anchor="middle">celkern · mitochondriën · vacuole · knop</text>`,
+  vir:`<polygon class="cap" points="210,85 268,118 268,192 210,225 152,192 152,118"/>
+       <path class="dna" d="M185 155 q12 -20 25 0 t25 0"/>
+       ${Array.from({length:10},(_,i)=>{const a=i/10*2*Math.PI,x=210+Math.cos(a)*78,y=155+Math.sin(a)*78,x2=210+Math.cos(a)*98,y2=155+Math.sin(a)*98;return `<line class="sp" x1="${x}" y1="${y}" x2="${x2}" y2="${y2}"/><circle class="spk" cx="${x2}" cy="${y2}" r="6"/>`}).join("")}
+       <circle class="env" cx="210" cy="155" r="78"/>
+       <text x="210" y="285" class="lb" text-anchor="middle">DNA/RNA · capside · spikes · (enveloppe)</text>`
+};
+function renderStart(app){
+  const v = h(`<section class="view">
+    <div class="hero">
+      <div>
+        <h1>Drie soorten micro-organismen</h1>
+        <p class="lead">Bacteriën en archaea, virussen en gisten: ze zijn allemaal microscopisch klein, maar hun bouw verschilt sterk. Klik op een groep en vergelijk. Daarna werk je per hoofdstuk door de leerstof van thema 5.</p>
+        <ol class="ladder" id="ladder"></ol>
+        <div class="lvinfo" id="lvinfo" aria-live="polite"></div>
+      </div>
+      <svg id="cell" viewBox="0 0 420 310" role="img" aria-label="Schematische tekening van de gekozen groep"></svg>
+    </div>
+    <div class="chapters" id="chaps"></div>
+    <div class="howto">
+      <h3>Zo werk je</h3>
+      <p>Lees in elk hoofdstuk eerst de samenvatting. Draai daarna de begripkaarten om en maak de oefeningen: je krijgt meteen feedback. Een oefening die volledig juist is, krijgt een groen vinkje en telt mee in de voortgangsring bovenaan. Je voortgang wordt alleen in deze browser bewaard. Oefen daarna spelenderwijs in de oefenarena en test jezelf op het einde met de eindtoets.</p>
+    </div>
+  </section>`);
+  app.appendChild(v);
+  const lad=$("#ladder",v), svg=$("#cell",v), info=$("#lvinfo",v);
+  const keys=["bac","vir","gis"];
+  keys.forEach((k,i)=> lad.appendChild(h(`<li><button type="button" aria-pressed="false" data-k="${k}"><span class="n">${MICRO[k].k==="pro"?"prokaryoot":MICRO[k].k==="euk"?"eukaryoot":"geen cel"}</span>${MICRO[k].n}</button></li>`)));
+  function pick(k){
+    const d=MICRO[k];
+    lad.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.k===k));
+    svg.innerHTML = DSVG[d.k];
+    info.innerHTML = `<h3>${d.n}</h3><dl class="dlist">${d.rows.map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join("")}</dl><p class="lvex">Voorbeeld: ${d.ex}</p>`;
+  }
+  lad.addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) pick(b.dataset.k); });
+  pick("bac");
+  const cg=$("#chaps",v);
+  CH.forEach(ch=>{ const p=chProgress(ch); cg.appendChild(h(`<a class="chap" href="#${ch.id}"><div class="num">${ch.num}</div><h3>${ch.title}</h3><p>${ch.short}</p><div class="bar" aria-label="${p.d} van ${p.n} oefeningen juist"><i style="width:${100*p.d/p.n}%"></i></div></a>`)); });
+  cg.appendChild(h(`<a class="chap arena" href="#arena"><div class="num">Spel</div><h3>Oefenarena</h3><p>Memory, sorteerrace, wie ben ik? en kettingreactie over het hele thema.</p></a>`));
+}
+
+/* ---------- EXTRA OEFENTYPES THEMA 5 (2u) ---------- */
+const BUILD2 = {
+  checks(ex,w,body){
+    const t=h(`<div class="tbl"><table><thead><tr><th>Beschrijving</th>${ex.cols.map(c=>`<th class="c">${c}</th>`).join("")}</tr></thead><tbody></tbody></table></div>`);
+    ex.rows.forEach((r,k)=>{ $("tbody",t).appendChild(h(`<tr><td>${r.t}</td>${ex.cols.map((c,j)=>`<td class="c"><input type="checkbox" id="${w.id}-${k}-${j}" aria-label="${r.t}, ${c}"></td>`).join("")}</tr>`)); });
+    body.appendChild(t);
+    t.addEventListener("change",e=>{ const td=e.target.closest("td"); if(td) td.classList.remove("ok","bad"); });
+    actions(w, m=>{ let g=0,n=0; ex.rows.forEach((r,k)=>ex.cols.forEach((c,j)=>{ const cb=document.getElementById(`${w.id}-${k}-${j}`); const ok=cb.checked===!!r.a[j]; n++; if(ok) g++; cb.parentElement.classList.toggle("ok",ok&&cb.checked); cb.parentElement.classList.toggle("bad",!ok); }));
+      if(setMsg(m,g,n)) w.done(); });
+  },
+  grow(ex,w,body){
+    const g=h(`<div><label for="${w.id}-t">Tijd: <b class="tv"></b></label><input type="range" id="${w.id}-t" min="0" max="10" step="1" value="2">
+      <div class="growbox"><div class="dots" aria-hidden="true"></div><p class="gcount" aria-live="polite"></p></div></div>`);
+    body.appendChild(g);
+    function upd(){ const s=+$("input",g).value, n=Math.pow(2,s); $(".tv",g).textContent=(s*30>=60?Math.floor(s/2)+" u "+(s%2?"30 min":""):s*30+" min")+` (${s} generaties)`;
+      const show=Math.min(n,256); $(".dots",g).innerHTML="<i></i>".repeat(show);
+      $(".gcount",g).innerHTML=`<b>${n.toLocaleString("nl-BE")}</b> bacterie${n>1?"ën":""}${n>256?" (er worden er maar 256 getoond)":""}. Elke 30 minuten verdubbelt het aantal.`; }
+    $("input",g).addEventListener("input",upd); upd();
+    const box=h(`<div style="margin-top:12px"></div>`); body.appendChild(box);
+    ex.items.forEach((it,k)=>{ const id=w.id+"-c"+k; const r=h(`<div class="row"><label class="t" for="${id}">${it.t}</label><span style="display:flex;gap:8px;align-items:center"><input type="text" inputmode="numeric" id="${id}" autocomplete="off"><span class="u">${it.u}</span></span></div>`); r.it=it; $("input",r).addEventListener("input",()=>r.classList.remove("ok","bad")); box.appendChild(r); });
+    actions(w, m=>{ let gd=0; box.querySelectorAll(".row").forEach(r=>{ const v=parseFloat(String($("input",r).value).replace(/\./g,"").replace(",",".")); const ok=v===r.it.a; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok); if(ok) gd++; });
+      if(setMsg(m,gd,ex.items.length,"Na elke generatie verdubbelt het aantal: 1 → 2 → 4 → 8 …")) w.done(); else m.textContent+=" Tip: tel het aantal generaties van 30 minuten."; });
+  }
+};
+
+/* ---------- CHAPTER ---------- */
+function renderChapter(app, ch){
+  const v = h(`<section class="view">
+    <div class="chead"><div class="num">${ch.num==="Focus"?"Focus":"Hoofdstuk "+ch.num}</div><h1>${ch.title}</h1><p>${ch.lead}</p>
+      <div class="subnav"><a href="#${ch.id}" data-jump="sum">Samenvatting</a><a href="#${ch.id}" data-jump="cards">Begripkaarten</a><a href="#${ch.id}" data-jump="oef">Oefeningen</a></div></div>
+    <div class="block" id="sum"><h2>Samenvatting</h2><div class="sum">${ch.summary}</div></div>
+    <div class="block" id="cards" style="max-width:1000px"><h2>Begripkaarten</h2><p class="note">Denk eerst zelf na over de betekenis. Klik daarna om de kaart om te draaien.</p><div class="cards"></div></div>
+    <div class="block" id="oef" style="max-width:1000px"><h2>Oefeningen</h2><div class="ex-list"></div></div>
+    <p class="foot">Gebaseerd op Focus Biologie 4.2 (Pelckmans), thema 5 Micro-organismen. Samenvattingen en oefeningen zijn bewerkt voor eigen gebruik in de les.</p>
+  </section>`);
+  app.appendChild(v);
+  v.querySelector(".subnav").addEventListener("click",e=>{ const a=e.target.closest("[data-jump]"); if(a){ e.preventDefault(); const t=v.querySelector("#"+a.dataset.jump); t.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); } });
+  const cards=$(".cards",v);
+  ch.cards.forEach(c=>{ const b=h(`<button type="button" class="card" aria-label="${c[0]}: klik om om te draaien"><span class="in"><span class="f">${c[0]}<small>klik om om te draaien</small></span><span class="b">${c[1]}</span></span></button>`); b.addEventListener("click",()=>b.classList.toggle("flip")); cards.appendChild(b); });
+  const list=$(".ex-list",v);
+  ch.exercises.forEach((ex,i)=> list.appendChild(buildEx(ex, ch.id+"-"+i, (ch.num==="Focus"?"F":ch.num)+"."+(i+1))));
+}
+
+function shell(ex,id,label){
+  const w = h(`<article class="ex${P[id]?" done":""}" id="ex-${id}">
+    <div class="exh"><h3><span class="tag">Oefening ${label}</span>${ex.title}</h3><span class="chip">${P[id]?"Juist":"Te doen"}</span></div>
+    ${ex.q?`<p class="q">${ex.q}</p>`:""}<div class="ex-body"></div></article>`);
+  w.done = () => { P[id]=true; save(); w.classList.add("done"); $(".chip",w).textContent="Juist"; renderTabs(current); };
+  return w;
+}
+function actions(w, onCheck, onReset){
+  const a = h(`<div class="actions"><button type="button" class="btn">Controleer</button>${onReset?'<button type="button" class="btn ghost">Opnieuw</button>':""}<span class="msg" aria-live="polite"></span></div>`);
+  a.children[0].addEventListener("click",()=>onCheck($(".msg",a)));
+  if(onReset) a.children[1].addEventListener("click",()=>{ $(".msg",a).textContent=""; $(".msg",a).className="msg"; onReset(); });
+  w.appendChild(a); return a;
+}
+function setMsg(m, good, total, okText){
+  const all = good===total;
+  m.className = "msg " + (all?"ok":"bad");
+  m.textContent = all ? ("Alles juist! " + (okText||"")) : (good + " van " + total + " juist. Pas de rode antwoorden aan.");
+  return all;
+}
+
+function buildEx(ex,id,label){
+  const w = shell(ex,id,label), body=$(".ex-body",w);
+  const T = BUILD[ex.type]; T(ex,w,body); return w;
+}
+
+const BUILD = {
+  classify(ex,w,body){
+    const items = shuffle(ex.items);
+    items.forEach((it,k)=>{
+      const r = h(`<div class="row"><div class="t">${it.t}</div><div class="opts" role="group"></div></div>`);
+      ex.buckets.forEach((b,j)=>{ const btn=h(`<button type="button" class="opt" aria-pressed="false">${b}</button>`); btn.addEventListener("click",()=>{ r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); btn.setAttribute("aria-pressed","true"); r.dataset.c=j; r.classList.remove("ok","bad"); const f=$(".fb",r); if(f) f.remove(); }); $(".opts",r).appendChild(btn); });
+      r.it=it; body.appendChild(r);
+    });
+    actions(w, m=>{
+      let g=0; body.querySelectorAll(".row").forEach(r=>{ const ok = r.dataset.c!==undefined && +r.dataset.c===r.it.b; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok); if(ok) g++; });
+      if(setMsg(m,g,items.length,ex.ok)) w.done();
+    }, ()=>{ body.querySelectorAll(".row").forEach(r=>{ delete r.dataset.c; r.classList.remove("ok","bad"); r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); }); });
+  },
+  match(ex,w,body){
+    ex.items.forEach((it,k)=>{
+      const sid = w.id+"-s"+k;
+      const r = h(`<div class="row"><label class="t" for="${sid}">${it.t}</label><select id="${sid}"><option value="">Kies …</option>${ex.options.map((o,j)=>`<option value="${j}">${o}</option>`).join("")}</select></div>`);
+      r.it=it; $("select",r).addEventListener("change",()=>r.classList.remove("ok","bad")); body.appendChild(r);
+    });
+    actions(w, m=>{ let g=0; body.querySelectorAll(".row").forEach(r=>{ const v=$("select",r).value; const ok = v!=="" && +v===r.it.a; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok); if(ok) g++; }); if(setMsg(m,g,ex.items.length)) w.done(); });
+  },
+  tf(ex,w,body){
+    const state = ex.items.map(()=>null);
+    ex.items.forEach((it,k)=>{
+      const r = h(`<div class="row"><div class="t">${k+1}. ${it.s}</div><div class="opts"><button type="button" class="opt" aria-pressed="false" data-v="1">Waar</button><button type="button" class="opt" aria-pressed="false" data-v="0">Niet waar</button></div></div>`);
+      r.addEventListener("click",e=>{ const b=e.target.closest(".opt"); if(!b) return;
+        r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");
+        const ok = (b.dataset.v==="1")===it.a; state[k]=ok; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok);
+        let f=$(".fb",r); if(!f){ f=h(`<div class="fb"></div>`); r.appendChild(f); }
+        f.className="fb "+(ok?"ok":"bad"); f.innerHTML = (ok?"<b>Juist.</b> ":"<b>Niet juist.</b> Denk nog eens na. ") + (ok?it.e:"");
+        if(state.every(s=>s===true)) w.done();
+      });
+      body.appendChild(r);
+    });
+  },
+  mc(ex,w,body){
+    const multi = Array.isArray(ex.a); const sel=new Set();
+    const box = h(`<div class="qopts" role="group"></div>`);
+    ex.o.forEach((o,j)=>{ const b=h(`<button type="button" class="qopt" aria-pressed="false">${String.fromCharCode(97+j)}&ensp;${o}</button>`);
+      b.addEventListener("click",()=>{ if(!multi){ sel.clear(); box.querySelectorAll(".qopt").forEach(x=>x.setAttribute("aria-pressed","false")); }
+        if(sel.has(j)){ sel.delete(j); b.setAttribute("aria-pressed","false"); } else { sel.add(j); b.setAttribute("aria-pressed","true"); }
+        box.querySelectorAll(".qopt").forEach(x=>x.classList.remove("ok","bad")); });
+      box.appendChild(b); });
+    body.appendChild(box);
+    const css = `.qopt[aria-pressed="true"]{border-color:var(--water);box-shadow:inset 0 0 0 1px var(--water)}`;
+    if(!document.getElementById("mccss")){ const s=document.createElement("style"); s.id="mccss"; s.textContent=css; document.head.appendChild(s); }
+    actions(w, m=>{
+      const want = new Set(multi?ex.a:[ex.a]);
+      const ok = sel.size===want.size && [...sel].every(x=>want.has(x));
+      box.querySelectorAll(".qopt").forEach((b,j)=>{ b.classList.remove("ok","bad"); if(sel.has(j)) b.classList.add(want.has(j)?"ok":"bad"); });
+      m.className="msg "+(ok?"ok":"bad");
+      m.textContent = sel.size===0 ? "Kies eerst een antwoord." : ok ? "Juist! "+(ex.e||"") : (multi?"Nog niet helemaal juist. Let op: er kunnen meerdere antwoorden juist zijn.":"Niet juist. Probeer opnieuw.");
+      if(ok) w.done();
+    });
+  },
+  multi(ex,w,body){
+    const t = h(`<div class="tbl"><table><thead><tr><th>Proces</th>${ex.cols.map(c=>`<th class="c">${c} waterkringloop</th>`).join("")}</tr></thead><tbody></tbody></table></div>`);
+    ex.rows.forEach((r,k)=>{ const tr=h(`<tr><td>${r.t}</td>${ex.cols.map((c,j)=>`<td class="c"><input type="checkbox" id="${w.id}-${k}-${j}" aria-label="${r.t}, ${c}"></td>`).join("")}</tr>`); $("tbody",t).appendChild(tr); });
+    body.appendChild(t);
+    t.addEventListener("change",e=>{ const td=e.target.closest("td"); if(td) td.classList.remove("ok","bad"); });
+    actions(w, m=>{ let g=0,n=0; ex.rows.forEach((r,k)=>ex.cols.forEach((c,j)=>{ const cb=document.getElementById(`${w.id}-${k}-${j}`); const ok=cb.checked===!!r.a[j]; n++; if(ok) g++; cb.parentElement.classList.toggle("ok",ok&&cb.checked); cb.parentElement.classList.toggle("bad",!ok); })); if(setMsg(m,g,n,"In de korte kringloop komt het water niet op het land terecht.")) w.done(); });
+  },
+  order(ex,w,body){
+    const pool=h(`<div class="pool"></div>`), ans=h(`<ol class="answer" style="list-style:none;margin:10px 0 0"></ol>`);
+    body.append(pool,ans);
+    function reset(){ pool.innerHTML=""; ans.innerHTML=""; shuffle(ex.items.map((t,i)=>i)).forEach(i=>pool.appendChild(tok(i))); }
+    function tok(i){ const b=h(`<button type="button" class="tok" data-i="${i}"><span class="i"></span><span>${ex.items[i]}</span></button>`); return b; }
+    function renum(){ ans.querySelectorAll(".tok").forEach((b,k)=>{ $(".i",b).textContent=(k+1)+"."; }); pool.querySelectorAll(".i").forEach(s=>s.textContent=""); }
+    pool.addEventListener("click",e=>{ const b=e.target.closest(".tok"); if(b){ const li=document.createElement("li"); li.appendChild(b); ans.appendChild(li); ans.querySelectorAll(".tok").forEach(x=>x.classList.remove("ok","bad")); renum(); } });
+    ans.addEventListener("click",e=>{ const b=e.target.closest(".tok"); if(b){ const li=b.parentElement; pool.appendChild(b); li.remove(); ans.querySelectorAll(".tok").forEach(x=>x.classList.remove("ok","bad")); renum(); } });
+    reset();
+    actions(w, m=>{ const toks=[...ans.querySelectorAll(".tok")]; if(toks.length<ex.items.length){ m.className="msg bad"; m.textContent="Zet eerst alle stappen in je volgorde."; return; }
+      let g=0; toks.forEach((b,k)=>{ const ok=+b.dataset.i===k; b.classList.toggle("ok",ok); b.classList.toggle("bad",!ok); if(ok) g++; }); if(setMsg(m,g,toks.length)) w.done(); }, reset);
+  },
+  open(ex,w,body){
+    const id=w.id+"-ta";
+    body.appendChild(h(`<div><label for="${id}" class="note" style="display:block;margin-bottom:6px;border:none;padding:0">Schrijf eerst je eigen antwoord.</label><textarea id="${id}"></textarea></div>`));
+    const a=h(`<div class="actions"><button type="button" class="btn">Toon modelantwoord</button></div>`); w.appendChild(a);
+    a.children[0].addEventListener("click",()=>{ if(!$(".model",w)){ w.appendChild(h(`<div class="model"><b>Modelantwoord</b>${ex.model}<br><span style="color:var(--ink-2);font-size:.9rem">Vergelijk met je eigen antwoord. Staan alle kernwoorden erin?</span></div>`)); w.done(); } });
+  },
+  explore(ex,w,body){
+    const g=h(`<div class="explore"><div class="list" role="group"></div><div class="panel" aria-live="polite"></div></div>`); body.appendChild(g);
+    const seen=new Set();
+    ex.items.forEach((it,k)=>{ const b=h(`<button type="button" class="opt" aria-pressed="false" style="text-align:left">${it.n}</button>`);
+      b.addEventListener("click",()=>{ g.querySelectorAll(".list .opt").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");
+        $(".panel",g).innerHTML=`<h4>${it.n}</h4><dl>${it.d.map(d=>`<dt>${d[0]}</dt><dd>${d[1]}</dd>`).join("")}</dl>`; seen.add(k); if(seen.size===ex.items.length) w.done(); });
+      $(".list",g).appendChild(b); });
+    g.querySelector(".list .opt").click();
+  },
+};
+Object.assign(BUILD, BUILD2);
+
+/* ---------- GLOSSARY ---------- */
+function renderGloss(app){
+  const v=h(`<section class="view"><div class="chead"><h1>Begrippenlijst</h1><p>Alle kernbegrippen van thema 5. Zoek een woord of filter op hoofdstuk.</p></div>
+    <div class="gl-tools"><input type="search" id="gl-q" placeholder="Zoek een begrip, bv. conjugatie" aria-label="Zoek een begrip"><select id="gl-c" aria-label="Filter op hoofdstuk"><option value="">Alle hoofdstukken</option><option value="Focus">Focus de microkosmos</option><option value="1">1 Bacteriën en archaea</option><option value="2">2 Virussen</option><option value="3">3 Gisten</option><option value="4">4 Interacties met de mens</option></select><button type="button" class="btn ghost" id="gl-hide" aria-pressed="false">Verberg betekenissen</button></div>
+    <dl class="gl"></dl></section>`);
+  app.appendChild(v);
+  const dl=$(".gl",v), q=$("#gl-q",v), c=$("#gl-c",v), hide=$("#gl-hide",v); let hidden=false;
+  function draw(){ const s=q.value.trim().toLowerCase(); const rows=GLOSS.filter(g=>(!c.value||g[2]===c.value)&&(!s||(g[0]+" "+g[1]).toLowerCase().includes(s))).sort((a,b)=>a[0].localeCompare(b[0],"nl"));
+    dl.innerHTML = rows.length ? rows.map(g=>`<div><dt>${g[0]}<br><span class="h">${g[2]==="Focus"?"Focus":"hoofdstuk "+g[2]}</span></dt><dd ${hidden?'style="filter:blur(6px);cursor:pointer" title="Klik om te tonen"':""}>${g[1]}</dd></div>`).join("") : `<p class="note" style="margin-top:12px">Geen begrip gevonden. Probeer een ander woord of kies ‘Alle hoofdstukken’.</p>`; }
+  q.addEventListener("input",draw); c.addEventListener("change",draw);
+  hide.addEventListener("click",()=>{ hidden=!hidden; hide.setAttribute("aria-pressed",hidden); hide.textContent=hidden?"Toon betekenissen":"Verberg betekenissen"; draw(); });
+  dl.addEventListener("click",e=>{ const d=e.target.closest("dd"); if(d) d.style.filter="none"; });
+  draw();
+}
+
+/* ---------- QUIZ ---------- */
+function renderQuiz(app){
+  const v=h(`<section class="view quiz"><div class="chead"><h1>Eindtoets thema 5</h1><p>Tien willekeurige vragen over het hele thema. Elke keer dat je start, krijg je andere vragen.</p></div><div class="block" id="qz"></div></section>`);
+  app.appendChild(v); const box=$("#qz",v);
+  function intro(){ const best=P.best; box.innerHTML=`<div class="qcard"><h3>Klaar om jezelf te testen?</h3><p>${best!=null?`Je beste score tot nu toe: <b>${best}/10</b>.`:"Je hebt de toets nog niet gemaakt."}</p><div class="actions"><button type="button" class="btn" id="qstart">Start de toets</button></div></div>`; $("#qstart",box).addEventListener("click",start); }
+  let qs=[], i=0, score=0;
+  function start(){ qs=shuffle(POOL).slice(0,10).map(q=>{ const ord=shuffle(q.o.map((_,j)=>j)); return {q:q.q,o:ord.map(j=>q.o[j]),a:ord.indexOf(q.a)}; }); i=0; score=0; ask(); }
+  function ask(){ const q=qs[i];
+    box.innerHTML=`<div class="qcard"><div class="qn">Vraag ${i+1} van 10</div><div class="bar"><i style="width:${i*10}%"></i></div><h3>${q.q}</h3><div class="qopts">${q.o.map((o,j)=>`<button type="button" class="qopt" data-j="${j}">${o}</button>`).join("")}</div><div class="actions"><span class="msg" aria-live="polite"></span></div></div>`;
+    box.querySelector(".qopts").addEventListener("click",e=>{ const b=e.target.closest(".qopt"); if(!b||b.disabled) return; const j=+b.dataset.j; const ok=j===q.a; if(ok) score++;
+      box.querySelectorAll(".qopt").forEach((x,k)=>{ x.disabled=true; if(k===q.a) x.classList.add("ok"); }); if(!ok) b.classList.add("bad");
+      const m=$(".msg",box); m.className="msg "+(ok?"ok":"bad"); m.textContent= ok?"Juist!":"Niet juist. Het juiste antwoord is groen.";
+      const nb=h(`<button type="button" class="btn">${i<9?"Volgende vraag":"Bekijk je score"}</button>`); nb.addEventListener("click",()=>{ i++; i<10?ask():end(); }); $(".actions",box).prepend(nb); nb.focus(); });
+  }
+  function end(){ if(P.best==null||score>P.best){ P.best=score; save(); }
+    const t = score>=8?"Sterk gedaan. Je beheerst dit thema goed.":score>=5?"Goed bezig. Herhaal de hoofdstukken waar je twijfelde.":"Lees de samenvattingen nog eens en maak de oefeningen opnieuw.";
+    box.innerHTML=`<div class="qcard"><div class="score">${score}/10</div><p style="margin-top:6px">${t}</p><div class="actions"><button type="button" class="btn" id="qagain">Nieuwe toets</button><a class="btn ghost" href="#start" style="text-decoration:none">Terug naar start</a></div></div>`;
+    $("#qagain",box).addEventListener("click",start); }
+  intro();
+}
+
+/* ---------- OEFENARENA ---------- */
+let arTotal=0, arTab="mem";
+function renderArena(app){
+  const v=h(`<section class="view">
+    <div class="ar-top"><div class="chead"><div class="num">Oefenen</div><h1>Oefenarena</h1><p>Vier spellen over het hele thema. Verdien punten en verbeter je record. Je punten worden alleen in deze browser bewaard.</p></div>
+      <div class="ar-pts" aria-live="polite"><span class="ar-pill">Punten <b id="ar-total">0</b></span><span class="ar-pill">Record <b id="ar-best">0</b></span></div></div>
+    <div class="ar-tabs" role="tablist" aria-label="Spellen">
+      <button role="tab" data-g="mem">Begrippen-memory</button><button role="tab" data-g="sort">Sorteerrace</button>
+      <button role="tab" data-g="who">Wie ben ik?</button><button role="tab" data-g="chain">Kettingreactie</button></div>
+    <div id="ar-stage"></div>
+    <p class="foot">Gebaseerd op Focus Biologie 4.2 (Pelckmans), thema 5 Micro-organismen.</p></section>`);
+  app.appendChild(v);
+  const stage=$("#ar-stage",v);
+  function pts(n){ arTotal=Math.max(0,arTotal+n); $("#ar-total",v).textContent=arTotal; if(arTotal>(P.arenaBest||0)){ P.arenaBest=arTotal; save(); } $("#ar-best",v).textContent=P.arenaBest||0; }
+  pts(0);
+  let timer=null;
+  function fb(el,ok,t){ el.className="ar-fb "+(ok?"ok":"no"); el.textContent=t; }
+  const GAMES={
+    mem(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2>Begrippen-memory</h2><span class="ar-meta" id="m-meta"></span><p>Draai telkens twee kaarten om en zoek bij elk begrip de juiste omschrijving. Hoe minder beurten, hoe meer punten.</p></div><div class="ar-mem" id="m-grid"></div><div class="actions"><button type="button" class="btn" id="m-new">Nieuw spel</button></div><div class="ar-fb" id="m-fb" aria-live="polite"></div></div>`;
+      let st;
+      function meta(){ $("#m-meta",stage).textContent=`Beurten: ${st.turns} · Paren: ${st.found}/8`; }
+      function start(){
+        const pick=shuffle(AR_MEM).slice(0,8);
+        st={cards:shuffle(pick.flatMap((g,i)=>[{id:i,t:g[0],term:true},{id:i,t:g[1],term:false}])),open:[],turns:0,found:0,lock:false};
+        const grid=$("#m-grid",stage); grid.innerHTML=""; $("#m-fb",stage).textContent="";
+        st.cards.forEach((c,k)=>{ const b=document.createElement("button"); b.type="button"; b.className="ar-card"+(c.term?" term":""); b.textContent=c.t; b.setAttribute("aria-label","Kaart "+(k+1)+", omgedraaid"); b.addEventListener("click",()=>flip(k,b)); c.el=b; grid.appendChild(b); });
+        meta();
+      }
+      function flip(k,b){
+        const c=st.cards[k]; if(st.lock||c.done||st.open.includes(k)) return;
+        b.classList.add("open"); b.setAttribute("aria-label",c.t); st.open.push(k); if(st.open.length<2) return;
+        st.turns++; const [a,z]=st.open.map(i=>st.cards[i]); const m=$("#m-fb",stage);
+        if(a.id===z.id&&a.term!==z.term){ a.done=z.done=true; a.el.classList.add("done"); z.el.classList.add("done"); st.open=[]; st.found++; fb(m,true,"Juist paar!");
+          if(st.found===8){ const p=Math.max(4,20-Math.max(0,st.turns-8)); pts(p); fb(m,true,`Alle paren gevonden in ${st.turns} beurten: +${p} punten.`); } }
+        else { st.lock=true; a.el.classList.add("wrong"); z.el.classList.add("wrong"); fb(m,false,"Geen paar. Onthoud waar ze liggen.");
+          setTimeout(()=>{ [a,z].forEach(c=>{ c.el.classList.remove("open","wrong"); c.el.setAttribute("aria-label","Omgedraaide kaart"); }); st.open=[]; st.lock=false; },1300); }
+        meta();
+      }
+      $("#m-new",stage).addEventListener("click",start); start();
+    },
+    sort(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2 id="s-title">Sorteerrace</h2><span class="ar-meta" id="s-meta"></span><p>Tik op een kaartje en daarna op de juiste kolom. Elke fout kost een punt; ben je binnen de minuut klaar, dan krijg je 2 bonuspunten.</p></div>
+        <div class="actions"><label for="s-pick" class="ar-meta">Onderwerp</label><select id="s-pick"></select><button type="button" class="btn" id="s-next">Volgende ronde</button></div>
+        <div class="ar-pool" id="s-pool" aria-label="Te sorteren kaartjes"></div><div class="ar-buckets" id="s-buckets"></div><div class="ar-fb" id="s-fb" aria-live="polite"></div></div>`;
+      const sel=$("#s-pick",stage); AR_SETS.forEach((s,i)=>sel.appendChild(h(`<option value="${i}">${s.t}</option>`)));
+      let st={idx:-1};
+      function meta(){ $("#s-meta",stage).textContent=`Nog ${st.left} · Fouten ${st.err} · ${Math.round((Date.now()-st.t0)/1000)} s`; }
+      function start(idx){
+        if(idx===undefined) idx=(st.idx+1)%AR_SETS.length;
+        const s=AR_SETS[idx]; st={idx,set:s,left:s.i.length,err:0,sel:null,t0:Date.now()}; sel.value=idx;
+        $("#s-title",stage).textContent=s.t; $("#s-fb",stage).textContent="";
+        const pool=$("#s-pool",stage); pool.innerHTML="";
+        shuffle(s.i).forEach(it=>{ const b=document.createElement("button"); b.type="button"; b.className="ar-chip"; b.textContent=it[0]; b.dataset.c=it[1];
+          b.addEventListener("click",()=>{ if(b.classList.contains("placed")) return; stage.querySelectorAll(".ar-chip.sel").forEach(x=>x.classList.remove("sel")); b.classList.add("sel"); st.sel=b; }); pool.appendChild(b); });
+        const bk=$("#s-buckets",stage); bk.innerHTML="";
+        s.c.forEach((c,ci)=>{ const d=document.createElement("button"); d.type="button"; d.className="ar-bucket"; d.innerHTML=`<h4>${c}</h4>`; d.setAttribute("aria-label","Kolom "+c); d.addEventListener("click",()=>drop(ci,d)); bk.appendChild(d); });
+        clearInterval(timer); timer=setInterval(()=>{ if(!document.body.contains(stage)) return clearInterval(timer); meta(); },500); meta();
+      }
+      function drop(ci,d){
+        const b=st.sel, m=$("#s-fb",stage); if(!b){ fb(m,false,"Tik eerst op een kaartje."); return; }
+        if(+b.dataset.c===ci){ b.classList.remove("sel"); b.classList.add("placed"); d.appendChild(b); st.sel=null; st.left--; fb(m,true,"Juist!");
+          if(st.left===0){ clearInterval(timer); const sec=Math.round((Date.now()-st.t0)/1000); const p=Math.max(1,st.set.i.length-st.err+(sec<60?2:0)); pts(p);
+            fb(m,true,`Ronde klaar in ${sec} s met ${st.err} fout(en): +${p} punten.${sec<60?" (snelheidsbonus +2)":""}`); } }
+        else { st.err++; d.classList.add("flash","ar-shake"); b.classList.add("ar-shake"); setTimeout(()=>{ d.classList.remove("flash","ar-shake"); b.classList.remove("ar-shake"); },400);
+          fb(m,false,`‘${b.textContent}’ hoort niet bij ${st.set.c[ci]}. Probeer opnieuw.`); }
+        meta();
+      }
+      sel.addEventListener("change",()=>start(+sel.value)); $("#s-next",stage).addEventListener("click",()=>start()); start(0);
+    },
+    who(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2>Wie ben ik?</h2><span class="ar-meta" id="w-meta"></span><p>Raad het organisme, proces of begrip. Na één hint verdien je 3 punten, na twee hints 2 punten, na drie hints 1 punt.</p></div>
+        <div class="ar-riddle"><ol id="w-hints"></ol></div><div class="actions"><button type="button" class="btn ghost" id="w-hint">Volgende hint</button></div>
+        <div class="ar-opts" id="w-opts"></div><div class="ar-fb" id="w-fb" aria-live="polite"></div><div class="actions"><button type="button" class="btn" id="w-next">Volgend raadsel</button></div></div>`;
+      let st={order:[],k:-1,shown:1,done:false};
+      function draw(){ const r=AR_WHO[st.order[st.k]]; $("#w-hints",stage).innerHTML=r.h.map((x,i)=>i<st.shown?`<li>${x}</li>`:`<li class="hid" aria-hidden="true">verborgen hint</li>`).join("");
+        $("#w-hint",stage).disabled=st.done||st.shown>=3; $("#w-meta",stage).textContent=`Raadsel ${st.k+1}/${AR_WHO.length} · waard ${4-st.shown} pt`; }
+      function next(){
+        if(!st.order.length||st.k>=st.order.length-1){ st.order=shuffle(AR_WHO.map((_,i)=>i)); st.k=-1; }
+        st.k++; st.shown=1; st.done=false; const r=AR_WHO[st.order[st.k]]; $("#w-fb",stage).textContent=""; draw();
+        const o=$("#w-opts",stage); o.innerHTML="";
+        shuffle(r.o).forEach(t=>{ const b=document.createElement("button"); b.type="button"; b.textContent=t; b.addEventListener("click",()=>answer(b,t,r)); o.appendChild(b); });
+      }
+      function answer(b,t,r){ if(st.done) return; const m=$("#w-fb",stage);
+        if(t===r.a){ st.done=true; b.classList.add("ok"); const p=4-st.shown; pts(p); st.shown=3; draw(); fb(m,true,`Juist, het is ${r.a}! +${p} punten.`); }
+        else { b.classList.add("no"); b.disabled=true;
+          if(st.shown<3){ st.shown++; draw(); fb(m,false,"Niet juist. Je krijgt een extra hint."); }
+          else { st.done=true; stage.querySelectorAll("#w-opts button").forEach(x=>{ if(x.textContent===r.a) x.classList.add("ok"); }); draw(); fb(m,false,`Helaas, het juiste antwoord is ${r.a}.`); } } }
+      $("#w-hint",stage).addEventListener("click",()=>{ if(st.shown<3){ st.shown++; draw(); } });
+      $("#w-next",stage).addEventListener("click",next); next();
+    },
+    chain(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2 id="c-title">Kettingreactie</h2><span class="ar-meta" id="c-meta"></span><p id="c-q"></p></div>
+        <ol class="ar-chain" id="c-list"></ol><div class="actions"><button type="button" class="btn" id="c-check">Controleer</button><button type="button" class="btn ghost" id="c-next">Volgende ketting</button></div><div class="ar-fb" id="c-fb" aria-live="polite"></div></div>`;
+      let st={k:-1,cur:[],checked:false};
+      function draw(marks){ const ol=$("#c-list",stage); ol.innerHTML="";
+        st.cur.forEach((s,i)=>{ const li=document.createElement("li"); if(marks) li.className=marks[i]?"ok":"no";
+          li.innerHTML=`<span class="n" aria-hidden="true"></span><span class="t"></span>`; $(".t",li).textContent=s;
+          const up=h(`<button type="button" class="ar-mv">↑</button>`), dn=h(`<button type="button" class="ar-mv">↓</button>`);
+          up.setAttribute("aria-label","Omhoog: "+s); dn.setAttribute("aria-label","Omlaag: "+s); up.disabled=i===0||st.checked; dn.disabled=i===st.cur.length-1||st.checked;
+          up.addEventListener("click",()=>{ [st.cur[i-1],st.cur[i]]=[st.cur[i],st.cur[i-1]]; draw(); ol.children[i-1].querySelector(".ar-mv").focus(); });
+          dn.addEventListener("click",()=>{ [st.cur[i+1],st.cur[i]]=[st.cur[i],st.cur[i+1]]; draw(); ol.children[i+1].querySelectorAll(".ar-mv")[1].focus(); });
+          li.append(up,dn); ol.appendChild(li); }); }
+      function next(){ st.k=(st.k+1)%AR_CHAINS.length; const c=AR_CHAINS[st.k]; let cur; do{ cur=shuffle(c.s); }while(cur.every((x,i)=>x===c.s[i]));
+        st.cur=cur; st.checked=false; $("#c-title",stage).textContent=c.t; $("#c-q",stage).textContent=c.q+" Zet de stappen in de juiste volgorde met de pijltjes en controleer. Elke stap op de juiste plaats = 1 punt.";
+        $("#c-fb",stage).textContent=""; $("#c-check",stage).disabled=false; $("#c-meta",stage).textContent=`Ketting ${st.k+1}/${AR_CHAINS.length}`; draw(); }
+      $("#c-check",stage).addEventListener("click",()=>{ if(st.checked) return; const c=AR_CHAINS[st.k]; const marks=st.cur.map((s,i)=>s===c.s[i]); const n=marks.filter(Boolean).length;
+        st.checked=true; draw(marks); pts(n); $("#c-check",stage).disabled=true;
+        fb($("#c-fb",stage),n===c.s.length, n===c.s.length?`Perfect! +${n} punten.`:`${n} van de ${c.s.length} stappen staan juist: +${n} punten. Juiste volgorde: ${c.s.join(" → ")}`); });
+      $("#c-next",stage).addEventListener("click",next); next();
+    }
+  };
+  const tabs=v.querySelectorAll(".ar-tabs button");
+  function open(g){ arTab=g; clearInterval(timer); tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.g===g)); GAMES[g](); }
+  v.querySelector(".ar-tabs").addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) open(b.dataset.g); });
+  open(arTab);
+}
+
+/* ---------- ROUTER ---------- */
+let current="start";
+function route(){
+  const id=(location.hash||"#start").slice(1);
+  const ch=CH.find(c=>c.id===id);
+  current = ch?id:(["begrippen","toets","arena"].includes(id)?id:"start");
+  const app=$("#app"); app.innerHTML="";
+  if(ch) renderChapter(app,ch); else if(current==="begrippen") renderGloss(app); else if(current==="toets") renderQuiz(app); else if(current==="arena") renderArena(app); else renderStart(app);
+  renderTabs(current); window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+route();
+</script>
+<script>try{localStorage.setItem("bio42-last","5")}catch(e){}</script>
+</body>
+</html>

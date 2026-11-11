@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Biologie 4 · 2 lesuren</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Young+Serif&display=swap">
+<style>
+/* Layout: één verticale leerweg (een wandelpad door het schooljaar) met zes haltes; elke halte = thema met voortgangsring rond het nummer. */
+:root{
+  --paper:#EAF0EC; --sheet:#F8FBF9; --ink:#12302A; --ink-2:#4B6761; --line:#C6D6CE;
+  --moss:#4C7D27; --moss-soft:#DAE8CC; --water:#2A6C84; --water-soft:#D3E6ED;
+  --f-display:"Young Serif",Georgia,"Times New Roman",serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0D1A17; --sheet:#132420; --ink:#E1ECE6; --ink-2:#9BB3AB; --line:#29423B;
+  --moss:#9CCB6B; --moss-soft:#22371B; --water:#74B5CA; --water-soft:#17313A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0D1A17; --sheet:#132420; --ink:#E1ECE6; --ink-2:#9BB3AB; --line:#29423B;
+  --moss:#9CCB6B; --moss-soft:#22371B; --water:#74B5CA; --water-soft:#17313A; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--water);outline-offset:3px;border-radius:6px}
+.wrap{max-width:900px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+
+.top{border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-block:12px;font-family:var(--f-display);font-size:1.1rem}
+.top .sub{color:var(--moss)}
+
+.hero{padding-block:48px 8px;display:grid;gap:18px}
+.hero h1{font-size:clamp(2.6rem,7vw,4.4rem)}
+.hero .lead{font-size:1.15rem;color:var(--ink-2);max-width:56ch}
+.resume{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:6px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--paper);text-decoration:none;padding:10px 18px;border-radius:999px;font-weight:700}
+.btn:hover{background:var(--moss)}
+.resume .note{color:var(--ink-2);font-size:.95rem}
+
+/* de leerweg */
+.trail{list-style:none;margin:40px 0 0;padding:0;position:relative}
+.trail::before{content:"";position:absolute;left:35px;top:40px;bottom:40px;border-left:2px dashed var(--line)}
+.stop{display:grid;grid-template-columns:72px minmax(0,1fr);gap:22px;padding-block:22px;position:relative}
+.badge{position:relative;width:72px;height:72px;background:var(--paper);border-radius:50%}
+.badge svg{position:absolute;inset:0;width:72px;height:72px;transform:rotate(-90deg)}
+.badge circle{fill:var(--sheet);stroke-width:5}
+.badge .bg{stroke:var(--line)}
+.badge .fg{fill:none;stroke:var(--moss);stroke-linecap:round;transition:stroke-dashoffset .8s ease}
+.badge .num{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-size:1.9rem;font-variant-numeric:tabular-nums}
+.stop.done .badge circle.bg{fill:var(--moss-soft)}
+
+.body{min-width:0;display:grid;gap:10px;padding-top:4px}
+.body h2{font-size:clamp(1.6rem,3.6vw,2.15rem)}
+.body h2 a{text-decoration:none}
+.body h2 a:hover{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px;text-decoration-color:var(--moss)}
+.hook{font-family:var(--f-display);color:var(--moss);font-size:1.1rem}
+.chs{list-style:none;margin:2px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.chs a{display:inline-flex;align-items:baseline;gap:6px;border:1px solid var(--line);background:var(--sheet);padding:4px 11px;border-radius:999px;text-decoration:none;font-size:.9rem;color:var(--ink)}
+.chs a:hover{border-color:var(--moss);background:var(--moss-soft)}
+.chs .n{color:var(--ink-2);font-size:.78rem;font-variant-numeric:tabular-nums}
+.chs a.ok .n{color:var(--moss);font-weight:700}
+.meta{display:flex;flex-wrap:wrap;gap:4px 18px;color:var(--ink-2);font-size:.92rem;font-variant-numeric:tabular-nums}
+.meta b{color:var(--ink)}
+.extra{font-size:.95rem}
+.extra a{color:var(--water);font-weight:700;text-underline-offset:3px}
+
+.foot{border-top:1px solid var(--line);margin-top:40px}
+.foot .wrap{padding-block:22px 40px;color:var(--ink-2);font-size:.92rem;display:grid;gap:10px}
+.foot button{font:inherit;color:var(--ink-2);background:none;border:1px solid var(--line);border-radius:999px;padding:4px 12px;cursor:pointer;justify-self:start}
+.foot button:hover{color:var(--ink);border-color:var(--ink-2)}
+
+@media (max-width:560px){
+  .stop{grid-template-columns:52px minmax(0,1fr);gap:14px}
+  .badge,.badge svg{width:52px;height:52px}
+  .badge .num{font-size:1.4rem}
+  .trail::before{left:25px}
+}
+@media (prefers-reduced-motion:reduce){.badge .fg{transition:none}}
+</style>
+
+</head>
+<body>
+<header class="top"><div class="wrap"><span>Biologie 4 <span class="sub">2 lesuren</span></span><span>P. Vandenheede</span></div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>Van ecosysteem tot bevruchting</h1>
+    <p class="lead">Zes thema’s, één schooljaar. Elk thema heeft per hoofdstuk een samenvatting, begripkaarten en oefeningen met meteen feedback. Daarna oefen je in de oefenarena en test je jezelf met de eindtoets.</p>
+    <div class="resume" id="resume" hidden></div>
+  </section>
+
+  <ol class="trail" id="trail" aria-label="Thema’s"></ol>
+</main>
+
+<footer class="foot"><div class="wrap">
+  <p>Je voortgang wordt alleen in deze browser bewaard. Op een andere computer of in een privévenster begin je opnieuw.</p>
+  <button type="button" id="refresh">Voortgang vernieuwen</button>
+</div></footer>
+
+<script>
+const THEMAS = [
+ {n:1,file:"thema1.html",title:"Ecologie",hook:"Van cel tot ecosysteem",key:"eco-thema1-v1",
+  ch:[["h1","1","Ecosystemen",6],["h2","2","Biodiversiteit in ecosystemen",8],["mad","Focus","Madagaskar",4],["h3","3","Energiestromen en kringlopen",13],["h4","4","Ecosysteemdiensten",3],["h5","5","Invloed van de mens",6]]},
+ {n:2,file:"thema2.html",title:"Populaties en ecologie",hook:"Hoe groot kan een populatie worden?",key:"eco-thema2-v1",
+  ch:[["h1","1","Populatiekenmerken",10],["h2","2","Populatiedynamiek",9],["h3","3","Verstoring van populaties",9],["inv","Focus","Invasieve soorten",5]]},
+ {n:3,file:"thema3.html",title:"Interactie en gedrag",hook:"Wie heeft er voordeel?",key:"bio-thema3-v1",
+  ch:[["h1","1","Interactievormen",5],["h2","2","Interspecifieke interacties",8],["h3","3","Intraspecifieke interacties en gedrag",8],["h4","4","Communicatie",5],["mim","Focus","Mimicry",4]]},
+ {n:4,file:"thema4.html",title:"Classificatie",hook:"Hoe verwant zijn ze?",key:"bio-thema4-2u-v1",
+  ch:[["h1","1","Biologisch soortbegrip",13],["h2","2","Classificatie in domeinen",9],["evo","Focus","Mensen evolueren nog steeds",5]]},
+ {n:5,file:"thema5.html",title:"Micro-organismen",hook:"Drie soorten micro-organismen",key:"bio-thema5-2u-v1",
+  ch:[["mic","Focus","De microkosmos",3],["h1","1","Bacteriën en archaea",10],["h2","2","Virussen",9],["h3","3","Gisten",5],["h4","4","Micro-organismen en de mens",6]]},
+ {n:6,file:"thema6.html",title:"Voortplanting bij de mens",hook:"De menstruatiecyclus in 28 dagen",key:"bio-thema6-2u-v1",
+  ch:[["h1","1","Geslachtskenmerken",7],["gen","Focus","Geslacht versus gender",4],["zaad","2.1","De zaadcel",6],["eicel","2.2","Eicel en menstruatiecyclus",8],["zwang","2.3","Bevruchting en zwangerschap",6],["anti","Extra","Jongeren en anticonceptie",5]],
+  extra:{href:"menstruatiecyclus.html",label:"Interactieve animatie van de menstruatiecyclus"}}
+];
+const read = k => { try { return JSON.parse(localStorage.getItem(k)||"{}")||{}; } catch(e){ return {}; } };
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const C = 2*Math.PI*31;
+
+function render(){
+  let last=null; try{ last=parseInt(localStorage.getItem("bio42-last")); }catch(e){}
+  const trail=document.getElementById("trail"); trail.innerHTML="";
+  THEMAS.forEach(t=>{
+    const P=read(t.key); let d=0,n=0;
+    const chips=t.ch.map(([id,num,title,cnt])=>{
+      let cd=0; for(let i=0;i<cnt;i++) if(P[id+"-"+i]) cd++; d+=cd; n+=cnt;
+      return `<li><a class="${cd===cnt?"ok":""}" href="${t.file}#${id}"><span class="n">${esc(num)}</span>${esc(title)}<span class="n" aria-label="${cd} van ${cnt} oefeningen juist">${cd}/${cnt}</span></a></li>`;
+    }).join("");
+    const frac=n?d/n:0;
+    const best = P.best!=null ? `beste eindtoets <b>${P.best}/10</b>` : "eindtoets nog niet gemaakt";
+    const li=document.createElement("li");
+    li.className="stop"+(frac===1?" done":"");
+    li.innerHTML=`
+      <div class="badge" aria-hidden="true">
+        <svg viewBox="0 0 72 72"><circle class="bg" cx="36" cy="36" r="31"/><circle class="fg" cx="36" cy="36" r="31" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-frac)}"/></svg>
+        <span class="num">${t.n}</span>
+      </div>
+      <div class="body">
+        <h2><a href="${t.file}">${esc(t.title)}</a></h2>
+        <p class="hook">${esc(t.hook)}</p>
+        <ul class="chs" aria-label="Hoofdstukken van thema ${t.n}">${chips}</ul>
+        <p class="meta"><span><b>${d}</b> van ${n} oefeningen juist</span><span>${best}</span></p>
+        ${t.extra?`<p class="extra"><a href="${t.extra.href}">${esc(t.extra.label)}</a></p>`:""}
+      </div>`;
+    trail.appendChild(li);
+  });
+  const r=document.getElementById("resume");
+  const t=THEMAS.find(x=>x.n===last);
+  if(t){ r.hidden=false; r.innerHTML=`<a class="btn" href="${t.file}">Verder met thema ${t.n}</a><span class="note">Laatst geopend: ${esc(t.title)}</span>`; }
+  else { r.hidden=false; r.innerHTML=`<a class="btn" href="${THEMAS[0].file}">Start met thema 1</a>`; }
+}
+render();
+document.getElementById("refresh").addEventListener("click",render);
+window.addEventListener("pageshow",render);
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden) render(); });
+</script>
+
+</body>
+</html>

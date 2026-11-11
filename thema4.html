@@ -1,0 +1,991 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Classificatie – Thema 4 (2 lesuren)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Young+Serif&display=swap">
+<style>
+/* Layout: veldschrift — één hoofdstuk tegelijk, smalle leeskolom, oefeningen als losse werkbladen eronder */
+:root{
+  --paper:#EAF0EC; --sheet:#F8FBF9; --ink:#12302A; --ink-2:#4B6761; --line:#C6D6CE;
+  --moss:#4C7D27; --moss-soft:#DAE8CC; --water:#2A6C84; --water-soft:#D3E6ED;
+  --ok:#2C7A47; --ok-soft:#D5EDDC; --bad:#B0442D; --bad-soft:#F5DCD5;
+  --bone:#F3F1EA; --dead:#8D8676;
+  --f-display:"Young Serif", "Iowan Old Style", Georgia, serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0D1A17; --sheet:#132420; --ink:#E1ECE6; --ink-2:#9BB3AB; --line:#29423B;
+  --moss:#9CCB6B; --moss-soft:#22371B; --water:#74B5CA; --water-soft:#17313A;
+  --ok:#7ACB91; --ok-soft:#163322; --bad:#EC8F77; --bad-soft:#3B1E17;
+  --bone:#E9E6DC; --dead:#7A7466; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0D1A17; --sheet:#132420; --ink:#E1ECE6; --ink-2:#9BB3AB; --line:#29423B;
+  --moss:#9CCB6B; --moss-soft:#22371B; --water:#74B5CA; --water-soft:#17313A;
+  --ok:#7ACB91; --ok-soft:#163322; --bad:#EC8F77; --bad-soft:#3B1E17;
+  --bone:#E9E6DC; --dead:#7A7466; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;margin:0}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,5vw,3.6rem)}
+h2{font-size:clamp(1.6rem,3.4vw,2.3rem)}
+h3{font-size:1.3rem}
+p{margin:0}
+b,strong{font-weight:700}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--water);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:20px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 18px;padding-block:10px}
+.teacher{font-family:var(--f-display);font-size:1.15rem;color:var(--ink)}
+.brand{font-family:var(--f-display);font-size:1.15rem;white-space:nowrap;text-decoration:none;color:var(--ink)}
+.brand span{color:var(--moss)}
+nav.tabs{display:flex;flex-wrap:wrap;gap:4px;min-width:0;flex-basis:100%;margin-left:-11px}
+nav.tabs a{flex:none;display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;text-decoration:none;color:var(--ink-2);font-size:.92rem;white-space:nowrap}
+nav.tabs a:hover{background:var(--moss-soft);color:var(--ink)}
+nav.tabs a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+.ring{width:16px;height:16px;flex:none}
+.ring circle{fill:none;stroke-width:3}
+.ring .bg{stroke:var(--line)}
+.ring .fg{stroke:var(--moss);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%}
+nav.tabs a[aria-current="page"] .ring .bg{stroke:color-mix(in srgb,var(--paper) 35%,transparent)}
+
+main{padding-block:36px 80px}
+.view[hidden]{display:none}
+
+/* hero ladder */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:36px;align-items:center}
+.hero .lead{font-size:1.15rem;color:var(--ink-2);max-width:52ch;margin-top:14px}
+.ladder{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px;counter-reset:lv}
+.ladder button{border:1px solid var(--line);background:var(--sheet);padding:6px 12px;border-radius:999px;cursor:pointer;font-size:.95rem;display:flex;gap:7px;align-items:baseline}
+.ladder button .n{font-variant-numeric:tabular-nums;color:var(--ink-2);font-size:.8rem}
+.ladder button[aria-pressed="true"]{background:var(--moss);border-color:var(--moss);color:var(--sheet)}
+.ladder button[aria-pressed="true"] .n{color:inherit;opacity:.8}
+.lvinfo{margin-top:18px;min-height:7.5em;border-left:3px solid var(--moss);padding:4px 0 4px 16px;max-width:60ch}
+.lvinfo h3{font-size:1.5rem}
+.lvinfo .lvex{color:var(--ink-2);margin-top:6px;font-style:italic}
+#rings{width:100%;max-width:420px;height:auto;display:block;margin:auto}
+#rings circle{fill:transparent;stroke:var(--line);stroke-width:1.5;transition:fill .35s,stroke .35s;cursor:pointer}
+#rings circle.in{fill:color-mix(in srgb,var(--moss) 9%,transparent);stroke:color-mix(in srgb,var(--moss) 55%,var(--line))}
+#rings circle.on{stroke:var(--moss);stroke-width:3.5}
+#rings text{font-family:var(--f-body);font-size:13px;fill:var(--ink);text-anchor:middle;pointer-events:none}
+
+.chapters{margin-top:56px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.chap{display:block;text-decoration:none;color:inherit;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.chap:hover{border-color:var(--moss)}
+.chap .num{font-family:var(--f-display);font-size:1.9rem;color:var(--moss);line-height:1}
+.chap h3{margin-top:8px;font-size:1.15rem}
+.chap p{color:var(--ink-2);font-size:.92rem;margin-top:4px}
+.bar{height:5px;background:var(--line);border-radius:3px;margin-top:12px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--moss);border-radius:3px;width:0;transition:width .4s}
+.howto{margin-top:44px;max-width:64ch;color:var(--ink-2)}
+.howto h3{color:var(--ink);margin-bottom:6px}
+
+/* chapter */
+.chead{max-width:760px}
+.chead .num{font-family:var(--f-display);color:var(--moss);font-size:1.1rem}
+.chead p{font-size:1.12rem;color:var(--ink-2);margin-top:12px}
+.subnav{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.subnav a{font-size:.9rem;color:var(--water);text-decoration:none;border-bottom:1px solid currentColor}
+.block{margin-top:44px;max-width:760px}
+.block > h2{margin-bottom:6px}
+.sum{margin-top:22px;display:grid;gap:12px}
+.sum h3{margin-top:14px}
+.sum p,.sum li{max-width:68ch}
+.sum ul{margin:0;padding-left:1.2em;display:grid;gap:4px}
+dfn{font-style:normal;font-weight:700;background:linear-gradient(transparent 62%,var(--moss-soft) 62%)}
+.note{font-size:.95rem;color:var(--ink-2);border-left:3px solid var(--water);padding-left:12px}
+
+/* flashcards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:16px;max-width:1000px}
+.card{perspective:900px;border:none;background:none;padding:0;cursor:pointer;min-height:132px;text-align:left}
+.card .in{position:relative;display:block;width:100%;height:100%;min-height:132px;transition:transform .45s;transform-style:preserve-3d}
+.card.flip .in{transform:rotateY(180deg)}
+.card .f,.card .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;justify-content:center}
+.card .f{background:var(--sheet);border:1px solid var(--line);font-family:var(--f-display);font-size:1.2rem}
+.card .f small{font-family:var(--f-body);font-size:.78rem;color:var(--ink-2);margin-top:8px}
+.card .b{background:var(--moss-soft);border:1px solid var(--moss);transform:rotateY(180deg);font-size:.93rem;line-height:1.45}
+
+/* exercises */
+.ex-list{display:grid;gap:18px;margin-top:18px;max-width:1000px}
+.ex{min-width:0;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.ex.done{border-color:var(--ok)}
+.exh{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.exh h3{font-size:1.18rem;max-width:62ch}
+.exh .tag{font-size:.8rem;color:var(--ink-2);display:block;font-family:var(--f-body);margin-bottom:2px}
+.chip{font-size:.8rem;padding:3px 10px;border-radius:999px;background:var(--paper);color:var(--ink-2);white-space:nowrap;border:1px solid var(--line)}
+.ex.done .chip{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
+.ex .q{margin-top:8px;color:var(--ink-2);max-width:68ch}
+.ex-body{margin-top:14px}
+.row{display:flex;gap:10px 16px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:10px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:none}
+.row .t{flex:1 1 280px;min-width:0}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opt{border:1px solid var(--line);background:var(--paper);padding:5px 12px;border-radius:7px;cursor:pointer;font-size:.92rem}
+.opt:hover{border-color:var(--water)}
+.opt[aria-pressed="true"]{background:var(--water);color:var(--sheet);border-color:var(--water)}
+.row.ok .opt[aria-pressed="true"]{background:var(--ok);border-color:var(--ok)}
+.row.bad .opt[aria-pressed="true"]{background:var(--bad);border-color:var(--bad)}
+.fb{flex-basis:100%;font-size:.92rem;padding:6px 10px;border-radius:7px}
+.fb.ok{background:var(--ok-soft);color:var(--ink)}
+.fb.bad{background:var(--bad-soft);color:var(--ink)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.btn{border:none;background:var(--ink);color:var(--paper);padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.95rem}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:400}
+.btn:hover{opacity:.9}
+.msg{font-size:.95rem}
+.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+select{font:inherit;font-size:.93rem;padding:5px 8px;border-radius:7px;border:1px solid var(--line);background:var(--paper);color:var(--ink);max-width:100%}
+.row.ok select{border-color:var(--ok);background:var(--ok-soft)}
+.row.bad select{border-color:var(--bad);background:var(--bad-soft)}
+textarea{width:100%;min-height:90px;font:inherit;font-size:.95rem;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);resize:vertical}
+.model{margin-top:12px;background:var(--moss-soft);border-radius:8px;padding:12px 14px;font-size:.95rem}
+.model b{display:block;margin-bottom:2px}
+
+/* order */
+.pool,.answer{display:flex;flex-wrap:wrap;gap:8px;min-height:48px;padding:10px;border-radius:8px}
+.pool{background:var(--paper)}
+.answer{border:1.5px dashed var(--line);margin-top:10px;flex-direction:column;align-items:stretch}
+.answer:empty::before{content:"Tik de stappen hierboven aan in de juiste volgorde.";color:var(--ink-2);font-size:.92rem}
+.tok{border:1px solid var(--line);background:var(--sheet);padding:6px 12px;border-radius:7px;cursor:pointer;text-align:left;font-size:.93rem}
+.answer .tok{display:flex;gap:10px}
+.answer .tok .i{font-variant-numeric:tabular-nums;color:var(--ink-2);min-width:1.2em}
+.answer .tok.ok{border-color:var(--ok);background:var(--ok-soft)}
+.answer .tok.bad{border-color:var(--bad);background:var(--bad-soft)}
+
+/* table */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:380px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{font-weight:700;font-size:.9rem;color:var(--ink-2)}
+td.c,th.c{text-align:center}
+td.ok{background:var(--ok-soft)} td.bad{background:var(--bad-soft)}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--water)}
+
+/* explore */
+.explore{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:16px}
+.explore .list{display:flex;flex-direction:column;gap:6px}
+.explore .panel{background:var(--paper);border-radius:8px;padding:14px 16px;min-height:120px}
+.explore .panel h4{font-family:var(--f-display);font-weight:400;font-size:1.2rem;margin:0 0 6px}
+.explore .panel dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.explore .panel dt{color:var(--ink-2);font-size:.9rem}
+.explore .panel dd{margin:0}
+
+/* pyramid */
+.pyr{display:grid;gap:6px;margin-top:12px}
+.pyr .lv{display:grid;grid-template-columns:150px minmax(0,1fr) 110px;gap:10px;align-items:center;font-size:.92rem}
+.pyr .lv .bw{display:flex;justify-content:center}
+.pyr .lv .b{height:30px;background:var(--moss);border-radius:4px;min-width:3px;transition:width .3s}
+.pyr .lv:nth-child(2) .b{background:color-mix(in srgb,var(--moss) 75%,var(--water))}
+.pyr .lv:nth-child(3) .b{background:color-mix(in srgb,var(--moss) 45%,var(--water))}
+.pyr .lv:nth-child(4) .b{background:var(--water)}
+.pyr .lv .v{font-variant-numeric:tabular-nums;text-align:right}
+input[type=range]{width:100%;accent-color:var(--moss)}
+input[type=number]{font:inherit;width:9em;padding:5px 8px;border-radius:7px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+
+/* svg diagrams */
+.diagram{overflow-x:auto}
+.diagram svg{display:block;width:100%;min-width:560px;height:auto}
+.node rect{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+.node text{font-family:var(--f-body);font-size:14px;fill:var(--ink);text-anchor:middle}
+.arr{cursor:pointer}
+.arr line{stroke-width:3.5}
+.arr .hit{stroke:transparent;stroke-width:22}
+.arr text{font-family:var(--f-body);font-size:13px;font-weight:700;paint-order:stroke;stroke:var(--sheet);stroke-width:5px;stroke-linejoin:round}
+.arr.dim{opacity:.25}
+.arr.hl line{stroke-width:6}
+.k-fix{stroke:var(--water);fill:var(--water)}
+.k-ass{stroke:var(--moss);fill:var(--moss)}
+.k-nit{stroke:#C98A1B;fill:#C98A1B}
+.k-amm{stroke:var(--bad);fill:var(--bad)}
+.k-dood{stroke:var(--ink-2);fill:var(--ink-2)}
+.arr text.k-fix,.arr text.k-ass,.arr text.k-nit,.arr text.k-amm,.arr text.k-dood{stroke:var(--sheet)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:none;background:transparent;padding:6px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.infobox{margin-top:12px;background:var(--paper);border-radius:8px;padding:12px 14px;min-height:72px}
+
+/* coral */
+.coral{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:20px;align-items:center}
+.coral svg{width:100%;max-width:300px;height:auto}
+.coral .st{font-family:var(--f-display);font-size:1.5rem}
+.c-branch{transition:stroke .6s}
+.state-gezond .c-branch{stroke:var(--moss)}
+.state-gezond .c-pol{fill:#E0A33A;opacity:1}
+.state-verbleekt .c-branch{stroke:var(--bone)}
+.state-verbleekt .c-pol{fill:var(--bone);opacity:.7}
+.state-dood .c-branch{stroke:var(--dead)}
+.state-dood .c-pol{opacity:0}
+.c-alg{opacity:0;transition:opacity .6s;fill:var(--moss)}
+.state-dood .c-alg{opacity:.8}
+.c-pol{transition:fill .6s,opacity .6s}
+
+/* glossary */
+.gl-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.gl-tools input{font:inherit;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--sheet);color:var(--ink);flex:1 1 240px;min-width:0}
+.gl{margin-top:16px;display:grid;gap:0;max-width:820px}
+.gl div{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}
+.gl dt{font-weight:700}
+.gl dd{margin:0}
+.gl .h{font-size:.8rem;color:var(--ink-2)}
+
+/* toets */
+.quiz{max-width:760px}
+.qcard{background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.qcard .qn{color:var(--ink-2);font-size:.9rem;font-variant-numeric:tabular-nums}
+.qcard h3{margin:6px 0 14px}
+.qopts{display:grid;gap:8px}
+.qopt{border:1px solid var(--line);background:var(--paper);text-align:left;padding:10px 14px;border-radius:8px;cursor:pointer}
+.qopt:hover{border-color:var(--water)}
+.qopt.ok{background:var(--ok-soft);border-color:var(--ok)}
+.qopt.bad{background:var(--bad-soft);border-color:var(--bad)}
+.qopt:disabled{cursor:default}
+.score{font-family:var(--f-display);font-size:3rem;color:var(--moss)}
+
+.foot{margin-top:60px;color:var(--ink-2);font-size:.85rem;max-width:70ch}
+
+@media (max-width:820px){
+  .top{position:static}
+  .hero{grid-template-columns:1fr}
+  #rings{max-width:300px}
+  .explore,.coral{grid-template-columns:1fr}
+  .pyr .lv{grid-template-columns:110px minmax(0,1fr) 80px}
+  .gl div{grid-template-columns:1fr;gap:2px}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .ex{padding:16px}
+}
+
+/* oefenarena (spellen) */
+.ar-top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between}
+.ar-pts{display:flex;gap:8px;flex-wrap:wrap}
+.ar-pill{background:var(--sheet);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.ar-pill b{color:var(--moss)}
+.ar-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-top:26px}
+.ar-tabs button{border:1px solid var(--line);background:var(--sheet);padding:7px 14px;border-radius:999px;cursor:pointer;font-size:.95rem}
+.ar-tabs button[aria-selected="true"]{background:var(--moss);border-color:var(--moss);color:var(--sheet)}
+.ar-game{margin-top:16px;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;max-width:1000px}
+.ar-head{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:baseline}
+.ar-head p{flex-basis:100%;color:var(--ink-2);max-width:68ch;margin-top:6px}
+.ar-meta{color:var(--ink-2);font-variant-numeric:tabular-nums;font-weight:700;font-size:.95rem}
+.ar-fb{min-height:1.5em;font-weight:700;margin-top:10px;font-size:.95rem}
+.ar-fb.ok{color:var(--ok)} .ar-fb.no{color:var(--bad)}
+.ar-mem{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+@media (max-width:620px){.ar-mem{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ar-card{min-height:108px;border-radius:8px;border:1px solid var(--line);background:var(--ink);color:transparent;cursor:pointer;padding:8px;font-size:.86rem;line-height:1.3;position:relative}
+.ar-card::after{content:"?";position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-size:1.8rem;color:color-mix(in srgb,var(--paper) 45%,transparent)}
+.ar-card.open,.ar-card.done{background:var(--paper);color:var(--ink);cursor:default}
+.ar-card.open::after,.ar-card.done::after{content:none}
+.ar-card.term{font-family:var(--f-display);font-size:1.02rem}
+.ar-card.done{background:var(--ok-soft);border-color:var(--ok)}
+.ar-card.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.ar-pool{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border:1.5px dashed var(--line);border-radius:8px;margin-top:14px}
+.ar-chip{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:7px 12px;cursor:pointer;text-align:left;max-width:100%;font-size:.93rem}
+.ar-chip.sel{border-color:var(--water);background:var(--water-soft)}
+.ar-chip.placed{cursor:default;background:var(--ok-soft);border-color:transparent;font-size:.88rem;padding:5px 9px}
+.ar-buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:12px}
+.ar-bucket{border:1.5px solid var(--moss);border-radius:8px;padding:10px;min-height:100px;background:transparent;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ar-bucket h4{margin:0 0 4px;font-family:var(--f-display);font-weight:400;font-size:1.05rem;color:var(--moss)}
+.ar-bucket.flash{border-color:var(--bad);background:var(--bad-soft)}
+@keyframes ar-shake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.ar-shake{animation:ar-shake .3s}
+.ar-riddle{background:var(--moss-soft);border-radius:8px;padding:14px 16px;margin-top:14px}
+.ar-riddle ol{margin:0;padding-left:1.4em;display:grid;gap:6px}
+.ar-riddle li.hid{color:transparent;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--moss) 30%,transparent) 0 10px,transparent 10px 14px);border-radius:4px;list-style:none;margin-left:-1.4em;padding-left:1.4em}
+.ar-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:12px}
+.ar-opts button{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:11px;cursor:pointer;font-weight:700}
+.ar-opts button.ok{border-color:var(--ok);background:var(--ok-soft)}
+.ar-opts button.no{border-color:var(--bad);background:var(--bad-soft)}
+.ar-chain{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px;counter-reset:s}
+.ar-chain li{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--paper)}
+.ar-chain li .n{counter-increment:s;font-family:var(--f-display);color:var(--moss);width:1.6em;text-align:center;flex:none}
+.ar-chain li .n::before{content:counter(s)}
+.ar-chain li .t{flex:1;min-width:0}
+.ar-chain li.ok{border-color:var(--ok);background:var(--ok-soft)}
+.ar-chain li.no{border-color:var(--bad)}
+.ar-mv{border:1px solid var(--line);background:var(--sheet);border-radius:7px;width:38px;height:38px;cursor:pointer;flex:none}
+.ar-mv:disabled{opacity:.3;cursor:default}
+.chap.arena{border-color:var(--moss);background:var(--moss-soft)}
+@media (prefers-reduced-motion:reduce){.ar-shake{animation:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* thema 4 extra's */
+.top .wrap{align-items:center}
+.teacher{font-family:var(--f-display);font-size:clamp(1.5rem,3.4vw,2.4rem);line-height:1.1;color:var(--ink);margin-left:auto;text-align:right}
+#cell{width:100%;max-width:440px;height:auto;display:block;margin:auto}
+#cell .cw{fill:var(--moss-soft);stroke:var(--moss);stroke-width:4}
+#cell .cm{fill:var(--sheet);stroke:var(--ink-2);stroke-width:2}
+#cell .dna{fill:none;stroke:var(--bad);stroke-width:3;stroke-linecap:round}
+#cell .pl{fill:none;stroke:var(--bad);stroke-width:2.5}
+#cell .pi,#cell .sp{stroke:var(--ink-2);stroke-width:2.5;stroke-linecap:round}
+#cell .fl{fill:none;stroke:var(--ink-2);stroke-width:2.5}
+#cell .nu{fill:var(--water-soft);stroke:var(--water);stroke-width:3}
+#cell .mi{fill:#E8C9A0;stroke:#B07A3A;stroke-width:2}
+#cell .ch{fill:var(--moss);opacity:.75}
+#cell .cap{fill:var(--water-soft);stroke:var(--water);stroke-width:4}
+#cell .env{fill:none;stroke:var(--ink-2);stroke-width:2;stroke-dasharray:6 5}
+#cell .spk{fill:var(--moss)}
+#cell .lb{font-family:var(--f-body);font-size:14px;fill:var(--ink-2)}
+.ladder button .n{font-size:.7rem}
+.dlist{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:8px 0 0}
+.dlist dt{color:var(--ink-2);font-size:.92rem}
+.dlist dd{margin:0}
+.growbox{background:var(--paper);border-radius:8px;padding:12px 14px;margin-top:10px}
+.growbox .dots{display:flex;flex-wrap:wrap;gap:3px;min-height:16px}
+.growbox .dots i{width:10px;height:6px;border-radius:3px;background:var(--moss)}
+.growbox .gcount{margin-top:8px}
+.row input[type=text]{font:inherit;width:7em;padding:5px 8px;border-radius:7px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+.row .u{color:var(--ink-2);font-size:.9rem}
+.brand{white-space:normal}
+.pick{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.pick label{display:flex;flex-direction:column;gap:4px;font-size:.9rem;color:var(--ink-2)}
+.pick select{font:inherit;padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:var(--sheet);color:var(--ink)}
+.tax{display:grid;gap:4px;max-width:460px;width:100%;margin:auto}
+.trow{display:grid;grid-template-columns:78px 1fr 1fr;gap:6px}
+.trow span{background:var(--sheet);border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:.88rem;line-height:1.25;min-width:0;overflow-wrap:anywhere}
+.trow span:first-child{background:transparent;border:none;color:var(--ink-2);font-weight:700;overflow-wrap:normal;padding-left:0;padding-right:0}
+.trow.th span{background:transparent;border:none;font-weight:700;color:var(--ink)}
+.trow.same span:not(:first-child){background:var(--moss-soft);border-color:var(--moss)}
+
+</style>
+<style>.home-link{font-family:var(--f-body);font-size:.92rem;color:var(--ink-2);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:2px 11px;white-space:nowrap;margin-right:auto}.home-link:hover{color:var(--ink);border-color:var(--moss);background:var(--moss-soft)}</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#start">Thema 4 <span>Classificatie · 2 lesuren</span></a>
+    <a class="home-link" href="index.html">Alle thema’s</a>
+    <span class="teacher">P. Vandenheede</span>
+    <nav class="tabs" id="tabs" aria-label="Hoofdstukken"></nav>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<script>
+const TAXA = {
+  tijger:{n:"tijger",l:["Animalia (dieren)","Chordata (chordadieren)","Mammalia (zoogdieren)","Carnivora (roofdieren)","Felidae (katachtigen)","Panthera","Panthera tigris"]},
+  leeuw:{n:"leeuw",l:["Animalia (dieren)","Chordata (chordadieren)","Mammalia (zoogdieren)","Carnivora (roofdieren)","Felidae (katachtigen)","Panthera","Panthera leo"]},
+  kat:{n:"huiskat",l:["Animalia (dieren)","Chordata (chordadieren)","Mammalia (zoogdieren)","Carnivora (roofdieren)","Felidae (katachtigen)","Felis","Felis catus"]},
+  wolf:{n:"wolf",l:["Animalia (dieren)","Chordata (chordadieren)","Mammalia (zoogdieren)","Carnivora (roofdieren)","Canidae (hondachtigen)","Canis","Canis lupus"]},
+  mens:{n:"mens",l:["Animalia (dieren)","Chordata (chordadieren)","Mammalia (zoogdieren)","Primates (primaten)","Hominidae (mensachtigen)","Homo","Homo sapiens"]},
+  dovenetel:{n:"witte dovenetel",l:["Plantae (planten)","Spermatophyta (zaadplanten)","Magnoliopsida (tweezaadlobbigen)","Lamiales","Lamiaceae (lipbloemigen)","Lamium","Lamium album"]}
+};
+const LEVELNAMES = ["rijk","stam","klasse","orde","familie","geslacht","soort"];
+
+const CH = [
+/* ---------------- HOOFDSTUK 1 ---------------- */
+{ id:"h1", num:"1", title:"Biologisch soortbegrip", short:"Nieuwe eigenschappen, nieuwe soorten, stambomen en classificatie",
+  lead:"Alle levende wezens zijn verwant. Hoe ontstaan nieuwe eigenschappen en nieuwe soorten, en hoe ordenen we al die soorten?",
+  summary:`
+  <h3>1.1 Nieuwe eigenschappen</h3>
+  <p>Organismen kunnen sterk op elkaar lijken en toch erg verschillen: een wesp en een zweefvlieg lijken op elkaar, maar hun anatomie, voortplanting en voeding zijn anders (let op de ‘wespentaille’). De eigenschappen van een organisme worden bepaald door het <dfn>DNA</dfn>. Het DNA is opgedeeld in <dfn>genen</dfn>; elk gen is verantwoordelijk voor één of meer eigenschappen.</p>
+  <p>Nakomelingen kunnen nieuwe eigenschappen hebben, op twee manieren:</p>
+  <ul>
+    <li>bij <b>geslachtelijke voortplanting</b> geeft elke ouder de helft van zijn genen door: een <b>nieuwe combinatie</b> van genen;</li>
+    <li>door een <dfn>mutatie</dfn>, een toevallige verandering in het DNA (bv. albinisme, pigmentvlekken door uv-straling).</li>
+  </ul>
+  <p>De best aangepaste organismen hebben meer kans om te overleven en zich voort te planten, en geven hun eigenschappen door. In de stad vind je vooral paardenbloemen met <b>zware zaden</b>: lichte zaden waaien ver weg en landen op steen of beton, zware vallen dicht bij de moederplant op vruchtbare grond.</p>
+  <h3>1.2 De biologische soort</h3>
+  <p>Een nieuwe eigenschap is nog geen nieuwe soort. Van een <dfn>nieuwe soort</dfn> spreek je pas als organismen zich onderling niet meer kunnen of willen voortplanten, of geen vruchtbare nakomelingen krijgen. Dat gebeurt vaak als een deel van een populatie lang <b>geïsoleerd</b> raakt: door bergen, een rivier, een zee, ijs, een woestijn, of doordat een groep een nieuwe niche inneemt. Ook mutaties kunnen voortplanting onmogelijk maken.</p>
+  <p>Dat proces heet <dfn>evolutie</dfn>. Het kan snel gaan (antibioticaresistente bacteriën) of duizenden tot miljoenen jaren duren. De <b>40 soorten paradijsvogels</b> ontstonden uit één kraaiachtige voorouder die 35 miljoen jaar geleden leefde rond het huidige Nieuw-Guinea: de geïsoleerde populaties ontwikkelden elk een eigen paringsritueel, tot ze zich niet meer onderling voortplantten.</p>
+  <p>Een <dfn>stamboom</dfn> stelt evolutie schematisch voor. Elke vertakking is een nieuwe soort; waar takken samenkomen, ligt de <b>gemeenschappelijke voorouder</b>. Hoe recenter twee soorten een gemeenschappelijke voorouder delen, hoe meer genen ze gemeenschappelijk hebben. Zo is de wolf genetisch meer verwant met de hond dan met de prairiewolf.</p>
+  <h3>1.3 Classificatie</h3>
+  <p>Wetenschappers <dfn>classificeren</dfn> organismen: organismen met gemeenschappelijke eigenschappen komen in dezelfde groep. Een goed classificatiesysteem biedt overzicht, helpt bij het identificeren, toont verwantschappen, helpt evolutie bestuderen en is makkelijk aan te passen bij nieuwe inzichten.</p>
+  <ul>
+    <li><b>Carl Linnaeus</b> (18de eeuw) maakte een hiërarchisch systeem op basis van <b>uiterlijke eigenschappen</b>, met zeven <dfn>classificatieniveaus</dfn>: rijk, stam, klasse, orde, familie, geslacht, soort. Van rijk naar soort neemt het aantal gemeenschappelijke eigenschappen toe.</li>
+    <li>Hij voerde ook de <dfn>binominale naamgeving</dfn> in: geslachtsnaam (hoofdletter) + soortnaam (kleine letter), beide cursief, soms gevolgd door de beginletter van de naamgever (L. = Linnaeus). Bv. <i>Panthera tigris</i> L. De geslachtsnaam toont verwantschap: tijger, leeuw en luipaard horen tot <i>Panthera</i>.</li>
+    <li><b>Charles Darwin</b> beschreef in 1859 het ontstaan van nieuwe soorten door evolutie: soorten binnen hetzelfde geslacht stammen af van een gemeenschappelijke voorouder.</li>
+    <li><b>Ernst Haeckel</b> tekende in 1866 een <dfn>tree of life</dfn> met drie rijken: planten, dieren en, onderaan de stam, de eencellige <b>protisten</b> als voorouders.</li>
+  </ul>`,
+  cards:[["Gen","Stukje DNA dat verantwoordelijk is voor één of meer eigenschappen."],["Mutatie","Toevallige verandering in het DNA."],["Biologische soort","Organismen die zich onderling voortplanten en vruchtbare nakomelingen krijgen."],["Evolutie","Het proces waarbij een nieuwe soort ontstaat."],["Stamboom","Schema van evolutie: vertakkingen zijn nieuwe soorten, knooppunten gemeenschappelijke voorouders."],["Classificatieniveaus","Rijk, stam, klasse, orde, familie, geslacht, soort."],["Binominale naamgeving","Geslachtsnaam (hoofdletter) + soortnaam (kleine letter), cursief."],["Tree of life","Stamboom van al het leven (Haeckel, 1866)."]],
+  exercises:[
+    { type:"classify", title:"Combinatie of mutatie?", q:"Hoe ontstaat de nieuwe eigenschap?",
+      buckets:["nieuwe combinatie van genen","mutatie"],
+      items:[{t:"Een kind heeft de ogen van de vader en de haarkleur van de moeder.",b:0},{t:"Een paardenbloem krijgt nakomelingen met zware zaden.",b:1},{t:"Een dier wordt geboren zonder melanine (albinisme).",b:1},{t:"Door uv-straling ontstaan pigmentvlekken.",b:1},{t:"Elke ouder geeft de helft van zijn genen door.",b:0}]},
+    { type:"mc", title:"Paardenbloemen in de stad", q:"Waarom vind je in de stad vooral paardenbloemen met zware zaden?",
+      o:["Zware zaden worden minder opgegeten door vogels.","Lichte zaden landen ver weg op steen of beton en kiemen niet; zware vallen dicht bij de moederplant op vruchtbare grond.","De stad maakt alle zaden zwaarder.","Zware zaden kiemen sneller op beton."], a:1,
+      e:"De best aangepaste paardenbloemen planten zich het best voort en geven hun eigenschap door."},
+    { type:"open", title:"De bruine kever", q:"In een populatie gele kevers op boomstammen komt soms een bruinere kever voor. (a) Op welke twee manieren kan het DNA gewijzigd zijn? (b) Welke kever heeft de meeste overlevingskansen? Verklaar.",
+      model:"(a) Door een nieuwe combinatie van genen van beide ouders of door een mutatie. (b) De bruine kever: hij is beter gecamoufleerd op de stam, overleeft vaker en geeft zijn eigenschap door."},
+    { type:"order", title:"Zo ontstaat een nieuwe soort", q:"Zet de stappen in de juiste volgorde.",
+      items:["Dit is de oorspronkelijke populatie.","Een rivier splitst de populatie in twee.","De twee populaties krijgen verschillende eigenschappen, bv. een andere kleur.","De rivier verdroogt, maar de populaties planten zich niet meer met elkaar voort: twee soorten."]},
+    { type:"mc", title:"Een nieuwe schapensoort", q:"Welke manier van isoleren geeft de grootste kans op een nieuwe schapensoort?",
+      o:["De populatie met een hek in twee groepen verdelen.","Een deel van de schapen naar een ander ecosysteem verhuizen."], a:1,
+      e:"In een ander ecosysteem passen de schapen zich aan andere omstandigheden aan: meer kans op nieuwe eigenschappen en dus op een nieuwe soort."},
+    { type:"mc", title:"Lezen in een stamboom", q:"De wolf (Canis lupus), de hond (Canis lupus familiaris) en de prairiewolf (Canis latrans). Met wie is de wolf het meest verwant?",
+      o:["met de hond","met de prairiewolf","met beide evenveel"], a:0,
+      e:"Wolf en hond delen een recentere gemeenschappelijke voorouder, dus hebben ze meer gemeenschappelijke genen."},
+    { type:"order", title:"Classificatieniveaus", q:"Rangschik van de minste naar de meeste gemeenschappelijke eigenschappen.",
+      items:["rijk","stam","klasse","orde","familie","geslacht","soort"]},
+    { type:"order", title:"Van algemeen naar specifiek: de witte dovenetel", q:"Zet in volgorde, van algemeen naar zeer specifiek.",
+      items:["plantenrijk","zaadplanten","familie lipbloemigen","witte dovenetel"]},
+    { type:"order", title:"Van algemeen naar specifiek: de mens", q:"Zet in volgorde, van algemeen naar zeer specifiek.",
+      items:["dieren","chordadieren","familie Hominidae","Homo sapiens"]},
+    { type:"classify", title:"Juist geschreven?", q:"Is de wetenschappelijke naam correct geschreven?",
+      buckets:["correct","fout"],
+      items:[{t:"Fragaria vesca L. (aardbei)",b:0},{t:"Fragaria vesca Lin. (aardbei)",b:1},{t:"helianthus annuus (zonnebloem)",b:1},{t:"Equus Caballus (paard)",b:1},{t:"Panthera leo (leeuw)",b:0},{t:"Canis (hond)",b:1}],
+      ok:"Geslachtsnaam met hoofdletter, soortnaam met kleine letter, allebei nodig. De naamgever schrijf je met één letter (L.)."},
+    { type:"mc", title:"Wolf en hond", q:"Wolf (Canis lupus) en hond (Canis lupus familiaris). Hoe zie je in de naam dat ze tot hetzelfde geslacht behoren?",
+      o:["Beide namen beginnen met de geslachtsnaam Canis.","Beide namen zijn cursief geschreven.","Beide namen hebben drie delen.","Dat kun je niet aan de naam zien."], a:0,
+      e:"Het eerste deel van de binominale naam is de geslachtsnaam."},
+    { type:"match", title:"Wie deed wat?", options:["Carl Linnaeus","Charles Darwin","Ernst Haeckel"],
+      items:[{t:"hiërarchisch classificatiesysteem op basis van uiterlijke kenmerken",a:0},{t:"binominale naamgeving",a:0},{t:"evolutietheorie (1859)",a:1},{t:"tree of life met planten, dieren en protisten (1866)",a:2}]},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Genen zijn stukjes DNA die samen de eigenschappen van een organisme bepalen.",a:true,e:"Elk gen is verantwoordelijk voor één of meer eigenschappen."},
+        {s:"Nieuwe eigenschappen in organismen ontstaan steeds door mutatie.",a:false,e:"Ook een nieuwe combinatie van genen bij geslachtelijke voortplanting geeft nieuwe eigenschappen."},
+        {s:"Door het proces van evolutie ontstaan er nieuwe eigenschappen en nieuwe soorten.",a:true,e:"Evolutie is het proces waarbij nieuwe soorten ontstaan."},
+        {s:"Organismen van dezelfde soort hebben minder gemeenschappelijke kenmerken dan organismen van hetzelfde rijk.",a:false,e:"Omgekeerd: van rijk naar soort neemt het aantal gemeenschappelijke eigenschappen toe."},
+        {s:"De tree of life is een stamboom die toont hoe al het leven geëvolueerd is.",a:true,e:"Haeckel tekende er een in 1866."}
+    ]}
+  ]},
+
+/* ---------------- HOOFDSTUK 2 ---------------- */
+{ id:"h2", num:"2", title:"Classificatie in domeinen", short:"Van twee naar drie domeinen, en de plaats van virussen",
+  lead:"Op basis van cellen en DNA delen wetenschappers alle leven in domeinen in. Waar horen virussen dan thuis?",
+  summary:`
+  <h3>2.1 Twee domeinen</h3>
+  <p>Rond 1925 ontdekten wetenschappers dat een groep eencelligen geen celkern heeft: de <dfn>prokaryoten</dfn>. Ze hebben geen inwendige membranen: hun DNA zweeft vrij in het cytoplasma en celorganellen zoals mitochondriën en vacuolen ontbreken. Alle meercelligen en sommige eencelligen hebben wel een celkern, mitochondriën, bladgroenkorrels en/of vacuolen: de <dfn>eukaryoten</dfn>. Zo ontstonden twee domeinen: Prokaryota en Eukaryota.</p>
+  <h3>2.2 Drie domeinen</h3>
+  <p><b>Carl Woese</b> onderzocht vanaf 1977 de genetische code van prokaryoten. In 1990 besloot hij dat de prokaryoten uit twee groepen bestaan: de bacteriën en een groep die genetisch even sterk van de bacteriën verschilt als de eukaryoten: de <dfn>archaea</dfn>. Zo kwamen er drie domeinen: <b>Bacteria</b>, <b>Archaea</b> en <b>Eukaryota</b>. Archaea zijn meer verwant aan eukaryoten: ze delen een recentere gemeenschappelijke voorouder. Archaea en bacteriën verschillen onder meer in de samenstelling van de <b>celwand</b> en de opbouw van het <b>celmembraan</b> (bacteriën: dubbel, archaea: enkelvoudig).</p>
+  <p>In elk domein zijn er heterotrofe en autotrofe organismen. Sommige bacteriën en archaea doen aan <b>chemosynthese</b>: met ammoniak, koolstofmonoxide, waterstofgas of zwavelverbindingen als energiebron kunnen ze leven zonder zonlicht. De meeste bacteriën en archaea leven in de bodem, in de zee, in en op andere organismen. Stikstofbacteriën in wortelknolletjes helpen planten stikstof uit de lucht op te nemen. Er zijn (nog) geen archaea bekend die ziekten veroorzaken; bij bacteriën wel.</p>
+  <h3>2.3 De plaats van virussen</h3>
+  <p><dfn>Virussen</dfn> staan niet in het driedomeinensysteem, omdat er geen eensgezindheid is of ze leven. Ze hebben <b>geen eigen stofwisseling</b>, kunnen zich <b>niet zelfstandig vermenigvuldigen</b> (enkel met een gastheercel), <b>groeien niet</b> en zijn <b>geen cellen</b> (geen celmembraan). Anderzijds kunnen ze een stofwisseling starten in een gastheercel, hebben ook sommige bacteriën andere organismen nodig, maken ze ziek zoals bacteriën en schimmels, en <b>evolueren</b> ze: door mutaties ontstaan varianten, zodat je een stamboom van virussen kunt opstellen. Mondmaskers en handen wassen met zeep (vernietigt de buitenste laag) helpen tegen verspreiding.</p>`,
+  cards:[["Prokaryoot","Eencellige zonder celkern; DNA vrij in het cytoplasma."],["Eukaryoot","Organisme met celkern en celorganellen."],["Carl Woese","Ontdekte op basis van genetisch onderzoek het derde domein: de archaea."],["Archaea","Prokaryoten met enkelvoudig celmembraan, verwant aan de eukaryoten."],["Chemosynthese","Organische stoffen maken met chemische energie, zonder zonlicht."],["Virus","Geen cel en geen eigen stofwisseling; staat buiten de drie domeinen."]],
+  exercises:[
+    { type:"grid", title:"Prokaryoten en eukaryoten", q:"Welke eigenschappen hebben de organismen? Kies telkens: altijd, soms of nooit.",
+      opts:["altijd","soms","nooit"], cols:["prokaryoten","eukaryoten"],
+      rows:[{t:"celwand",a:["altijd","soms"]},{t:"celkern",a:["nooit","altijd"]},{t:"meercellig",a:["nooit","soms"]},{t:"bladgroenkorrels",a:["nooit","soms"]}]},
+    { type:"classify", title:"Bacteria, archaea of eukaryota?", buckets:["bacteria","archaea","eukaryota"],
+      items:[{t:"DNA in een celkern",b:2},{t:"enkelvoudig celmembraan",b:1},{t:"celwand enkel bij planten en schimmels",b:2},{t:"er zijn soorten die ziekten veroorzaken; DNA los in het cytoplasma",b:0},{t:"Methanobrevibacter smithii in onze darmen",b:1},{t:"stikstofbacteriën in wortelknolletjes",b:0}]},
+    { type:"mc", title:"Het derde domein", q:"Waarom creëerde Woese een derde domein?",
+      o:["Omdat sommige prokaryoten toch een celkern bleken te hebben.","Omdat genetisch onderzoek toonde dat de prokaryoten uit twee groepen bestaan die sterk van elkaar verschillen.","Omdat virussen een eigen domein nodig hadden.","Omdat archaea groter zijn dan bacteriën."], a:1},
+    { type:"mc", title:"Celmembraan", q:"Hoe verschilt het celmembraan van de archaea van dat van de bacteriën?",
+      o:["Archaea hebben een enkelvoudig, bacteriën een dubbel celmembraan.","Archaea hebben geen celmembraan.","Archaea hebben een dubbel, bacteriën een enkelvoudig celmembraan.","Er is geen verschil."], a:0},
+    { type:"classify", title:"Whittaker of Woese?", q:"Hoort dit kenmerk bij het vijfrijkensysteem van Whittaker of bij het driedomeinensysteem van Woese?",
+      buckets:["vijfrijkensysteem (Whittaker)","driedomeinensysteem (Woese)"],
+      items:[{t:"gebaseerd op gemeenschappelijke kenmerken",b:0},{t:"gebaseerd op DNA-onderzoek",b:1},{t:"aanpasbaar bij nieuwe inzichten",b:1},{t:"wetenschappelijk onderbouwd",b:1},{t:"evolutionair het meest correct",b:1},{t:"gemeenschappelijke voorouders terug te vinden",b:1}]},
+    { type:"tf", title:"Recente classificatiesystemen", items:[
+        {s:"Elk classificatiesysteem staat of valt met de gebruikte criteria.",a:true,e:"Andere criteria (uiterlijk of DNA) geven een andere indeling."},
+        {s:"Classificeren doe je enkel aan de hand van macroscopische eigenschappen.",a:false,e:"Ook microscopische kenmerken (celkern) en vooral DNA-onderzoek worden gebruikt."}
+    ]},
+    { type:"classify", title:"Leeft een virus?", q:"Is dit een argument dat virussen géén levende wezens zijn, of net wél?",
+      buckets:["geen levend wezen","wel een levend wezen"],
+      items:[{t:"Ze hebben geen eigen stofwisseling.",b:0},{t:"Ze kunnen een stofwisseling starten in een gastheercel.",b:1},{t:"Ze kunnen zich niet zelfstandig vermenigvuldigen.",b:0},{t:"Ze groeien niet.",b:0},{t:"Ze kunnen andere organismen ziek maken.",b:1},{t:"Ze hebben geen celmembraan.",b:0},{t:"Ze evolueren: er ontstaan nieuwe varianten.",b:1}]},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"De eukaryoten hebben geen celkern; het DNA zweeft los in het cytoplasma.",a:false,e:"Dat zijn de prokaryoten."},
+        {s:"De enige manier om verwantschappen te onderzoeken is door te kijken naar macroscopische kenmerken.",a:false,e:"DNA-onderzoek toont verwantschappen veel nauwkeuriger."},
+        {s:"De indeling in eukaryoten en prokaryoten gebeurt op basis van het al dan niet hebben van een celkern.",a:true,e:"Dat was de basis van het tweedomeinensysteem."},
+        {s:"Carl Woese ontdekte dat de archaea en de eukaryoten afstammen van een gemeenschappelijke voorouder.",a:true,e:"Archaea en eukaryoten delen een recentere gemeenschappelijke voorouder dan archaea en bacteriën."},
+        {s:"Virussen zijn opgenomen in het driedomeinensysteem.",a:false,e:"Er is geen eensgezindheid of virussen leven."}
+    ]},
+    { type:"open", title:"Omstreden virussen", q:"‘Virussen hebben een heel omstreden plaats in het classificatiesysteem.’ Verklaar aan de hand van de celstofwisseling.",
+      model:"Virussen hebben geen eigen stofwisseling, maar ze kunnen wel een stofwisseling activeren zodra ze een gastheercel binnendringen."}
+  ]},
+
+/* ---------------- FOCUS ---------------- */
+{ id:"evo", num:"Focus", title:"Mensen evolueren nog steeds", short:"Lactose, partnerkeuze, Inuit en Bajau",
+  lead:"Evolutie is niet gestopt. Ook bij mensen zijn er de voorbije duizenden jaren nieuwe eigenschappen ontstaan.",
+  summary:`
+  <ul>
+    <li><b>Melk drinken als volwassene.</b> Melk bevat de suiker lactose; om die te verteren heb je het enzym <b>lactase</b> nodig. Pasgeboren zoogdieren maken lactase, maar na het zogen stopt die productie: volwassenen zijn lactose-intolerant. Zo’n 11 000 jaar geleden begonnen onze voorouders melkvee te houden. Door een <b>mutatie</b> maakten sommige mensen levenslang lactase: melk werd een extra voedingsbron, dus hun overlevingskansen namen toe. Die mutatie bleef bestaan bij melkdrinkende populaties. Wereldwijd is nog twee derde van de mensen lactose-intolerant.</li>
+    <li><b>Partnerkeuze.</b> Onbewuste voorkeuren (bv. verhouding taille-heupen, feromonen die verschillen van de onze) doen ons partners kiezen met eigenschappen die we voordelig of mooi vinden, en met een ander genenpakket: een goede mix van genen voor de nakomelingen.</li>
+    <li><b>Inuit.</b> Ze eten veel vette vis. Aangepaste genen zetten schadelijke vetzuren om in onschadelijke, en hun metabolisme ligt tot 10 % hoger: meer lichaamswarmte in de koude.</li>
+    <li><b>Bajau.</b> Deze zeenomaden bij de Filipijnen duiken tot 70 m diep. Een genetische aanpassing geeft hen een anderhalve keer grotere <b>milt</b>, die zuurstofrijk bloed opslaat.</li>
+  </ul>`,
+  cards:[["Lactase","Enzym om melksuiker (lactose) te verteren."],["Lactose-intolerant","Geen lactase meer: melk is moeilijk verteerbaar."]],
+  exercises:[
+    { type:"order", title:"Melk voor volwassenen", q:"Zet de evolutie van lactosetolerantie in volgorde.",
+      items:["Zoogdieren maken na het zogen geen lactase meer.","Zo’n 11 000 jaar geleden houden mensen melkvee.","Door een mutatie maken sommige mensen levenslang lactase.","Zij hebben een extra voedingsbron en meer overlevingskansen.","De mutatie blijft bestaan in melkdrinkende populaties."]},
+    { type:"match", title:"Welke aanpassing?", options:["levenslang lactase maken","hoger metabolisme en omzetten van schadelijke vetzuren","grotere milt die zuurstofrijk bloed opslaat"],
+      items:[{t:"melkdrinkende populaties",a:0},{t:"Inuit in Groenland",a:1},{t:"Bajau, duikende zeenomaden",a:2}]},
+    { type:"mc", title:"Een derde slagader", q:"In 1880 had 1/10 van de mensen een derde slagader in de onderarm, vandaag 1/3. Wat toont dit aan?",
+      o:["De evolutie van de mens heeft haar hoogtepunt bereikt.","Evolutie kan zich ook relatief ‘snel’ voltrekken.","De derde slagader zal snel weer verdwijnen."], a:1},
+    { type:"mc", title:"Zachter voedsel", q:"Ons voedsel werd steeds zachter. Welke invloed kan dat op lange termijn hebben op onze mond? Er zijn meerdere antwoorden juist.",
+      o:["De kaakspieren worden sterker.","Het aantal kiezen neemt af.","De kaakbeenderen worden steviger.","De onderkaak wordt kleiner."], a:[1,3]},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Dat volwassen mensen melk kunnen verteren, is mogelijk door een mutatie.",a:true,e:"Een mutatie zorgt dat zij levenslang lactase maken."},
+        {s:"Bij mensen kunnen nieuwe eigenschappen ontstaan als ze leven in specifieke omstandigheden.",a:true,e:"Bv. de Inuit en de Bajau."},
+        {s:"Genetische aanpassingen bij mensen leveren steeds een voordeel op.",a:false,e:"Mutaties kunnen ook nadelig zijn; enkel voordelige eigenschappen blijven op lange termijn behouden."}
+    ]}
+  ]}
+];
+
+const GLOSS = [
+ ["DNA","Erfelijk materiaal dat de eigenschappen bepaalt.","1"],
+ ["Gen","Stukje DNA voor één of meer eigenschappen.","1"],
+ ["Mutatie","Toevallige verandering in het DNA.","1"],
+ ["Biologische soort","Organismen die zich onderling voortplanten en vruchtbare nakomelingen krijgen.","1"],
+ ["Evolutie","Proces waarbij een nieuwe soort ontstaat.","1"],
+ ["Stamboom","Schema van evolutie met vertakkingen en gemeenschappelijke voorouders.","1"],
+ ["Gemeenschappelijke voorouder","Soort waaruit twee of meer soorten ontstaan zijn.","1"],
+ ["Classificatie","Organismen met gemeenschappelijke eigenschappen in groepen ordenen.","1"],
+ ["Classificatieniveaus","Rijk, stam, klasse, orde, familie, geslacht, soort.","1"],
+ ["Binominale naamgeving","Geslachtsnaam (hoofdletter) + soortnaam (kleine letter), cursief.","1"],
+ ["Carl Linnaeus","Hiërarchisch classificatiesysteem en binominale naamgeving (18de eeuw).","1"],
+ ["Charles Darwin","Evolutietheorie (1859).","1"],
+ ["Tree of life","Stamboom van al het leven; Haeckel (1866): planten, dieren, protisten.","1"],
+ ["Protisten","Eencelligen onderaan Haeckels tree of life.","1"],
+ ["Prokaryoot","Eencellige zonder celkern; DNA vrij in het cytoplasma.","2"],
+ ["Eukaryoot","Organisme met een celkern en celorganellen.","2"],
+ ["Carl Woese","Ontdekte de archaea en het driedomeinensysteem (1990).","2"],
+ ["Bacteria","Domein van prokaryoten met dubbel celmembraan.","2"],
+ ["Archaea","Domein van prokaryoten met enkelvoudig celmembraan.","2"],
+ ["Eukaryota","Domein van organismen met een celkern.","2"],
+ ["Chemosynthese","Organische stoffen maken met chemische energie.","2"],
+ ["Virus","Geen cel en geen eigen stofwisseling; buiten de drie domeinen.","2"],
+ ["Lactase","Enzym dat lactose (melksuiker) afbreekt.","Focus"],
+ ["Lactose-intolerantie","Geen lactase: melk moeilijk verteerbaar.","Focus"]
+];
+
+const POOL = [
+ {q:"Hoe ontstaan nieuwe eigenschappen?",o:["Door een nieuwe combinatie van genen of door een mutatie","Enkel door mutatie","Enkel door de omgeving","Door classificatie"],a:0},
+ {q:"Waarom groeien in de stad vooral paardenbloemen met zware zaden?",o:["Zware zaden vallen dicht bij de moederplant op vruchtbare grond","Ze worden minder opgegeten","Ze zijn groter","Ze kiemen op beton"],a:0},
+ {q:"Wanneer spreek je van een nieuwe soort?",o:["Bij een nieuwe kleur","Als organismen zich niet meer onderling (vruchtbaar) voortplanten","Na één mutatie","Als ze in een ander land leven"],a:1},
+ {q:"Hoe ontstonden de 40 soorten paradijsvogels?",o:["Door isolatie van populaties met elk een eigen paringsritueel","Door kruising met kraaien","Door de mens","Ze bestaan al altijd"],a:0},
+ {q:"Wat stelt een knooppunt in een stamboom voor?",o:["Een uitgestorven soort","Een gemeenschappelijke voorouder","Een mutatie","Een domein"],a:1},
+ {q:"Met wie is de wolf het meest verwant?",o:["de hond","de prairiewolf","de vos","de leeuw"],a:0},
+ {q:"Welk niveau heeft de meeste gemeenschappelijke eigenschappen?",o:["rijk","stam","familie","soort"],a:3},
+ {q:"Welke volgorde is juist, van algemeen naar specifiek?",o:["rijk – stam – klasse – orde – familie – geslacht – soort","rijk – klasse – stam – orde – geslacht – familie – soort","soort – geslacht – familie – orde – klasse – stam – rijk","stam – rijk – klasse – orde – familie – soort – geslacht"],a:0},
+ {q:"Welke wetenschappelijke naam is correct geschreven?",o:["Panthera tigris","panthera Tigris","Panthera Tigris","panthera tigris"],a:0},
+ {q:"Wat betekent de L. in ‘Fragaria vesca L.’?",o:["Latijn","Linnaeus, die de naam gaf","lang","leven"],a:1},
+ {q:"Wie maakte de eerste hiërarchische classificatie op basis van uiterlijke kenmerken?",o:["Darwin","Linnaeus","Woese","Haeckel"],a:1},
+ {q:"Wie beschreef in 1859 het ontstaan van soorten door evolutie?",o:["Darwin","Linnaeus","Haeckel","Woese"],a:0},
+ {q:"In welke drie rijken deelde Haeckel de organismen in?",o:["planten, dieren, protisten","bacteriën, archaea, eukaryoten","planten, dieren, schimmels","prokaryoten, eukaryoten, virussen"],a:0},
+ {q:"Wat hebben prokaryoten NIET?",o:["DNA","een celkern","een celmembraan","een celwand"],a:1},
+ {q:"Wie ontdekte het domein van de archaea?",o:["Carl Woese","Carl Linnaeus","Charles Darwin","Ernst Haeckel"],a:0},
+ {q:"Waarop baseerde Woese zich?",o:["uiterlijk","genetische codes (DNA)","grootte","voedingswijze"],a:1},
+ {q:"Met wie zijn de archaea het meest verwant?",o:["bacteria","eukaryota","virussen","protisten"],a:1},
+ {q:"Welk celmembraan hebben archaea?",o:["enkelvoudig","dubbel","geen","driedubbel"],a:0},
+ {q:"Welke energiebron gebruiken chemoautotrofe bacteriën?",o:["zonlicht","zwavelverbindingen of waterstofgas","glucose uit voedsel","geen"],a:1},
+ {q:"Zijn er archaea bekend die ziekten veroorzaken?",o:["ja, veel","nee, tot op heden niet","enkel bij planten","enkel bij dieren"],a:1},
+ {q:"Waarom staan virussen niet in het driedomeinensysteem?",o:["Ze zijn te klein","Er is geen eensgezindheid of ze leven","Ze hebben een celkern","Ze zijn altijd onschadelijk"],a:1},
+ {q:"Welk argument pleit ervoor dat virussen leven?",o:["Ze groeien niet","Ze evolueren","Ze hebben geen celmembraan","Ze hebben geen stofwisseling"],a:1},
+ {q:"Welk enzym heb je nodig om melk te verteren?",o:["lactase","amylase","penicilline","lactose"],a:0},
+ {q:"Waarom hebben de Bajau een grotere milt?",o:["om zuurstofrijk bloed op te slaan bij het duiken","om vet te verteren","tegen de kou","om melk te verteren"],a:0}
+];
+
+const AR_MEM=[
+ ["gen","Stukje DNA voor eigenschappen"],
+ ["mutatie","Toevallige verandering in het DNA"],
+ ["evolutie","Ontstaan van een nieuwe soort"],
+ ["stamboom","Schema met gemeenschappelijke voorouders"],
+ ["Linnaeus","Binominale naamgeving"],
+ ["Darwin","Evolutietheorie (1859)"],
+ ["Haeckel","Tree of life (1866)"],
+ ["Woese","Derde domein: archaea"],
+ ["soort","Niveau met de meeste gemeenschappelijke eigenschappen"],
+ ["rijk","Niveau met de minste gemeenschappelijke eigenschappen"],
+ ["prokaryoot","Geen celkern"],
+ ["eukaryoot","Wel een celkern"],
+ ["archaea","Enkelvoudig celmembraan"],
+ ["chemosynthese","Energie uit chemische verbindingen"],
+ ["lactase","Enzym om melk te verteren"]
+];
+const AR_SETS=[
+ {t:"Combinatie of mutatie?",c:["combinatie","mutatie"],i:[["genen van beide ouders",0],["albinisme",1],["zware paardenbloemzaden",1],["pigmentvlekken door uv",1],["geslachtelijke voortplanting",0]]},
+ {t:"Juist geschreven?",c:["correct","fout"],i:[["Panthera leo",0],["helianthus annuus",1],["Equus Caballus",1],["Felis catus",0],["Canis",1],["Homo sapiens",0]]},
+ {t:"Wie?",c:["Linnaeus","Darwin","Haeckel","Woese"],i:[["binominale naamgeving",0],["evolutietheorie",1],["tree of life",2],["archaea",3],["zeven classificatieniveaus",0],["protisten",2]]},
+ {t:"Prokaryoot of eukaryoot?",c:["prokaryoot","eukaryoot"],i:[["geen celkern",0],["mitochondriën",1],["bacterie",0],["archaea",0],["paddenstoel",1],["boom",1]]},
+ {t:"Leeft een virus?",c:["argument: niet","argument: wel"],i:[["geen stofwisseling",0],["groeit niet",0],["evolueert",1],["maakt ziek",1],["geen celmembraan",0]]},
+ {t:"Whittaker of Woese?",c:["Whittaker","Woese"],i:[["gemeenschappelijke kenmerken",0],["DNA-onderzoek",1],["drie domeinen",1],["vijf rijken",0]]}
+];
+const AR_WHO=[
+ {a:"Carl Linnaeus",o:["Carl Linnaeus","Charles Darwin","Ernst Haeckel","Carl Woese"],h:["Ik leefde in de 18de eeuw.","Ik deelde organismen in op basis van uiterlijke kenmerken.","Ik bedacht de binominale naamgeving."]},
+ {a:"Charles Darwin",o:["Charles Darwin","Carl Linnaeus","Ernst Haeckel","Carl Woese"],h:["Ik publiceerde in 1859.","Ik zag Linnaeus’ classificatie als bewijs.","Ik beschreef het ontstaan van soorten door evolutie."]},
+ {a:"Ernst Haeckel",o:["Ernst Haeckel","Charles Darwin","Carl Woese","Carl Linnaeus"],h:["Ik werd geïnspireerd door de evolutietheorie.","Ik tekende in 1866 een tree of life.","Ik plaatste de protisten onderaan de stam."]},
+ {a:"Carl Woese",o:["Carl Woese","Carl Linnaeus","Ernst Haeckel","Charles Darwin"],h:["Ik onderzocht genetische codes van prokaryoten.","In 1990 kwam ik tot een conclusie.","Ik ontdekte de archaea en de drie domeinen."]},
+ {a:"archaea",o:["archaea","bacteria","eukaryota","virussen"],h:["Ik ben een domein van prokaryoten.","Ik heb een enkelvoudig celmembraan.","Ik ben meer verwant aan de eukaryoten dan aan de bacteriën."]},
+ {a:"paradijsvogels",o:["paradijsvogels","paardenbloemen","prairiewolven","kevers"],h:["Er zijn 40 soorten van ons.","Onze voorouder was een kraaiachtige vogel.","Door isolatie kreeg elke populatie een eigen paringsritueel."]},
+ {a:"lactase",o:["lactase","lactose","penicilline","melanine"],h:["Ik ben een enzym.","Pasgeboren zoogdieren maken mij.","Dankzij een mutatie maken sommige volwassenen mij nog."]},
+ {a:"Bajau",o:["Bajau","Inuit","Masai","Aboriginals"],h:["Wij zijn zeenomaden bij de Filipijnen.","Wij duiken tot 70 meter diep.","Onze milt is anderhalve keer groter dan normaal."]}
+];
+const AR_CHAINS=[
+ {t:"Een nieuwe soort",q:"Zet in volgorde.",s:["oorspronkelijke populatie","een rivier splitst de populatie","verschillende eigenschappen ontstaan","geen voortplanting meer mogelijk: twee soorten"]},
+ {t:"Classificatieniveaus",q:"Van algemeen naar specifiek.",s:["rijk","stam","klasse","orde","familie","geslacht","soort"]},
+ {t:"De tijger",q:"Van algemeen naar specifiek.",s:["dieren","chordadieren","zoogdieren","roofdieren","katachtigen","Panthera","Panthera tigris"]},
+ {t:"Van twee naar drie domeinen",q:"Zet in volgorde.",s:["rond 1925: prokaryoten zonder celkern ontdekt","twee domeinen: Prokaryota en Eukaryota","vanaf 1977: Woese onderzoekt genetische codes","1990: drie domeinen met de archaea"]},
+ {t:"Melk voor volwassenen",q:"Zet in volgorde.",s:["mensen houden melkvee","mutatie: levenslang lactase","extra voedingsbron, betere overlevingskansen","de mutatie blijft in melkdrinkende populaties"]}
+];
+
+const TABS = {h1:"Soortbegrip",h2:"Domeinen",evo:"Mensen evolueren"};
+const KEY = "bio-thema4-2u-v1";
+let P = {};
+try { P = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e) { P = {}; }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(P)); } catch(e) {} }
+
+const $ = (s, r=document) => r.querySelector(s);
+function h(html){ const t=document.createElement("template"); t.innerHTML=html.trim(); return t.content.firstElementChild; }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+const fmt = n => n.toLocaleString("nl-BE");
+
+function chProgress(ch){ const n=ch.exercises.length; let d=0; ch.exercises.forEach((_,i)=>{ if(P[ch.id+"-"+i]) d++; }); return {d,n}; }
+function ringSVG(f){ const c=2*Math.PI*6; return `<svg class="ring" viewBox="0 0 16 16" aria-hidden="true"><circle class="bg" cx="8" cy="8" r="6"/><circle class="fg" cx="8" cy="8" r="6" stroke-dasharray="${(c*f).toFixed(2)} ${c.toFixed(2)}"/></svg>`; }
+
+function renderTabs(cur){
+  const nav = $("#tabs");
+  let s = `<a href="#start" ${cur==="start"?'aria-current="page"':""}>Start</a>`;
+  CH.forEach(ch=>{ const p=chProgress(ch); s += `<a href="#${ch.id}" ${cur===ch.id?'aria-current="page"':""}>${ringSVG(p.d/p.n)}${ch.num==="Focus"?"":ch.num+" "}${TABS[ch.id]}</a>`; });
+  s += `<a href="#arena" ${cur==="arena"?'aria-current="page"':""}>Oefenarena</a><a href="#begrippen" ${cur==="begrippen"?'aria-current="page"':""}>Begrippen</a><a href="#toets" ${cur==="toets"?'aria-current="page"':""}>Eindtoets</a>`;
+  nav.innerHTML = s;
+}
+
+/* ---------- START: classificatie vergelijken ---------- */
+function renderStart(app){
+  const v = h(`<section class="view">
+    <div class="hero">
+      <div>
+        <h1>Hoe verwant zijn ze?</h1>
+        <p class="lead">Kies twee organismen en vergelijk hun plaats in de zeven classificatieniveaus. Hoe lager hun gemeenschappelijke niveau, hoe nauwer verwant. Daarna werk je per hoofdstuk door de leerstof van thema 4.</p>
+        <div class="pick"><label>Organisme A <select id="ta"></select></label><label>Organisme B <select id="tb"></select></label></div>
+        <div class="lvinfo" id="lvinfo" aria-live="polite"></div>
+      </div>
+      <div class="tax" id="tax" aria-live="polite"></div>
+    </div>
+    <div class="chapters" id="chaps"></div>
+    <div class="howto">
+      <h3>Zo werk je</h3>
+      <p>Lees in elk hoofdstuk eerst de samenvatting. Draai daarna de begripkaarten om en maak de oefeningen: je krijgt meteen feedback. Een oefening die volledig juist is, krijgt een groen vinkje en telt mee in de voortgangsring bovenaan. Je voortgang wordt alleen in deze browser bewaard. Oefen daarna spelenderwijs in de oefenarena en test jezelf op het einde met de eindtoets.</p>
+    </div>
+  </section>`);
+  app.appendChild(v);
+  const A=$("#ta",v), B=$("#tb",v);
+  Object.entries(TAXA).forEach(([k,t])=>{ A.appendChild(h(`<option value="${k}">${t.n}</option>`)); B.appendChild(h(`<option value="${k}">${t.n}</option>`)); });
+  A.value="tijger"; B.value="leeuw";
+  function upd(){ const a=TAXA[A.value], b=TAXA[B.value]; let last=-1; for(let i=0;i<7;i++){ if(a.l[i]===b.l[i]) last=i; else break; }
+    $("#tax",v).innerHTML=`<div class="trow th"><span>niveau</span><span>${a.n}</span><span>${b.n}</span></div>`+LEVELNAMES.map((n,i)=>`<div class="trow${i<=last?" same":""}"><span>${n}</span><span><i>${a.l[i]}</i></span><span><i>${b.l[i]}</i></span></div>`).join("");
+    let txt;
+    if(A.value===B.value) txt="Kies twee verschillende organismen.";
+    else if(last<0) txt=`De ${a.n} en de ${b.n} horen zelfs niet tot hetzelfde rijk: ze hebben weinig gemeenschappelijke eigenschappen.`;
+    else txt=`De ${a.n} en de ${b.n} horen tot hetzelfde <b>${LEVELNAMES[last]}</b>${last<6?`, maar niet tot hetzelfde ${LEVELNAMES[last+1]}`:""}. ${last>=5?"Ze zijn nauw verwant: ze delen een recente gemeenschappelijke voorouder.":last>=3?"Ze zijn verwant, maar hun gemeenschappelijke voorouder leefde lang geleden.":"Ze delen enkel de algemeenste kenmerken."}`;
+    $("#lvinfo",v).innerHTML=`<h3>${A.value===B.value?"Twee keer hetzelfde":"Gemeenschappelijk tot: "+(last<0?"geen enkel niveau":LEVELNAMES[last])}</h3><p>${txt}</p><p class="lvex">Binominale naam: geslachtsnaam met hoofdletter + soortnaam met kleine letter, cursief.</p>`; }
+  A.addEventListener("change",upd); B.addEventListener("change",upd); upd();
+  const cg=$("#chaps",v);
+  CH.forEach(ch=>{ const p=chProgress(ch); cg.appendChild(h(`<a class="chap" href="#${ch.id}"><div class="num">${ch.num}</div><h3>${ch.title}</h3><p>${ch.short}</p><div class="bar" aria-label="${p.d} van ${p.n} oefeningen juist"><i style="width:${100*p.d/p.n}%"></i></div></a>`)); });
+  cg.appendChild(h(`<a class="chap arena" href="#arena"><div class="num">Spel</div><h3>Oefenarena</h3><p>Memory, sorteerrace, wie ben ik? en kettingreactie over het hele thema.</p></a>`));
+}
+
+const BUILD2 = {
+  grid(ex,w,body){
+    const O=ex.opts||["+","−"];
+    const t=h(`<div class="tbl"><table><thead><tr><th>Eigenschap</th>${ex.cols.map(c=>`<th class="c">${c}</th>`).join("")}</tr></thead><tbody></tbody></table></div>`);
+    ex.rows.forEach(r=>{ const tr=h(`<tr><td>${r.t}</td>${ex.cols.map((c,j)=>`<td class="c"><div class="opts" style="justify-content:center">${O.map(s=>`<button type="button" class="opt" aria-pressed="false" data-j="${j}" data-s="${s}" aria-label="${r.t}, ${c}: ${s}">${s}</button>`).join("")}</div></td>`).join("")}</tr>`);
+      tr.r=r; tr.v=[]; tr.addEventListener("click",e=>{ const b=e.target.closest(".opt"); if(!b) return; const j=+b.dataset.j; tr.querySelectorAll(`.opt[data-j="${j}"]`).forEach(o=>o.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); tr.v[j]=b.dataset.s; b.closest("td").classList.remove("ok","bad"); });
+      $("tbody",t).appendChild(tr); });
+    body.appendChild(t);
+    actions(w, m=>{ let g=0,n=0; t.querySelectorAll("tbody tr").forEach(tr=>{ tr.querySelectorAll("td.c").forEach((td,j)=>{ n++; const ok=tr.v[j]===tr.r.a[j]; td.classList.toggle("ok",ok); td.classList.toggle("bad",!ok); if(ok) g++; }); }); if(setMsg(m,g,n,ex.ok)) w.done(); });
+  },
+};
+
+/* ---------- CHAPTER ---------- */
+function renderChapter(app, ch){
+  const v = h(`<section class="view">
+    <div class="chead"><div class="num">${ch.num==="Focus"?"Focus":"Hoofdstuk "+ch.num}</div><h1>${ch.title}</h1><p>${ch.lead}</p>
+      <div class="subnav"><a href="#${ch.id}" data-jump="sum">Samenvatting</a><a href="#${ch.id}" data-jump="cards">Begripkaarten</a><a href="#${ch.id}" data-jump="oef">Oefeningen</a></div></div>
+    <div class="block" id="sum"><h2>Samenvatting</h2><div class="sum">${ch.summary}</div></div>
+    <div class="block" id="cards" style="max-width:1000px"><h2>Begripkaarten</h2><p class="note">Denk eerst zelf na over de betekenis. Klik daarna om de kaart om te draaien.</p><div class="cards"></div></div>
+    <div class="block" id="oef" style="max-width:1000px"><h2>Oefeningen</h2><div class="ex-list"></div></div>
+    <p class="foot">Gebaseerd op Focus Biologie 4.2 (Pelckmans), thema 4 Classificatie. Samenvattingen en oefeningen zijn bewerkt voor eigen gebruik in de les.</p>
+  </section>`);
+  app.appendChild(v);
+  v.querySelector(".subnav").addEventListener("click",e=>{ const a=e.target.closest("[data-jump]"); if(a){ e.preventDefault(); const t=v.querySelector("#"+a.dataset.jump); t.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); } });
+  const cards=$(".cards",v);
+  ch.cards.forEach(c=>{ const b=h(`<button type="button" class="card" aria-label="${c[0]}: klik om om te draaien"><span class="in"><span class="f">${c[0]}<small>klik om om te draaien</small></span><span class="b">${c[1]}</span></span></button>`); b.addEventListener("click",()=>b.classList.toggle("flip")); cards.appendChild(b); });
+  const list=$(".ex-list",v);
+  ch.exercises.forEach((ex,i)=> list.appendChild(buildEx(ex, ch.id+"-"+i, (ch.num==="Focus"?"F":ch.num)+"."+(i+1))));
+}
+
+function shell(ex,id,label){
+  const w = h(`<article class="ex${P[id]?" done":""}" id="ex-${id}">
+    <div class="exh"><h3><span class="tag">Oefening ${label}</span>${ex.title}</h3><span class="chip">${P[id]?"Juist":"Te doen"}</span></div>
+    ${ex.q?`<p class="q">${ex.q}</p>`:""}<div class="ex-body"></div></article>`);
+  w.done = () => { P[id]=true; save(); w.classList.add("done"); $(".chip",w).textContent="Juist"; renderTabs(current); };
+  return w;
+}
+function actions(w, onCheck, onReset){
+  const a = h(`<div class="actions"><button type="button" class="btn">Controleer</button>${onReset?'<button type="button" class="btn ghost">Opnieuw</button>':""}<span class="msg" aria-live="polite"></span></div>`);
+  a.children[0].addEventListener("click",()=>onCheck($(".msg",a)));
+  if(onReset) a.children[1].addEventListener("click",()=>{ $(".msg",a).textContent=""; $(".msg",a).className="msg"; onReset(); });
+  w.appendChild(a); return a;
+}
+function setMsg(m, good, total, okText){
+  const all = good===total;
+  m.className = "msg " + (all?"ok":"bad");
+  m.textContent = all ? ("Alles juist! " + (okText||"")) : (good + " van " + total + " juist. Pas de rode antwoorden aan.");
+  return all;
+}
+
+function buildEx(ex,id,label){
+  const w = shell(ex,id,label), body=$(".ex-body",w);
+  const T = BUILD[ex.type]; T(ex,w,body); return w;
+}
+
+const BUILD = {
+  classify(ex,w,body){
+    const items = shuffle(ex.items);
+    items.forEach((it,k)=>{
+      const r = h(`<div class="row"><div class="t">${it.t}</div><div class="opts" role="group"></div></div>`);
+      ex.buckets.forEach((b,j)=>{ const btn=h(`<button type="button" class="opt" aria-pressed="false">${b}</button>`); btn.addEventListener("click",()=>{ r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); btn.setAttribute("aria-pressed","true"); r.dataset.c=j; r.classList.remove("ok","bad"); const f=$(".fb",r); if(f) f.remove(); }); $(".opts",r).appendChild(btn); });
+      r.it=it; body.appendChild(r);
+    });
+    actions(w, m=>{
+      let g=0; body.querySelectorAll(".row").forEach(r=>{ const ok = r.dataset.c!==undefined && +r.dataset.c===r.it.b; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok); if(ok) g++; });
+      if(setMsg(m,g,items.length,ex.ok)) w.done();
+    }, ()=>{ body.querySelectorAll(".row").forEach(r=>{ delete r.dataset.c; r.classList.remove("ok","bad"); r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); }); });
+  },
+  match(ex,w,body){
+    ex.items.forEach((it,k)=>{
+      const sid = w.id+"-s"+k;
+      const r = h(`<div class="row"><label class="t" for="${sid}">${it.t}</label><select id="${sid}"><option value="">Kies …</option>${ex.options.map((o,j)=>`<option value="${j}">${o}</option>`).join("")}</select></div>`);
+      r.it=it; $("select",r).addEventListener("change",()=>r.classList.remove("ok","bad")); body.appendChild(r);
+    });
+    actions(w, m=>{ let g=0; body.querySelectorAll(".row").forEach(r=>{ const v=$("select",r).value; const ok = v!=="" && +v===r.it.a; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok); if(ok) g++; }); if(setMsg(m,g,ex.items.length)) w.done(); });
+  },
+  tf(ex,w,body){
+    const state = ex.items.map(()=>null);
+    ex.items.forEach((it,k)=>{
+      const r = h(`<div class="row"><div class="t">${k+1}. ${it.s}</div><div class="opts"><button type="button" class="opt" aria-pressed="false" data-v="1">Waar</button><button type="button" class="opt" aria-pressed="false" data-v="0">Niet waar</button></div></div>`);
+      r.addEventListener("click",e=>{ const b=e.target.closest(".opt"); if(!b) return;
+        r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");
+        const ok = (b.dataset.v==="1")===it.a; state[k]=ok; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok);
+        let f=$(".fb",r); if(!f){ f=h(`<div class="fb"></div>`); r.appendChild(f); }
+        f.className="fb "+(ok?"ok":"bad"); f.innerHTML = (ok?"<b>Juist.</b> ":"<b>Niet juist.</b> Denk nog eens na. ") + (ok?it.e:"");
+        if(state.every(s=>s===true)) w.done();
+      });
+      body.appendChild(r);
+    });
+  },
+  mc(ex,w,body){
+    const multi = Array.isArray(ex.a); const sel=new Set();
+    const box = h(`<div class="qopts" role="group"></div>`);
+    ex.o.forEach((o,j)=>{ const b=h(`<button type="button" class="qopt" aria-pressed="false">${String.fromCharCode(97+j)}&ensp;${o}</button>`);
+      b.addEventListener("click",()=>{ if(!multi){ sel.clear(); box.querySelectorAll(".qopt").forEach(x=>x.setAttribute("aria-pressed","false")); }
+        if(sel.has(j)){ sel.delete(j); b.setAttribute("aria-pressed","false"); } else { sel.add(j); b.setAttribute("aria-pressed","true"); }
+        box.querySelectorAll(".qopt").forEach(x=>x.classList.remove("ok","bad")); });
+      box.appendChild(b); });
+    body.appendChild(box);
+    const css = `.qopt[aria-pressed="true"]{border-color:var(--water);box-shadow:inset 0 0 0 1px var(--water)}`;
+    if(!document.getElementById("mccss")){ const s=document.createElement("style"); s.id="mccss"; s.textContent=css; document.head.appendChild(s); }
+    actions(w, m=>{
+      const want = new Set(multi?ex.a:[ex.a]);
+      const ok = sel.size===want.size && [...sel].every(x=>want.has(x));
+      box.querySelectorAll(".qopt").forEach((b,j)=>{ b.classList.remove("ok","bad"); if(sel.has(j)) b.classList.add(want.has(j)?"ok":"bad"); });
+      m.className="msg "+(ok?"ok":"bad");
+      m.textContent = sel.size===0 ? "Kies eerst een antwoord." : ok ? "Juist! "+(ex.e||"") : (multi?"Nog niet helemaal juist. Let op: er kunnen meerdere antwoorden juist zijn.":"Niet juist. Probeer opnieuw.");
+      if(ok) w.done();
+    });
+  },
+  multi(ex,w,body){
+    const t = h(`<div class="tbl"><table><thead><tr><th>Proces</th>${ex.cols.map(c=>`<th class="c">${c} waterkringloop</th>`).join("")}</tr></thead><tbody></tbody></table></div>`);
+    ex.rows.forEach((r,k)=>{ const tr=h(`<tr><td>${r.t}</td>${ex.cols.map((c,j)=>`<td class="c"><input type="checkbox" id="${w.id}-${k}-${j}" aria-label="${r.t}, ${c}"></td>`).join("")}</tr>`); $("tbody",t).appendChild(tr); });
+    body.appendChild(t);
+    t.addEventListener("change",e=>{ const td=e.target.closest("td"); if(td) td.classList.remove("ok","bad"); });
+    actions(w, m=>{ let g=0,n=0; ex.rows.forEach((r,k)=>ex.cols.forEach((c,j)=>{ const cb=document.getElementById(`${w.id}-${k}-${j}`); const ok=cb.checked===!!r.a[j]; n++; if(ok) g++; cb.parentElement.classList.toggle("ok",ok&&cb.checked); cb.parentElement.classList.toggle("bad",!ok); })); if(setMsg(m,g,n,"In de korte kringloop komt het water niet op het land terecht.")) w.done(); });
+  },
+  order(ex,w,body){
+    const pool=h(`<div class="pool"></div>`), ans=h(`<ol class="answer" style="list-style:none;margin:10px 0 0"></ol>`);
+    body.append(pool,ans);
+    function reset(){ pool.innerHTML=""; ans.innerHTML=""; shuffle(ex.items.map((t,i)=>i)).forEach(i=>pool.appendChild(tok(i))); }
+    function tok(i){ const b=h(`<button type="button" class="tok" data-i="${i}"><span class="i"></span><span>${ex.items[i]}</span></button>`); return b; }
+    function renum(){ ans.querySelectorAll(".tok").forEach((b,k)=>{ $(".i",b).textContent=(k+1)+"."; }); pool.querySelectorAll(".i").forEach(s=>s.textContent=""); }
+    pool.addEventListener("click",e=>{ const b=e.target.closest(".tok"); if(b){ const li=document.createElement("li"); li.appendChild(b); ans.appendChild(li); ans.querySelectorAll(".tok").forEach(x=>x.classList.remove("ok","bad")); renum(); } });
+    ans.addEventListener("click",e=>{ const b=e.target.closest(".tok"); if(b){ const li=b.parentElement; pool.appendChild(b); li.remove(); ans.querySelectorAll(".tok").forEach(x=>x.classList.remove("ok","bad")); renum(); } });
+    reset();
+    actions(w, m=>{ const toks=[...ans.querySelectorAll(".tok")]; if(toks.length<ex.items.length){ m.className="msg bad"; m.textContent="Zet eerst alle stappen in je volgorde."; return; }
+      let g=0; toks.forEach((b,k)=>{ const ok=+b.dataset.i===k; b.classList.toggle("ok",ok); b.classList.toggle("bad",!ok); if(ok) g++; }); if(setMsg(m,g,toks.length)) w.done(); }, reset);
+  },
+  open(ex,w,body){
+    const id=w.id+"-ta";
+    body.appendChild(h(`<div><label for="${id}" class="note" style="display:block;margin-bottom:6px;border:none;padding:0">Schrijf eerst je eigen antwoord.</label><textarea id="${id}"></textarea></div>`));
+    const a=h(`<div class="actions"><button type="button" class="btn">Toon modelantwoord</button></div>`); w.appendChild(a);
+    a.children[0].addEventListener("click",()=>{ if(!$(".model",w)){ w.appendChild(h(`<div class="model"><b>Modelantwoord</b>${ex.model}<br><span style="color:var(--ink-2);font-size:.9rem">Vergelijk met je eigen antwoord. Staan alle kernwoorden erin?</span></div>`)); w.done(); } });
+  },
+  explore(ex,w,body){
+    const g=h(`<div class="explore"><div class="list" role="group"></div><div class="panel" aria-live="polite"></div></div>`); body.appendChild(g);
+    const seen=new Set();
+    ex.items.forEach((it,k)=>{ const b=h(`<button type="button" class="opt" aria-pressed="false" style="text-align:left">${it.n}</button>`);
+      b.addEventListener("click",()=>{ g.querySelectorAll(".list .opt").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");
+        $(".panel",g).innerHTML=`<h4>${it.n}</h4><dl>${it.d.map(d=>`<dt>${d[0]}</dt><dd>${d[1]}</dd>`).join("")}</dl>`; seen.add(k); if(seen.size===ex.items.length) w.done(); });
+      $(".list",g).appendChild(b); });
+    g.querySelector(".list .opt").click();
+  },
+};
+Object.assign(BUILD, BUILD2);
+
+/* ---------- GLOSSARY ---------- */
+function renderGloss(app){
+  const v=h(`<section class="view"><div class="chead"><h1>Begrippenlijst</h1><p>Alle kernbegrippen van thema 4. Zoek een woord of filter op hoofdstuk.</p></div>
+    <div class="gl-tools"><input type="search" id="gl-q" placeholder="Zoek een begrip, bv. archaea" aria-label="Zoek een begrip"><select id="gl-c" aria-label="Filter op hoofdstuk"><option value="">Alle hoofdstukken</option><option value="1">1 Biologisch soortbegrip</option><option value="2">2 Classificatie in domeinen</option><option value="Focus">Focus mensen evolueren nog steeds</option></select><button type="button" class="btn ghost" id="gl-hide" aria-pressed="false">Verberg betekenissen</button></div>
+    <dl class="gl"></dl></section>`);
+  app.appendChild(v);
+  const dl=$(".gl",v), q=$("#gl-q",v), c=$("#gl-c",v), hide=$("#gl-hide",v); let hidden=false;
+  function draw(){ const s=q.value.trim().toLowerCase(); const rows=GLOSS.filter(g=>(!c.value||g[2]===c.value)&&(!s||(g[0]+" "+g[1]).toLowerCase().includes(s))).sort((a,b)=>a[0].localeCompare(b[0],"nl"));
+    dl.innerHTML = rows.length ? rows.map(g=>`<div><dt>${g[0]}<br><span class="h">${g[2]==="Focus"?"Focus":"hoofdstuk "+g[2]}</span></dt><dd ${hidden?'style="filter:blur(6px);cursor:pointer" title="Klik om te tonen"':""}>${g[1]}</dd></div>`).join("") : `<p class="note" style="margin-top:12px">Geen begrip gevonden. Probeer een ander woord of kies ‘Alle hoofdstukken’.</p>`; }
+  q.addEventListener("input",draw); c.addEventListener("change",draw);
+  hide.addEventListener("click",()=>{ hidden=!hidden; hide.setAttribute("aria-pressed",hidden); hide.textContent=hidden?"Toon betekenissen":"Verberg betekenissen"; draw(); });
+  dl.addEventListener("click",e=>{ const d=e.target.closest("dd"); if(d) d.style.filter="none"; });
+  draw();
+}
+
+/* ---------- QUIZ ---------- */
+function renderQuiz(app){
+  const v=h(`<section class="view quiz"><div class="chead"><h1>Eindtoets thema 4</h1><p>Tien willekeurige vragen over het hele thema. Elke keer dat je start, krijg je andere vragen.</p></div><div class="block" id="qz"></div></section>`);
+  app.appendChild(v); const box=$("#qz",v);
+  function intro(){ const best=P.best; box.innerHTML=`<div class="qcard"><h3>Klaar om jezelf te testen?</h3><p>${best!=null?`Je beste score tot nu toe: <b>${best}/10</b>.`:"Je hebt de toets nog niet gemaakt."}</p><div class="actions"><button type="button" class="btn" id="qstart">Start de toets</button></div></div>`; $("#qstart",box).addEventListener("click",start); }
+  let qs=[], i=0, score=0;
+  function start(){ qs=shuffle(POOL).slice(0,10).map(q=>{ const ord=shuffle(q.o.map((_,j)=>j)); return {q:q.q,o:ord.map(j=>q.o[j]),a:ord.indexOf(q.a)}; }); i=0; score=0; ask(); }
+  function ask(){ const q=qs[i];
+    box.innerHTML=`<div class="qcard"><div class="qn">Vraag ${i+1} van 10</div><div class="bar"><i style="width:${i*10}%"></i></div><h3>${q.q}</h3><div class="qopts">${q.o.map((o,j)=>`<button type="button" class="qopt" data-j="${j}">${o}</button>`).join("")}</div><div class="actions"><span class="msg" aria-live="polite"></span></div></div>`;
+    box.querySelector(".qopts").addEventListener("click",e=>{ const b=e.target.closest(".qopt"); if(!b||b.disabled) return; const j=+b.dataset.j; const ok=j===q.a; if(ok) score++;
+      box.querySelectorAll(".qopt").forEach((x,k)=>{ x.disabled=true; if(k===q.a) x.classList.add("ok"); }); if(!ok) b.classList.add("bad");
+      const m=$(".msg",box); m.className="msg "+(ok?"ok":"bad"); m.textContent= ok?"Juist!":"Niet juist. Het juiste antwoord is groen.";
+      const nb=h(`<button type="button" class="btn">${i<9?"Volgende vraag":"Bekijk je score"}</button>`); nb.addEventListener("click",()=>{ i++; i<10?ask():end(); }); $(".actions",box).prepend(nb); nb.focus(); });
+  }
+  function end(){ if(P.best==null||score>P.best){ P.best=score; save(); }
+    const t = score>=8?"Sterk gedaan. Je beheerst dit thema goed.":score>=5?"Goed bezig. Herhaal de hoofdstukken waar je twijfelde.":"Lees de samenvattingen nog eens en maak de oefeningen opnieuw.";
+    box.innerHTML=`<div class="qcard"><div class="score">${score}/10</div><p style="margin-top:6px">${t}</p><div class="actions"><button type="button" class="btn" id="qagain">Nieuwe toets</button><a class="btn ghost" href="#start" style="text-decoration:none">Terug naar start</a></div></div>`;
+    $("#qagain",box).addEventListener("click",start); }
+  intro();
+}
+
+/* ---------- OEFENARENA ---------- */
+let arTotal=0, arTab="mem";
+function renderArena(app){
+  const v=h(`<section class="view">
+    <div class="ar-top"><div class="chead"><div class="num">Oefenen</div><h1>Oefenarena</h1><p>Vier spellen over het hele thema. Verdien punten en verbeter je record. Je punten worden alleen in deze browser bewaard.</p></div>
+      <div class="ar-pts" aria-live="polite"><span class="ar-pill">Punten <b id="ar-total">0</b></span><span class="ar-pill">Record <b id="ar-best">0</b></span></div></div>
+    <div class="ar-tabs" role="tablist" aria-label="Spellen">
+      <button role="tab" data-g="mem">Begrippen-memory</button><button role="tab" data-g="sort">Sorteerrace</button>
+      <button role="tab" data-g="who">Wie ben ik?</button><button role="tab" data-g="chain">Kettingreactie</button></div>
+    <div id="ar-stage"></div>
+    <p class="foot">Gebaseerd op Focus Biologie 4.2 (Pelckmans), thema 4 Classificatie.</p></section>`);
+  app.appendChild(v);
+  const stage=$("#ar-stage",v);
+  function pts(n){ arTotal=Math.max(0,arTotal+n); $("#ar-total",v).textContent=arTotal; if(arTotal>(P.arenaBest||0)){ P.arenaBest=arTotal; save(); } $("#ar-best",v).textContent=P.arenaBest||0; }
+  pts(0);
+  let timer=null;
+  function fb(el,ok,t){ el.className="ar-fb "+(ok?"ok":"no"); el.textContent=t; }
+  const GAMES={
+    mem(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2>Begrippen-memory</h2><span class="ar-meta" id="m-meta"></span><p>Draai telkens twee kaarten om en zoek bij elk begrip de juiste omschrijving. Hoe minder beurten, hoe meer punten.</p></div><div class="ar-mem" id="m-grid"></div><div class="actions"><button type="button" class="btn" id="m-new">Nieuw spel</button></div><div class="ar-fb" id="m-fb" aria-live="polite"></div></div>`;
+      let st;
+      function meta(){ $("#m-meta",stage).textContent=`Beurten: ${st.turns} · Paren: ${st.found}/8`; }
+      function start(){
+        const pick=shuffle(AR_MEM).slice(0,8);
+        st={cards:shuffle(pick.flatMap((g,i)=>[{id:i,t:g[0],term:true},{id:i,t:g[1],term:false}])),open:[],turns:0,found:0,lock:false};
+        const grid=$("#m-grid",stage); grid.innerHTML=""; $("#m-fb",stage).textContent="";
+        st.cards.forEach((c,k)=>{ const b=document.createElement("button"); b.type="button"; b.className="ar-card"+(c.term?" term":""); b.textContent=c.t; b.setAttribute("aria-label","Kaart "+(k+1)+", omgedraaid"); b.addEventListener("click",()=>flip(k,b)); c.el=b; grid.appendChild(b); });
+        meta();
+      }
+      function flip(k,b){
+        const c=st.cards[k]; if(st.lock||c.done||st.open.includes(k)) return;
+        b.classList.add("open"); b.setAttribute("aria-label",c.t); st.open.push(k); if(st.open.length<2) return;
+        st.turns++; const [a,z]=st.open.map(i=>st.cards[i]); const m=$("#m-fb",stage);
+        if(a.id===z.id&&a.term!==z.term){ a.done=z.done=true; a.el.classList.add("done"); z.el.classList.add("done"); st.open=[]; st.found++; fb(m,true,"Juist paar!");
+          if(st.found===8){ const p=Math.max(4,20-Math.max(0,st.turns-8)); pts(p); fb(m,true,`Alle paren gevonden in ${st.turns} beurten: +${p} punten.`); } }
+        else { st.lock=true; a.el.classList.add("wrong"); z.el.classList.add("wrong"); fb(m,false,"Geen paar. Onthoud waar ze liggen.");
+          setTimeout(()=>{ [a,z].forEach(c=>{ c.el.classList.remove("open","wrong"); c.el.setAttribute("aria-label","Omgedraaide kaart"); }); st.open=[]; st.lock=false; },1300); }
+        meta();
+      }
+      $("#m-new",stage).addEventListener("click",start); start();
+    },
+    sort(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2 id="s-title">Sorteerrace</h2><span class="ar-meta" id="s-meta"></span><p>Tik op een kaartje en daarna op de juiste kolom. Elke fout kost een punt; ben je binnen de minuut klaar, dan krijg je 2 bonuspunten.</p></div>
+        <div class="actions"><label for="s-pick" class="ar-meta">Onderwerp</label><select id="s-pick"></select><button type="button" class="btn" id="s-next">Volgende ronde</button></div>
+        <div class="ar-pool" id="s-pool" aria-label="Te sorteren kaartjes"></div><div class="ar-buckets" id="s-buckets"></div><div class="ar-fb" id="s-fb" aria-live="polite"></div></div>`;
+      const sel=$("#s-pick",stage); AR_SETS.forEach((s,i)=>sel.appendChild(h(`<option value="${i}">${s.t}</option>`)));
+      let st={idx:-1};
+      function meta(){ $("#s-meta",stage).textContent=`Nog ${st.left} · Fouten ${st.err} · ${Math.round((Date.now()-st.t0)/1000)} s`; }
+      function start(idx){
+        if(idx===undefined) idx=(st.idx+1)%AR_SETS.length;
+        const s=AR_SETS[idx]; st={idx,set:s,left:s.i.length,err:0,sel:null,t0:Date.now()}; sel.value=idx;
+        $("#s-title",stage).textContent=s.t; $("#s-fb",stage).textContent="";
+        const pool=$("#s-pool",stage); pool.innerHTML="";
+        shuffle(s.i).forEach(it=>{ const b=document.createElement("button"); b.type="button"; b.className="ar-chip"; b.textContent=it[0]; b.dataset.c=it[1];
+          b.addEventListener("click",()=>{ if(b.classList.contains("placed")) return; stage.querySelectorAll(".ar-chip.sel").forEach(x=>x.classList.remove("sel")); b.classList.add("sel"); st.sel=b; }); pool.appendChild(b); });
+        const bk=$("#s-buckets",stage); bk.innerHTML="";
+        s.c.forEach((c,ci)=>{ const d=document.createElement("button"); d.type="button"; d.className="ar-bucket"; d.innerHTML=`<h4>${c}</h4>`; d.setAttribute("aria-label","Kolom "+c); d.addEventListener("click",()=>drop(ci,d)); bk.appendChild(d); });
+        clearInterval(timer); timer=setInterval(()=>{ if(!document.body.contains(stage)) return clearInterval(timer); meta(); },500); meta();
+      }
+      function drop(ci,d){
+        const b=st.sel, m=$("#s-fb",stage); if(!b){ fb(m,false,"Tik eerst op een kaartje."); return; }
+        if(+b.dataset.c===ci){ b.classList.remove("sel"); b.classList.add("placed"); d.appendChild(b); st.sel=null; st.left--; fb(m,true,"Juist!");
+          if(st.left===0){ clearInterval(timer); const sec=Math.round((Date.now()-st.t0)/1000); const p=Math.max(1,st.set.i.length-st.err+(sec<60?2:0)); pts(p);
+            fb(m,true,`Ronde klaar in ${sec} s met ${st.err} fout(en): +${p} punten.${sec<60?" (snelheidsbonus +2)":""}`); } }
+        else { st.err++; d.classList.add("flash","ar-shake"); b.classList.add("ar-shake"); setTimeout(()=>{ d.classList.remove("flash","ar-shake"); b.classList.remove("ar-shake"); },400);
+          fb(m,false,`‘${b.textContent}’ hoort niet bij ${st.set.c[ci]}. Probeer opnieuw.`); }
+        meta();
+      }
+      sel.addEventListener("change",()=>start(+sel.value)); $("#s-next",stage).addEventListener("click",()=>start()); start(0);
+    },
+    who(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2>Wie ben ik?</h2><span class="ar-meta" id="w-meta"></span><p>Raad het organisme, proces of begrip. Na één hint verdien je 3 punten, na twee hints 2 punten, na drie hints 1 punt.</p></div>
+        <div class="ar-riddle"><ol id="w-hints"></ol></div><div class="actions"><button type="button" class="btn ghost" id="w-hint">Volgende hint</button></div>
+        <div class="ar-opts" id="w-opts"></div><div class="ar-fb" id="w-fb" aria-live="polite"></div><div class="actions"><button type="button" class="btn" id="w-next">Volgend raadsel</button></div></div>`;
+      let st={order:[],k:-1,shown:1,done:false};
+      function draw(){ const r=AR_WHO[st.order[st.k]]; $("#w-hints",stage).innerHTML=r.h.map((x,i)=>i<st.shown?`<li>${x}</li>`:`<li class="hid" aria-hidden="true">verborgen hint</li>`).join("");
+        $("#w-hint",stage).disabled=st.done||st.shown>=3; $("#w-meta",stage).textContent=`Raadsel ${st.k+1}/${AR_WHO.length} · waard ${4-st.shown} pt`; }
+      function next(){
+        if(!st.order.length||st.k>=st.order.length-1){ st.order=shuffle(AR_WHO.map((_,i)=>i)); st.k=-1; }
+        st.k++; st.shown=1; st.done=false; const r=AR_WHO[st.order[st.k]]; $("#w-fb",stage).textContent=""; draw();
+        const o=$("#w-opts",stage); o.innerHTML="";
+        shuffle(r.o).forEach(t=>{ const b=document.createElement("button"); b.type="button"; b.textContent=t; b.addEventListener("click",()=>answer(b,t,r)); o.appendChild(b); });
+      }
+      function answer(b,t,r){ if(st.done) return; const m=$("#w-fb",stage);
+        if(t===r.a){ st.done=true; b.classList.add("ok"); const p=4-st.shown; pts(p); st.shown=3; draw(); fb(m,true,`Juist, het is ${r.a}! +${p} punten.`); }
+        else { b.classList.add("no"); b.disabled=true;
+          if(st.shown<3){ st.shown++; draw(); fb(m,false,"Niet juist. Je krijgt een extra hint."); }
+          else { st.done=true; stage.querySelectorAll("#w-opts button").forEach(x=>{ if(x.textContent===r.a) x.classList.add("ok"); }); draw(); fb(m,false,`Helaas, het juiste antwoord is ${r.a}.`); } } }
+      $("#w-hint",stage).addEventListener("click",()=>{ if(st.shown<3){ st.shown++; draw(); } });
+      $("#w-next",stage).addEventListener("click",next); next();
+    },
+    chain(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2 id="c-title">Kettingreactie</h2><span class="ar-meta" id="c-meta"></span><p id="c-q"></p></div>
+        <ol class="ar-chain" id="c-list"></ol><div class="actions"><button type="button" class="btn" id="c-check">Controleer</button><button type="button" class="btn ghost" id="c-next">Volgende ketting</button></div><div class="ar-fb" id="c-fb" aria-live="polite"></div></div>`;
+      let st={k:-1,cur:[],checked:false};
+      function draw(marks){ const ol=$("#c-list",stage); ol.innerHTML="";
+        st.cur.forEach((s,i)=>{ const li=document.createElement("li"); if(marks) li.className=marks[i]?"ok":"no";
+          li.innerHTML=`<span class="n" aria-hidden="true"></span><span class="t"></span>`; $(".t",li).textContent=s;
+          const up=h(`<button type="button" class="ar-mv">↑</button>`), dn=h(`<button type="button" class="ar-mv">↓</button>`);
+          up.setAttribute("aria-label","Omhoog: "+s); dn.setAttribute("aria-label","Omlaag: "+s); up.disabled=i===0||st.checked; dn.disabled=i===st.cur.length-1||st.checked;
+          up.addEventListener("click",()=>{ [st.cur[i-1],st.cur[i]]=[st.cur[i],st.cur[i-1]]; draw(); ol.children[i-1].querySelector(".ar-mv").focus(); });
+          dn.addEventListener("click",()=>{ [st.cur[i+1],st.cur[i]]=[st.cur[i],st.cur[i+1]]; draw(); ol.children[i+1].querySelectorAll(".ar-mv")[1].focus(); });
+          li.append(up,dn); ol.appendChild(li); }); }
+      function next(){ st.k=(st.k+1)%AR_CHAINS.length; const c=AR_CHAINS[st.k]; let cur; do{ cur=shuffle(c.s); }while(cur.every((x,i)=>x===c.s[i]));
+        st.cur=cur; st.checked=false; $("#c-title",stage).textContent=c.t; $("#c-q",stage).textContent=c.q+" Zet de stappen in de juiste volgorde met de pijltjes en controleer. Elke stap op de juiste plaats = 1 punt.";
+        $("#c-fb",stage).textContent=""; $("#c-check",stage).disabled=false; $("#c-meta",stage).textContent=`Ketting ${st.k+1}/${AR_CHAINS.length}`; draw(); }
+      $("#c-check",stage).addEventListener("click",()=>{ if(st.checked) return; const c=AR_CHAINS[st.k]; const marks=st.cur.map((s,i)=>s===c.s[i]); const n=marks.filter(Boolean).length;
+        st.checked=true; draw(marks); pts(n); $("#c-check",stage).disabled=true;
+        fb($("#c-fb",stage),n===c.s.length, n===c.s.length?`Perfect! +${n} punten.`:`${n} van de ${c.s.length} stappen staan juist: +${n} punten. Juiste volgorde: ${c.s.join(" → ")}`); });
+      $("#c-next",stage).addEventListener("click",next); next();
+    }
+  };
+  const tabs=v.querySelectorAll(".ar-tabs button");
+  function open(g){ arTab=g; clearInterval(timer); tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.g===g)); GAMES[g](); }
+  v.querySelector(".ar-tabs").addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) open(b.dataset.g); });
+  open(arTab);
+}
+
+/* ---------- ROUTER ---------- */
+let current="start";
+function route(){
+  const id=(location.hash||"#start").slice(1);
+  const ch=CH.find(c=>c.id===id);
+  current = ch?id:(["begrippen","toets","arena"].includes(id)?id:"start");
+  const app=$("#app"); app.innerHTML="";
+  if(ch) renderChapter(app,ch); else if(current==="begrippen") renderGloss(app); else if(current==="toets") renderQuiz(app); else if(current==="arena") renderArena(app); else renderStart(app);
+  renderTabs(current); window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+route();
+</script>
+<script>try{localStorage.setItem("bio42-last","4")}catch(e){}</script>
+</body>
+</html>

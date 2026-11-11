@@ -1,0 +1,1099 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interactie en gedrag – Thema 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Young+Serif&display=swap">
+<style>
+/* Layout: veldschrift — één hoofdstuk tegelijk, smalle leeskolom, oefeningen als losse werkbladen eronder */
+:root{
+  --paper:#EAF0EC; --sheet:#F8FBF9; --ink:#12302A; --ink-2:#4B6761; --line:#C6D6CE;
+  --moss:#4C7D27; --moss-soft:#DAE8CC; --water:#2A6C84; --water-soft:#D3E6ED;
+  --ok:#2C7A47; --ok-soft:#D5EDDC; --bad:#B0442D; --bad-soft:#F5DCD5;
+  --bone:#F3F1EA; --dead:#8D8676;
+  --f-display:"Young Serif", "Iowan Old Style", Georgia, serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0D1A17; --sheet:#132420; --ink:#E1ECE6; --ink-2:#9BB3AB; --line:#29423B;
+  --moss:#9CCB6B; --moss-soft:#22371B; --water:#74B5CA; --water-soft:#17313A;
+  --ok:#7ACB91; --ok-soft:#163322; --bad:#EC8F77; --bad-soft:#3B1E17;
+  --bone:#E9E6DC; --dead:#7A7466; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0D1A17; --sheet:#132420; --ink:#E1ECE6; --ink-2:#9BB3AB; --line:#29423B;
+  --moss:#9CCB6B; --moss-soft:#22371B; --water:#74B5CA; --water-soft:#17313A;
+  --ok:#7ACB91; --ok-soft:#163322; --bad:#EC8F77; --bad-soft:#3B1E17;
+  --bone:#E9E6DC; --dead:#7A7466; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;margin:0}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,5vw,3.6rem)}
+h2{font-size:clamp(1.6rem,3.4vw,2.3rem)}
+h3{font-size:1.3rem}
+p{margin:0}
+b,strong{font-weight:700}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--water);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:20px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 18px;padding-block:10px}
+.teacher{font-family:var(--f-display);font-size:1.15rem;color:var(--ink)}
+.brand{font-family:var(--f-display);font-size:1.15rem;white-space:nowrap;text-decoration:none;color:var(--ink)}
+.brand span{color:var(--moss)}
+nav.tabs{display:flex;flex-wrap:wrap;gap:4px;min-width:0;flex-basis:100%;margin-left:-11px}
+nav.tabs a{flex:none;display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;text-decoration:none;color:var(--ink-2);font-size:.92rem;white-space:nowrap}
+nav.tabs a:hover{background:var(--moss-soft);color:var(--ink)}
+nav.tabs a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+.ring{width:16px;height:16px;flex:none}
+.ring circle{fill:none;stroke-width:3}
+.ring .bg{stroke:var(--line)}
+.ring .fg{stroke:var(--moss);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%}
+nav.tabs a[aria-current="page"] .ring .bg{stroke:color-mix(in srgb,var(--paper) 35%,transparent)}
+
+main{padding-block:36px 80px}
+.view[hidden]{display:none}
+
+/* hero ladder */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:36px;align-items:center}
+.hero .lead{font-size:1.15rem;color:var(--ink-2);max-width:52ch;margin-top:14px}
+.ladder{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px;counter-reset:lv}
+.ladder button{border:1px solid var(--line);background:var(--sheet);padding:6px 12px;border-radius:999px;cursor:pointer;font-size:.95rem;display:flex;gap:7px;align-items:baseline}
+.ladder button .n{font-variant-numeric:tabular-nums;color:var(--ink-2);font-size:.8rem}
+.ladder button[aria-pressed="true"]{background:var(--moss);border-color:var(--moss);color:var(--sheet)}
+.ladder button[aria-pressed="true"] .n{color:inherit;opacity:.8}
+.lvinfo{margin-top:18px;min-height:7.5em;border-left:3px solid var(--moss);padding:4px 0 4px 16px;max-width:60ch}
+.lvinfo h3{font-size:1.5rem}
+.lvinfo .lvex{color:var(--ink-2);margin-top:6px;font-style:italic}
+#rings{width:100%;max-width:420px;height:auto;display:block;margin:auto}
+#rings circle{fill:transparent;stroke:var(--line);stroke-width:1.5;transition:fill .35s,stroke .35s;cursor:pointer}
+#rings circle.in{fill:color-mix(in srgb,var(--moss) 9%,transparent);stroke:color-mix(in srgb,var(--moss) 55%,var(--line))}
+#rings circle.on{stroke:var(--moss);stroke-width:3.5}
+#rings text{font-family:var(--f-body);font-size:13px;fill:var(--ink);text-anchor:middle;pointer-events:none}
+
+.chapters{margin-top:56px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.chap{display:block;text-decoration:none;color:inherit;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.chap:hover{border-color:var(--moss)}
+.chap .num{font-family:var(--f-display);font-size:1.9rem;color:var(--moss);line-height:1}
+.chap h3{margin-top:8px;font-size:1.15rem}
+.chap p{color:var(--ink-2);font-size:.92rem;margin-top:4px}
+.bar{height:5px;background:var(--line);border-radius:3px;margin-top:12px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--moss);border-radius:3px;width:0;transition:width .4s}
+.howto{margin-top:44px;max-width:64ch;color:var(--ink-2)}
+.howto h3{color:var(--ink);margin-bottom:6px}
+
+/* chapter */
+.chead{max-width:760px}
+.chead .num{font-family:var(--f-display);color:var(--moss);font-size:1.1rem}
+.chead p{font-size:1.12rem;color:var(--ink-2);margin-top:12px}
+.subnav{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.subnav a{font-size:.9rem;color:var(--water);text-decoration:none;border-bottom:1px solid currentColor}
+.block{margin-top:44px;max-width:760px}
+.block > h2{margin-bottom:6px}
+.sum{margin-top:22px;display:grid;gap:12px}
+.sum h3{margin-top:14px}
+.sum p,.sum li{max-width:68ch}
+.sum ul{margin:0;padding-left:1.2em;display:grid;gap:4px}
+dfn{font-style:normal;font-weight:700;background:linear-gradient(transparent 62%,var(--moss-soft) 62%)}
+.note{font-size:.95rem;color:var(--ink-2);border-left:3px solid var(--water);padding-left:12px}
+
+/* flashcards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:16px;max-width:1000px}
+.card{perspective:900px;border:none;background:none;padding:0;cursor:pointer;min-height:132px;text-align:left}
+.card .in{position:relative;display:block;width:100%;height:100%;min-height:132px;transition:transform .45s;transform-style:preserve-3d}
+.card.flip .in{transform:rotateY(180deg)}
+.card .f,.card .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;justify-content:center}
+.card .f{background:var(--sheet);border:1px solid var(--line);font-family:var(--f-display);font-size:1.2rem}
+.card .f small{font-family:var(--f-body);font-size:.78rem;color:var(--ink-2);margin-top:8px}
+.card .b{background:var(--moss-soft);border:1px solid var(--moss);transform:rotateY(180deg);font-size:.93rem;line-height:1.45}
+
+/* exercises */
+.ex-list{display:grid;gap:18px;margin-top:18px;max-width:1000px}
+.ex{min-width:0;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.ex.done{border-color:var(--ok)}
+.exh{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.exh h3{font-size:1.18rem;max-width:62ch}
+.exh .tag{font-size:.8rem;color:var(--ink-2);display:block;font-family:var(--f-body);margin-bottom:2px}
+.chip{font-size:.8rem;padding:3px 10px;border-radius:999px;background:var(--paper);color:var(--ink-2);white-space:nowrap;border:1px solid var(--line)}
+.ex.done .chip{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
+.ex .q{margin-top:8px;color:var(--ink-2);max-width:68ch}
+.ex-body{margin-top:14px}
+.row{display:flex;gap:10px 16px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:10px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:none}
+.row .t{flex:1 1 280px;min-width:0}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opt{border:1px solid var(--line);background:var(--paper);padding:5px 12px;border-radius:7px;cursor:pointer;font-size:.92rem}
+.opt:hover{border-color:var(--water)}
+.opt[aria-pressed="true"]{background:var(--water);color:var(--sheet);border-color:var(--water)}
+.row.ok .opt[aria-pressed="true"]{background:var(--ok);border-color:var(--ok)}
+.row.bad .opt[aria-pressed="true"]{background:var(--bad);border-color:var(--bad)}
+.fb{flex-basis:100%;font-size:.92rem;padding:6px 10px;border-radius:7px}
+.fb.ok{background:var(--ok-soft);color:var(--ink)}
+.fb.bad{background:var(--bad-soft);color:var(--ink)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.btn{border:none;background:var(--ink);color:var(--paper);padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.95rem}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:400}
+.btn:hover{opacity:.9}
+.msg{font-size:.95rem}
+.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+select{font:inherit;font-size:.93rem;padding:5px 8px;border-radius:7px;border:1px solid var(--line);background:var(--paper);color:var(--ink);max-width:100%}
+.row.ok select{border-color:var(--ok);background:var(--ok-soft)}
+.row.bad select{border-color:var(--bad);background:var(--bad-soft)}
+textarea{width:100%;min-height:90px;font:inherit;font-size:.95rem;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);resize:vertical}
+.model{margin-top:12px;background:var(--moss-soft);border-radius:8px;padding:12px 14px;font-size:.95rem}
+.model b{display:block;margin-bottom:2px}
+
+/* order */
+.pool,.answer{display:flex;flex-wrap:wrap;gap:8px;min-height:48px;padding:10px;border-radius:8px}
+.pool{background:var(--paper)}
+.answer{border:1.5px dashed var(--line);margin-top:10px;flex-direction:column;align-items:stretch}
+.answer:empty::before{content:"Tik de stappen hierboven aan in de juiste volgorde.";color:var(--ink-2);font-size:.92rem}
+.tok{border:1px solid var(--line);background:var(--sheet);padding:6px 12px;border-radius:7px;cursor:pointer;text-align:left;font-size:.93rem}
+.answer .tok{display:flex;gap:10px}
+.answer .tok .i{font-variant-numeric:tabular-nums;color:var(--ink-2);min-width:1.2em}
+.answer .tok.ok{border-color:var(--ok);background:var(--ok-soft)}
+.answer .tok.bad{border-color:var(--bad);background:var(--bad-soft)}
+
+/* table */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:380px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{font-weight:700;font-size:.9rem;color:var(--ink-2)}
+td.c,th.c{text-align:center}
+td.ok{background:var(--ok-soft)} td.bad{background:var(--bad-soft)}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--water)}
+
+/* explore */
+.explore{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:16px}
+.explore .list{display:flex;flex-direction:column;gap:6px}
+.explore .panel{background:var(--paper);border-radius:8px;padding:14px 16px;min-height:120px}
+.explore .panel h4{font-family:var(--f-display);font-weight:400;font-size:1.2rem;margin:0 0 6px}
+.explore .panel dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.explore .panel dt{color:var(--ink-2);font-size:.9rem}
+.explore .panel dd{margin:0}
+
+/* pyramid */
+.pyr{display:grid;gap:6px;margin-top:12px}
+.pyr .lv{display:grid;grid-template-columns:150px minmax(0,1fr) 110px;gap:10px;align-items:center;font-size:.92rem}
+.pyr .lv .bw{display:flex;justify-content:center}
+.pyr .lv .b{height:30px;background:var(--moss);border-radius:4px;min-width:3px;transition:width .3s}
+.pyr .lv:nth-child(2) .b{background:color-mix(in srgb,var(--moss) 75%,var(--water))}
+.pyr .lv:nth-child(3) .b{background:color-mix(in srgb,var(--moss) 45%,var(--water))}
+.pyr .lv:nth-child(4) .b{background:var(--water)}
+.pyr .lv .v{font-variant-numeric:tabular-nums;text-align:right}
+input[type=range]{width:100%;accent-color:var(--moss)}
+input[type=number]{font:inherit;width:9em;padding:5px 8px;border-radius:7px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+
+/* svg diagrams */
+.diagram{overflow-x:auto}
+.diagram svg{display:block;width:100%;min-width:560px;height:auto}
+.node rect{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+.node text{font-family:var(--f-body);font-size:14px;fill:var(--ink);text-anchor:middle}
+.arr{cursor:pointer}
+.arr line{stroke-width:3.5}
+.arr .hit{stroke:transparent;stroke-width:22}
+.arr text{font-family:var(--f-body);font-size:13px;font-weight:700;paint-order:stroke;stroke:var(--sheet);stroke-width:5px;stroke-linejoin:round}
+.arr.dim{opacity:.25}
+.arr.hl line{stroke-width:6}
+.k-fix{stroke:var(--water);fill:var(--water)}
+.k-ass{stroke:var(--moss);fill:var(--moss)}
+.k-nit{stroke:#C98A1B;fill:#C98A1B}
+.k-amm{stroke:var(--bad);fill:var(--bad)}
+.k-dood{stroke:var(--ink-2);fill:var(--ink-2)}
+.arr text.k-fix,.arr text.k-ass,.arr text.k-nit,.arr text.k-amm,.arr text.k-dood{stroke:var(--sheet)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:none;background:transparent;padding:6px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.infobox{margin-top:12px;background:var(--paper);border-radius:8px;padding:12px 14px;min-height:72px}
+
+/* coral */
+.coral{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:20px;align-items:center}
+.coral svg{width:100%;max-width:300px;height:auto}
+.coral .st{font-family:var(--f-display);font-size:1.5rem}
+.c-branch{transition:stroke .6s}
+.state-gezond .c-branch{stroke:var(--moss)}
+.state-gezond .c-pol{fill:#E0A33A;opacity:1}
+.state-verbleekt .c-branch{stroke:var(--bone)}
+.state-verbleekt .c-pol{fill:var(--bone);opacity:.7}
+.state-dood .c-branch{stroke:var(--dead)}
+.state-dood .c-pol{opacity:0}
+.c-alg{opacity:0;transition:opacity .6s;fill:var(--moss)}
+.state-dood .c-alg{opacity:.8}
+.c-pol{transition:fill .6s,opacity .6s}
+
+/* glossary */
+.gl-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.gl-tools input{font:inherit;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--sheet);color:var(--ink);flex:1 1 240px;min-width:0}
+.gl{margin-top:16px;display:grid;gap:0;max-width:820px}
+.gl div{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}
+.gl dt{font-weight:700}
+.gl dd{margin:0}
+.gl .h{font-size:.8rem;color:var(--ink-2)}
+
+/* toets */
+.quiz{max-width:760px}
+.qcard{background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.qcard .qn{color:var(--ink-2);font-size:.9rem;font-variant-numeric:tabular-nums}
+.qcard h3{margin:6px 0 14px}
+.qopts{display:grid;gap:8px}
+.qopt{border:1px solid var(--line);background:var(--paper);text-align:left;padding:10px 14px;border-radius:8px;cursor:pointer}
+.qopt:hover{border-color:var(--water)}
+.qopt.ok{background:var(--ok-soft);border-color:var(--ok)}
+.qopt.bad{background:var(--bad-soft);border-color:var(--bad)}
+.qopt:disabled{cursor:default}
+.score{font-family:var(--f-display);font-size:3rem;color:var(--moss)}
+
+.foot{margin-top:60px;color:var(--ink-2);font-size:.85rem;max-width:70ch}
+
+@media (max-width:820px){
+  .top{position:static}
+  .hero{grid-template-columns:1fr}
+  #rings{max-width:300px}
+  .explore,.coral{grid-template-columns:1fr}
+  .pyr .lv{grid-template-columns:110px minmax(0,1fr) 80px}
+  .gl div{grid-template-columns:1fr;gap:2px}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .ex{padding:16px}
+}
+
+/* oefenarena (spellen) */
+.ar-top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between}
+.ar-pts{display:flex;gap:8px;flex-wrap:wrap}
+.ar-pill{background:var(--sheet);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.ar-pill b{color:var(--moss)}
+.ar-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-top:26px}
+.ar-tabs button{border:1px solid var(--line);background:var(--sheet);padding:7px 14px;border-radius:999px;cursor:pointer;font-size:.95rem}
+.ar-tabs button[aria-selected="true"]{background:var(--moss);border-color:var(--moss);color:var(--sheet)}
+.ar-game{margin-top:16px;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;max-width:1000px}
+.ar-head{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:baseline}
+.ar-head p{flex-basis:100%;color:var(--ink-2);max-width:68ch;margin-top:6px}
+.ar-meta{color:var(--ink-2);font-variant-numeric:tabular-nums;font-weight:700;font-size:.95rem}
+.ar-fb{min-height:1.5em;font-weight:700;margin-top:10px;font-size:.95rem}
+.ar-fb.ok{color:var(--ok)} .ar-fb.no{color:var(--bad)}
+.ar-mem{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+@media (max-width:620px){.ar-mem{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ar-card{min-height:108px;border-radius:8px;border:1px solid var(--line);background:var(--ink);color:transparent;cursor:pointer;padding:8px;font-size:.86rem;line-height:1.3;position:relative}
+.ar-card::after{content:"?";position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-size:1.8rem;color:color-mix(in srgb,var(--paper) 45%,transparent)}
+.ar-card.open,.ar-card.done{background:var(--paper);color:var(--ink);cursor:default}
+.ar-card.open::after,.ar-card.done::after{content:none}
+.ar-card.term{font-family:var(--f-display);font-size:1.02rem}
+.ar-card.done{background:var(--ok-soft);border-color:var(--ok)}
+.ar-card.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.ar-pool{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border:1.5px dashed var(--line);border-radius:8px;margin-top:14px}
+.ar-chip{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:7px 12px;cursor:pointer;text-align:left;max-width:100%;font-size:.93rem}
+.ar-chip.sel{border-color:var(--water);background:var(--water-soft)}
+.ar-chip.placed{cursor:default;background:var(--ok-soft);border-color:transparent;font-size:.88rem;padding:5px 9px}
+.ar-buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:12px}
+.ar-bucket{border:1.5px solid var(--moss);border-radius:8px;padding:10px;min-height:100px;background:transparent;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ar-bucket h4{margin:0 0 4px;font-family:var(--f-display);font-weight:400;font-size:1.05rem;color:var(--moss)}
+.ar-bucket.flash{border-color:var(--bad);background:var(--bad-soft)}
+@keyframes ar-shake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.ar-shake{animation:ar-shake .3s}
+.ar-riddle{background:var(--moss-soft);border-radius:8px;padding:14px 16px;margin-top:14px}
+.ar-riddle ol{margin:0;padding-left:1.4em;display:grid;gap:6px}
+.ar-riddle li.hid{color:transparent;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--moss) 30%,transparent) 0 10px,transparent 10px 14px);border-radius:4px;list-style:none;margin-left:-1.4em;padding-left:1.4em}
+.ar-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:12px}
+.ar-opts button{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:11px;cursor:pointer;font-weight:700}
+.ar-opts button.ok{border-color:var(--ok);background:var(--ok-soft)}
+.ar-opts button.no{border-color:var(--bad);background:var(--bad-soft)}
+.ar-chain{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px;counter-reset:s}
+.ar-chain li{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--paper)}
+.ar-chain li .n{counter-increment:s;font-family:var(--f-display);color:var(--moss);width:1.6em;text-align:center;flex:none}
+.ar-chain li .n::before{content:counter(s)}
+.ar-chain li .t{flex:1;min-width:0}
+.ar-chain li.ok{border-color:var(--ok);background:var(--ok-soft)}
+.ar-chain li.no{border-color:var(--bad)}
+.ar-mv{border:1px solid var(--line);background:var(--sheet);border-radius:7px;width:38px;height:38px;cursor:pointer;flex:none}
+.ar-mv:disabled{opacity:.3;cursor:default}
+.chap.arena{border-color:var(--moss);background:var(--moss-soft)}
+@media (prefers-reduced-motion:reduce){.ar-shake{animation:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* thema 3 extra's */
+.top .wrap{align-items:center}
+.teacher{font-family:var(--f-display);font-size:clamp(1.5rem,3.4vw,2.4rem);line-height:1.1;color:var(--ink);margin-left:auto;text-align:right}
+.mx-wrap{max-width:440px;width:100%;margin:auto}
+.mx{display:grid;grid-template-columns:56px repeat(3,minmax(0,1fr));gap:6px}
+.mx-c{display:flex;align-items:center;justify-content:center;text-align:center;min-height:84px;border-radius:10px;font-size:.88rem;line-height:1.2;padding:6px}
+.mx-h{min-height:34px;color:var(--ink-2);font-weight:700;font-size:.95rem}
+.mx-b{border:1px solid var(--line);background:var(--sheet);cursor:pointer}
+.mx-b:hover{background:var(--moss-soft)}
+.mx-b[aria-pressed="true"]{background:var(--moss);border-color:var(--moss);color:var(--sheet)}
+.mx-sym{font-family:var(--f-display);font-size:2rem;color:var(--moss);margin-bottom:4px}
+.opt{min-width:2.6em}
+.mx-b{hyphens:auto;overflow-wrap:anywhere}
+@media (max-width:520px){.mx{grid-template-columns:40px repeat(3,minmax(0,1fr))}.mx-c{font-size:.74rem;min-height:64px;padding:4px}}
+
+</style>
+<style>.home-link{font-family:var(--f-body);font-size:.92rem;color:var(--ink-2);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:2px 11px;white-space:nowrap;margin-right:auto}.home-link:hover{color:var(--ink);border-color:var(--moss);background:var(--moss-soft)}</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#start">Thema 3 <span>Interactie en gedrag</span></a>
+    <a class="home-link" href="index.html">Alle thema’s</a>
+    <span class="teacher">P. Vandenheede</span>
+    <nav class="tabs" id="tabs" aria-label="Hoofdstukken"></nav>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<script>
+const MATRIX = {
+  "++":{n:"Mutualisme of coöperatie",d:"Beide soorten hebben voordeel. Bij <b>mutualisme</b> leven ze langdurig samen (symbiose); bij <b>coöperatie</b> werken ze tijdelijk samen.",ex:"Koraalpoliepen en zoöxanthellen (mutualisme); tandbaarzen en murenen die samen jagen (coöperatie)."},
+  "+0":{n:"Commensalisme",d:"De ene soort heeft voordeel, de andere ondervindt geen voor- of nadeel. Het is een symbiose.",ex:"Een bromelia (epifyt) op de stam van een tropische boom."},
+  "+-":{n:"Predatie",d:"De predator heeft voordeel, de prooi of gastheer nadeel. Vormen: begrazing, echte predatie, parasitoïsme en parasitisme.",ex:"Een kat die een muis vangt; de malariaparasiet in de mens."},
+  "00":{n:"Neutralisme",d:"Twee soorten leven samen zonder elkaar positief of negatief te beïnvloeden. Moeilijk waar te nemen.",ex:"De Indische aalscholver (jaagt in de namiddag) en de dwergaalscholver (jaagt ’s ochtends)."},
+  "0-":{n:"Amensalisme",d:"De ene soort hindert de andere (−) zonder er zelf voor- of nadeel van te hebben (0). Vormen: asymmetrische concurrentie en antibiose.",ex:"De schimmel Penicillium notatum maakt penicilline, waardoor bacteriën in de buurt sterven."},
+  "--":{n:"Competitie",d:"Beide soorten hebben nadeel: ze strijden om dezelfde hulpbronnen, zoals voedsel, licht of nestplaatsen.",ex:"Gevlekte hyena’s en witruggieren rond hetzelfde karkas."}
+};
+
+const CH = [
+/* ---------------- HOOFDSTUK 1 ---------------- */
+{ id:"h1", num:"1", title:"Interactievormen tussen organismen", short:"Interspecifiek of intraspecifiek, symbiose en de interactietabel",
+  lead:"Organismen beïnvloeden elkaar voortdurend. Hoe deel je die interacties in, en hoe benoem je ze correct met een interactietabel?",
+  summary:`
+  <p>De soorten in een levensgemeenschap leven samen in een <b>dynamisch evenwicht</b>. De variatie aan interacties tussen en binnen de soorten houdt dat fragiele evenwicht in stand. Hoe een organisme met andere organismen omgaat, wordt in grote mate bepaald door een <dfn>kosten-batenanalyse</dfn>: elke interactie houdt een risico in, maar kan ook veel voordeel opleveren.</p>
+  <h3>Twee niveaus</h3>
+  <ul>
+    <li><dfn>Interspecifieke interacties</dfn>: tussen organismen van verschillende soorten.</li>
+    <li><dfn>Intraspecifieke interacties</dfn>: tussen soortgenoten.</li>
+  </ul>
+  <p>De <b>intensiteit</b> van een interactie kan sterk verschillen: de ene is kort en krachtig, de andere lang en minder intens.</p>
+  <h3>Symbiose</h3>
+  <p>Langdurige interspecifieke interacties waarbij minstens één van beide organismen voordeel heeft, zijn <dfn>symbioses</dfn>. De organismen verschillen vaak in grootte: het kleinere organisme, de <dfn>gast</dfn>, leeft meestal op of in het grotere organisme, de <dfn>gastheer</dfn>.</p>
+  <h3>De interactietabel</h3>
+  <p>Hoe een organisme de interactie ervaart, geef je aan met een positief gevolg (<b>+</b>), een negatief gevolg (<b>−</b>) of een neutraal gevolg (<b>0</b>). Een <dfn>interactietabel</dfn> zet per deelnemer (symbiont) de inhoud en het gevolg op een rij, samen met de <b>duur</b> (lang/kort), de <b>intensiteit</b> (laag/hoog) en het <b>type interactie</b>. Zo kun je de interactievorm juist benoemen.</p>
+  <h3>Overzicht</h3>
+  <ul>
+    <li><b>Interspecifiek</b>: neutralisme (0/0), predatie (−/+) met echte predatie, begrazing, parasitoïsme en parasitisme, amensalisme (−/0), competitie (−/−), mutualisme (+/+), coöperatie (+/+) en commensalisme (+/0).</li>
+    <li><b>Intraspecifiek</b>: coöperatie (+/+) en concurrentie (−/−).</li>
+  </ul>
+  <p>Positieve interacties kunnen de populatiegrootte doen toenemen, negatieve interacties hebben vaak het omgekeerde effect. In al die interacties speelt <b>communicatie</b> een sleutelrol.</p>`,
+  cards:[["Interspecifieke interactie","Interactie tussen organismen van verschillende soorten."],["Intraspecifieke interactie","Interactie tussen soortgenoten."],["Symbiose","Langdurige interspecifieke interactie waarbij minstens één organisme voordeel heeft."],["Gast","Het kleinere organisme dat op of in de gastheer leeft."],["Gastheer","Het grotere organisme waarop of waarin de gast leeft."],["Interactietabel","Tabel met deelnemers, gevolg (+, −, 0), duur, intensiteit en type interactie."],["Kosten-batenanalyse","Afweging tussen risico en voordeel van een interactie."]],
+  exercises:[
+    { type:"classify", title:"Inter- of intraspecifiek?", buckets:["interspecifiek","intraspecifiek"],
+      items:[{t:"Leeuwinnen jagen samen op een waterbuffel.",b:1},{t:"Een kat vangt een muis.",b:0},{t:"Hoge beuken nemen het licht weg van jonge beuken.",b:1},{t:"Hyena’s en gieren vechten om een karkas.",b:0},{t:"Pinguïns staan dicht bij elkaar om warm te blijven.",b:1},{t:"Een remora zuigt zich vast aan een walvishaai.",b:0}]},
+    { type:"match", title:"Welk symbool hoort erbij?", q:"Kies de juiste combinatie van gevolgen voor beide organismen.",
+      options:["+ / +","+ / 0","− / +","− / 0","− / −","0 / 0"],
+      items:[{t:"mutualisme",a:0},{t:"commensalisme",a:1},{t:"predatie",a:2},{t:"amensalisme",a:3},{t:"competitie",a:4},{t:"neutralisme",a:5}]},
+    { type:"itable", title:"Vul de interactietabel in", q:"Lees de situatie. Kies voor elke deelnemer het gevolg en benoem daarna het type interactie.",
+      text:"De bromelia groeit op de schors van een tropische boom en krijgt daar water, licht en nutriënten. De boom ondervindt er geen voor- of nadeel van.",
+      parts:[["bromelia","+"],["tropische boom","0"]], types:["commensalisme","mutualisme","parasitisme","amensalisme"], a:0, extra:"Duur: lang · intensiteit: laag."},
+    { type:"tf", title:"Waar of niet waar?", items:[
+        {s:"Een symbiose is een langdurige interactie waarbij minstens één van beide organismen voordeel heeft.",a:true,e:"Juist: daarom zijn mutualisme, commensalisme en parasitisme symbioses."},
+        {s:"Bij een symbiose leeft de gastheer meestal in of op de gast.",a:false,e:"Omgekeerd: de kleinere gast leeft op of in de grotere gastheer."},
+        {s:"Negatieve interacties kunnen de populatiegrootte doen afnemen.",a:true,e:"Positieve interacties doen ze eerder toenemen, negatieve eerder afnemen."}
+    ]},
+    { type:"open", title:"Zelf een voorbeeld", q:"Omschrijf een interactievorm tussen twee organismen die (a) interspecifiek en negatief is en (b) intraspecifiek en positief is.",
+      model:"(a) bv. een kat die een muis vangt (echte predatie, −/+) of hyena’s en gieren die om een karkas vechten (competitie, −/−). (b) bv. leeuwinnen die samen jagen of pinguïns die dicht bij elkaar staan om warmte te sparen (coöperatie, +/+)."}
+  ]},
+
+/* ---------------- HOOFDSTUK 2 ---------------- */
+{ id:"h2", num:"2", title:"Interspecifieke interacties", short:"Neutralisme, predatie, amensalisme, competitie, mutualisme …",
+  lead:"Tussen verschillende soorten bestaan neutrale, negatieve en positieve interacties. Welke vorm herken je in welk voorbeeld?",
+  summary:`
+  <h3>2.1 Neutrale interacties: neutralisme (0/0)</h3>
+  <p>Twee organismen leven samen zonder elkaar te beïnvloeden. In India jagen de <b>Indische aalscholver</b> (namiddag) en de <b>dwergaalscholver</b> (ochtend) op een ander moment: ze nemen een andere niche in en vermijden zo competitie.</p>
+  <h3>2.2 Negatieve interacties</h3>
+  <p><dfn>Predatie</dfn> (−/+): de predator valt een levende prooi aan om zich te voeden. Of de prooi overleeft, hangt af van het type: grazers, echte predatoren, parasitoïden en parasieten. Predatie binnen dezelfde soort heet <b>kannibalisme</b> en is zeldzaam. De predatorpopulatie is meestal kleiner dan de prooipopulatie, omdat de predator op een hoger trofisch niveau staat.</p>
+  <ul>
+    <li><b>Korte interactie.</b> <dfn>Grazers</dfn> eten vooral groene plantendelen (koeien, rupsen); het zijn consumenten van de 1ste orde. <dfn>Echte predatoren</dfn> jagen actief op dieren (katten, wolven, uilen). Leeuwen werken samen om een grote prooi zoals een kafferbuffel te vangen.</li>
+    <li><b>Lange interactie.</b> Overleeft de gastheer de interactie niet, dan is het <dfn>parasitoïsme</dfn>: sluipwespen leggen hun eitjes in larven (bv. de tabakspijlstaartrups), de sluipwesplarven eten de larve op. Overleeft de gastheer wel, dan is het <dfn>parasitisme</dfn>: een (levens)lange symbiose waarbij de parasiet voordeel (+) en de gastheer nadeel (−) heeft.</li>
+  </ul>
+  <p>Sommige parasieten hebben een <b>tussengastheer</b> (eerste ontwikkelingsstadia) en een <b>eind- of hoofdgastheer</b> (volwassen parasiet). Bij malaria is de mug (<i>Anopheles</i>) de eindgastheer en de mens de tussengastheer van de parasiet <i>Plasmodium</i>. Indeling van parasieten:</p>
+  <ul>
+    <li><b>ectoparasiet</b> (op de gastheer, bv. de teek) ↔ <b>endoparasiet</b> (in de gastheer);</li>
+    <li><b>microparasiet</b> (micro-organisme, vaak in de cellen) ↔ <b>macroparasiet</b> (groeit in of op het lichaam, vaak meerdere stadia en gastheren);</li>
+    <li><b>obligate</b> parasiet (gastheer absoluut nodig) ↔ <b>facultatieve</b> parasiet (gastheer niet noodzakelijk);</li>
+    <li><b>holoparasiet</b> (doet zelf geen fotosynthese) ↔ <b>halfparasiet</b> (doet nog fotosynthese, gebruikt de gastheer voor water of nutriënten, bv. de gele ratelaar op graswortels).</li>
+  </ul>
+  <p><dfn>Amensalisme</dfn> (−/0): een organisme hindert een ander zonder er zelf voor- of nadeel van te hebben. Bij <b>asymmetrische concurrentie</b> verschillen de concurrenten sterk in grootte (grote en kleine vissen die fytoplankton eten). Bij <b>antibiose</b> verhindert één organisme de ontwikkeling van het andere volledig, meestal met toxines: <i>Penicillium notatum</i> maakt penicilline, dat de celwand van bacteriën aantast. Ook de Amerikaanse zwarte walnoot maakt een toxine.</p>
+  <p><dfn>Competitie</dfn> (−/−): soorten met een overlap in voorkeur (voedsel, nestplaats, licht) strijden om hulpbronnen. Dat kost energie en kan tot verwondingen leiden, zoals bij gevlekte hyena’s en witruggieren rond een karkas. Competitie is een drijvende kracht in de vorming van een levensgemeenschap: soorten evolueren om de strijd te winnen, of verdwijnen. Predatoren houden de competitie tussen prooisoorten beperkt; verstoringen (migratie, invasieve exoot, verdwijnen van predatoren) veranderen ze.</p>
+  <h3>2.3 Positieve interacties</h3>
+  <p><dfn>Mutualisme</dfn> (+/+, symbiose): beide soorten hebben voordeel. <b>Koraalpoliepen en zoöxanthellen</b>: de zoöxanthellen doen fotosynthese met de nutriënten, CO₂ en water van het koraal; 90 % van de energie gaat naar het koraal. Mutualisme kan <b>noodzakelijk</b> zijn (termieten en eencelligen in hun darmen die cellulose verteren) of <b>vrijblijvend</b> (de remora zuigt zich vast aan een walvishaai en eet parasieten van zijn huid). Bij samen evolueren schuilt een gevaar: de avocado was aangepast aan reuzenluiaards die de grote pit verspreidden; toen die 13 000 jaar geleden uitstierven, dreigde ook de avocado te verdwijnen.</p>
+  <p><dfn>Coöperatie</dfn> (+/+): soorten die geen competitie voeren, werken tijdelijk samen. <b>Tandbaarzen en murenen</b> in de Rode Zee jagen samen: de prooi kan nergens schuilen. De tandbaars geeft het signaal met een speciaal gedrag. Mensen en katten hebben een vrijblijvende samenwerking.</p>
+  <p><dfn>Commensalisme</dfn> (+/0, symbiose): één soort heeft voordeel, de andere niets. Vaak bij <b>epifyten</b>, zoals bromelia’s en orchideeën op takken en stammen van bomen. Ook boomkikkers die bladeren als camouflage gebruiken.</p>`,
+  cards:[["Neutralisme","0/0: samenleven zonder elkaar te beïnvloeden."],["Predatie","−/+: een predator valt een levende prooi aan om zich te voeden."],["Grazer","Eet vooral groene plantendelen; consument 1ste orde."],["Parasitoïsme","Lange predatie waarbij de gastheer sterft (sluipwesp)."],["Parasitisme","Lange symbiose: parasiet +, gastheer − (overleeft)."],["Tussengastheer","Gastheer voor de eerste ontwikkelingsstadia van een parasiet."],["Halfparasiet","Doet nog fotosynthese, gebruikt de gastheer voor water of nutriënten."],["Amensalisme","−/0: de ene soort hindert de andere zonder er zelf iets aan te hebben."],["Antibiose","Amensalisme door toxines, bv. penicilline."],["Competitie","−/−: strijd om dezelfde hulpbronnen."],["Mutualisme","+/+ symbiose: beide soorten hebben voordeel."],["Coöperatie","+/+: tijdelijke samenwerking."],["Commensalisme","+/0 symbiose, bv. epifyten."]],
+  exercises:[
+    { type:"classify", title:"Welke interactievorm?", q:"Benoem de meest specifieke samenlevingsvorm.",
+      buckets:["predatie","amensalisme","competitie","mutualisme","commensalisme"],
+      items:[{t:"Een kat vangt een muis.",b:0},{t:"Penicillium maakt penicilline waardoor bacteriën in de buurt sterven.",b:1},{t:"Zomereik en tamme kastanje verdringen elkaar bij hun groei naar het licht.",b:2},{t:"Termieten en eencelligen die cellulose helpen verteren.",b:3},{t:"Een orchidee groeit op de tak van een boom.",b:4},{t:"Sprinkhanen eten massaal landbouwgewassen.",b:0},{t:"Koraalpoliepen en zoöxanthellen.",b:3},{t:"De Amerikaanse zwarte walnoot remt met een toxine de groei van planten eromheen.",b:1}]},
+    { type:"classify", title:"Welk soort predatie?", buckets:["begrazing","echte predatie","parasitoïsme","parasitisme"],
+      items:[{t:"Een koe graast in de wei.",b:0},{t:"Een rups eet bladmoes.",b:0},{t:"Een uil vangt een muis.",b:1},{t:"Leeuwen vangen samen een kafferbuffel.",b:1},{t:"Sluipwesplarven eten een tabakspijlstaartrups op.",b:2},{t:"Een lintworm leeft in de dunne darm van een mens.",b:3},{t:"Een teek zuigt bloed van een schaap.",b:3}]},
+    { type:"itable", title:"Interactietabel: malaria", q:"Kies voor elke deelnemer het gevolg en benoem het type interactie tussen de parasiet en de mens.",
+      text:"De malariaparasiet (Plasmodium) plant zich voort in het lichaam van de mens en ontwikkelt zich ten koste van levercellen en rode bloedcellen. Dat kan na lange tijd dodelijk zijn. In de speekselklieren van de mug ontwikkelen zich kiemen zonder dat de mug er last van heeft.",
+      parts:[["malariaparasiet","+"],["mug (eindgastheer)","0"],["mens (tussengastheer)","−"]], types:["parasitisme","parasitoïsme","echte predatie","commensalisme"], a:0, extra:"Duur: lang · intensiteit: laag · predatie: parasitisme, symbiose."},
+    { type:"itable", title:"Interactietabel: hyena en gier", q:"Kies voor elke deelnemer het gevolg en benoem het type interactie.",
+      text:"De gevlekte hyena voedt zich met het karkas van een buffel, maar wordt gestoord door hongerige witruggieren en jaagt ze weg. De gieren willen ook van het karkas eten en riskeren verwondingen door de uithalen van de hyena.",
+      parts:[["gevlekte hyena","−"],["witruggier","−"]], types:["competitie","amensalisme","coöperatie","neutralisme"], a:0, extra:"Duur: kort · intensiteit: hoog."},
+    { type:"classify", title:"Parasieten indelen", q:"Welke term past bij de beschrijving?",
+      buckets:["ectoparasiet","endoparasiet","halfparasiet","holoparasiet"],
+      items:[{t:"Leeft op de huid van de gastheer, zoals de teek.",b:0},{t:"Leeft in het lichaam van de gastheer, zoals een lintworm in de darm.",b:1},{t:"Doet zelf nog fotosynthese, maar haalt water uit de wortels van grassen.",b:2},{t:"Doet zelf geen fotosynthese en sterft zonder gastheer.",b:3}]},
+    { type:"mc", title:"Noodzakelijk of vrijblijvend?", q:"Welk voorbeeld is een vrijblijvende vorm van mutualisme?",
+      o:["Termieten en de eencelligen in hun darmen","De remora en de walvishaai","Koraalpoliepen en zoöxanthellen in nutriëntarme zeeën","De avocado en de reuzenluiaard"], a:1,
+      e:"Is er geen walvishaai, dan zuigt de remora zich vast aan andere grote vissen, zoals roggen of haaien."},
+    { type:"open", title:"De avocado", q:"Leg uit waarom de avocado dreigde te verdwijnen en wat dit voorbeeld leert over het gevaar van mutualisme.",
+      model:"De avocadoboom was aangepast aan grote zoogdieren zoals de reuzenluiaard, die de grote pit door het darmkanaal transporteerden en via hun uitwerpselen verspreidden. Die dieren stierven 13 000 jaar geleden uit. Soorten die samen evolueren, zijn van elkaar afhankelijk: verdwijnt één symbiont, dan komt de andere in de problemen."},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Symbiose is een intraspecifieke interactie tussen twee organismen waarbij minstens één van beide een voordeel ervaart.",a:false,e:"Symbiose is een interspecifieke (tussen verschillende soorten) interactie."},
+        {s:"Bij predatie wordt een prooi aangevallen door een predator, waarbij de prooi de predatie al dan niet overleeft.",a:true,e:"Bij echte predatie en parasitoïsme sterft de prooi, bij begrazing en parasitisme niet altijd."},
+        {s:"Een parasiet heeft één of meerdere gastheren nodig om te groeien en zich te kunnen voortplanten.",a:true,e:"Sommige parasieten hebben een tussengastheer en een eindgastheer."},
+        {s:"Competitie tussen twee soorten komt enkel voor als deze soorten dezelfde niche verkiezen.",a:false,e:"Een overlap in voorkeur (voedsel, nestplaats, licht) volstaat al."},
+        {s:"Mutualisme is een samenlevingsvorm waarbij twee soorten elkaar nodig hebben om te kunnen overleven.",a:false,e:"Mutualisme kan ook vrijblijvend zijn, zoals bij de remora en de walvishaai."}
+    ]}
+  ]},
+
+/* ---------------- HOOFDSTUK 3 ---------------- */
+{ id:"h3", num:"3", title:"Intraspecifieke interacties en gedrag", short:"Concurrentie, coöperatie, aangeboren en aangeleerd gedrag",
+  lead:"Soortgenoten concurreren en werken samen. En hoe ontstaat gedrag: is het aangeboren of aangeleerd?",
+  summary:`
+  <p><b>Leeuwen in het Masai Mara-reservaat.</b> Ongeveer 25 leeuwen bezetten een territorium van 60 km². Een troep bestaat uit een vijftal wijfjes, één of twee mannetjes en veel welpen, met altijd één dominant mannetje dat mag paren. Komen troepen te dicht bij elkaar, dan ontstaat een felle strijd om territorium, wijfjes en voedsel. Leeuwinnen kunnen samen een waterbuffel aanvallen; alleen lukt dat nooit.</p>
+  <h3>3.1 Negatieve interacties: concurrentie (−/−)</h3>
+  <p>Soortgenoten hebben dezelfde voorkeur voor hulpbronnen. Hoe hoger de populatiedichtheid of hoe minder hulpbronnen per individu, hoe intenser de <dfn>intraspecifieke concurrentie</dfn>. Het gaat vaak om voedsel, partners, nestplaatsen, territorium en nakomelingen. Bij <b>directe</b> concurrentie beconcurreren individuen elkaar in elkaars nabijheid (hoge beuken nemen licht weg van jonge beuken), bij <b>indirecte</b> concurrentie zonder fysiek te kampen.</p>
+  <h3>3.2 Positieve interacties: coöperatie (+/+)</h3>
+  <p>Samenwerken levert voordelen op: meer kans op een succesvolle jacht of het vinden van voedsel, betere bescherming tegen predatoren of concurrenten, meer bescherming en verzorging van de nakomelingen, predatoren in de war brengen, een territorium verdedigen of overnemen en energetische voordelen (pinguïns die dicht bij elkaar staan). Nadelen: de populatie groeit sneller (meer concurrentie), ziekteverwekkers worden makkelijker doorgegeven en er is meer kans op bedrog, bastaards en agressie.</p>
+  <p>Zwanen vormen eengezinsgroepen met veel <dfn>broedzorg</dfn>. Bij leeuwen zorgen meerdere soortgenoten samen voor de jongen. Een kudde olifanten is één familie onder leiding van een dominant wijfje. De meest intense coöperatie zie je bij <b>sociale insecten</b> zoals bijen: een sociale staat met één koningin die instaat voor de voortplanting.</p>
+  <h3>3.3 Gedrag bij organismen</h3>
+  <p><dfn>Gedrag</dfn> is de wijze waarop een organisme reageert op zijn omgeving nadat het prikkels heeft ontvangen en verwerkt: alles wat een organisme doet en de manier waarop. Het kan actief (een concurrent aanvallen) of passief (kleurcamouflage) zijn. Het ontstaat door het samenspel van hormonen en zenuwimpulsen en wordt bepaald door omgeving én genen: <b>aangeboren</b> gedrag (<i>nature</i>) en <b>aangeleerd</b> gedrag (<i>nurture</i>). De meeste gedragspatronen zijn een combinatie.</p>
+  <p>Gedrag ontstaat door een prikkel van buiten (gevaar zien) of van binnen (dorst). De prikkel die het effectiefst een gedrag veroorzaakt, is de <dfn>sleutelprikkel</dfn>, zoals de rode vlek op de bek van de zilvermeeuw voor de jongen. Een <dfn>ritueel</dfn> is een vaste opeenvolging van gedragingen, zoals het vierfasige <b>baltsgedrag van futen</b>.</p>
+  <p><b>A. Aangeboren gedrag</b> treedt spontaan op. Een <dfn>instinct</dfn> is een genetisch voorgeprogrammeerde reactie op sleutelprikkels (migrerende ganzen in V-formatie). Complex instinctief gedrag is een <dfn>vast actiepatroon</dfn> (<i>fixed action pattern</i>), zoals het <b>eirolgedrag van grauwe ganzen</b>: ook zonder ei voert de gans de vier stappen uit. Een <dfn>reflex</dfn> is een automatische, onvrijwillige reactie op een prikkel (oogleden sluiten, een baby die de mond opent bij de borst).</p>
+  <p><b>B. Aangeleerd gedrag: associatief.</b> Een nieuwe reactie wordt gekoppeld aan een prikkel.</p>
+  <ul>
+    <li><dfn>Klassieke conditionering</dfn> (Pavlov): vleespoeder (ongeconditioneerde prikkel) veroorzaakt de speekselreflex (ongeconditioneerde reactie). Na herhaaldelijk metronoom + vleespoeder lokt de metronoom alleen (geconditioneerde prikkel, eerst neutraal) de speekselreflex uit (geconditioneerde reactie).</li>
+    <li><dfn>Operante conditionering</dfn> (Skinner): het gevolg beïnvloedt hoe vaak het gedrag voorkomt. Komt het gedrag meer voor, dan is het gevolg een <b>bekrachtiger (K)</b>; minder, dan een <b>bestraffer (S)</b>. <b>Positief</b> = iets toevoegen, <b>negatief</b> = iets weglaten.</li>
+  </ul>
+  <p><b>C. Aangeleerd gedrag: niet-associatief.</b> <dfn>Gewenning</dfn>: een prikkel lokt na herhaalde blootstelling geen reactie meer uit (vogels bij een spoorweg). <dfn>Inprenting</dfn>: in de eerste levensfase wordt gedrag blijvend gevormd (de ganzen van Konrad Lorenz). <b>Oefenen en herhalen</b>. <dfn>Inzicht</dfn>: zelf nieuw gedrag ontwikkelen (chimpansees van Köhler stapelen dozen). <dfn>Trial-and-error</dfn>: proefondervindelijk leren (rat in een doolhof). <dfn>Imitatie</dfn>: nabootsen (de liervogel bootst alle geluiden na). Het lichaam moet genetisch in staat zijn om het nieuwe gedrag te ontwikkelen.</p>`,
+  cards:[["Intraspecifieke concurrentie","Soortgenoten strijden om dezelfde hulpbronnen."],["Coöperatie","Soortgenoten werken tijdelijk of blijvend samen."],["Broedzorg","Veel tijd en energie investeren in de nakomelingen."],["Gedrag","Hoe een organisme reageert op zijn omgeving na het verwerken van prikkels."],["Sleutelprikkel","De prikkel die het effectiefst een gedrag veroorzaakt."],["Ritueel","Vaste opeenvolging van gedragingen, bv. balts."],["Instinct","Genetisch voorgeprogrammeerde reactie op sleutelprikkels."],["Vast actiepatroon","Complex instinctief gedrag, bv. eirolgedrag van de grauwe gans."],["Reflex","Automatische, onvrijwillige reactie op een prikkel."],["Klassieke conditionering","Een neutrale prikkel wordt gekoppeld aan een reactie (Pavlov)."],["Operante conditionering","Het gevolg (bekrachtiger of bestraffer) stuurt hoe vaak gedrag voorkomt."],["Gewenning","Een herhaalde prikkel lokt geen reactie meer uit."],["Inprenting","Blijvend gevormd gedrag in de eerste levensfase."],["Trial-and-error","Proefondervindelijk leren."],["Imitatie","Gedrag nabootsen."]],
+  exercises:[
+    { type:"classify", title:"Voor- of nadeel van samenwerken?", buckets:["voordeel","nadeel"],
+      items:[{t:"Meer kans op een succesvolle jacht",b:0},{t:"Ziekteverwekkers worden makkelijker doorgegeven",b:1},{t:"Betere bescherming van de nakomelingen",b:0},{t:"De populatie groeit sneller, met meer concurrentie",b:1},{t:"Minder warmteverlies (pinguïns)",b:0},{t:"Meer kans op bedrog en agressie",b:1}]},
+    { type:"open", title:"Leven in groep", q:"Noteer telkens een voordeel van het leven in groep: (a) een school haringen, (b) een kolonie mieren, (c) een roedel wolven.",
+      model:"(a) Samen bewegen brengt predatoren in de war en biedt bescherming. (b) Een sociale staat met een strikte taakverdeling: voedsel vinden, het nest verdedigen en de nakomelingen verzorgen. (c) Samen jagen geeft meer kans op een succesvolle vangst, ook van grotere prooien, en een territorium verdedigen lukt beter."},
+    { type:"classify", title:"Aangeboren of aangeleerd?", buckets:["aangeboren","aangeleerd"],
+      items:[{t:"Een baby opent de mond als zijn hoofdje bij de borst komt.",b:0},{t:"Grauwe ganzen rollen een ei terug naar het nest.",b:0},{t:"Een hond vangt steeds beter een frisbee door te oefenen.",b:1},{t:"Ganzen vliegen in V-formatie tijdens de migratie.",b:0},{t:"Chimpansees stapelen dozen om bananen te bereiken.",b:1},{t:"Een gekko is gecamoufleerd.",b:0},{t:"Kinderen bootsen het gedrag van volwassenen na.",b:1}]},
+    { type:"order", title:"Het eirolgedrag van de grauwe gans", q:"Zet de vier stappen van dit vaste actiepatroon in de juiste volgorde.",
+      items:["De gans strekt haar nek in de richting van het ei.","De gans komt van het nest en gaat naar het ei.","De gans plaatst de onderkant van haar snavel achter het ei.","De gans rolt het ei met haar snavel voorzichtig terug naar het nest."]},
+    { type:"match", title:"Het experiment van Pavlov", q:"Welke term hoort bij elk onderdeel van het experiment?",
+      options:["ongeconditioneerde prikkel","ongeconditioneerde reactie","neutrale prikkel","geconditioneerde prikkel","geconditioneerde reactie"],
+      items:[{t:"het vleespoeder",a:0},{t:"de speekselreflex bij het zien van vleespoeder",a:1},{t:"de metronoom vóór de conditionering",a:2},{t:"de metronoom na de conditionering",a:3},{t:"de speekselreflex bij het horen van de metronoom",a:4}]},
+    { type:"classify", title:"Operante conditionering bij de hond", q:"Een hond leert niet meer aan de lijn te trekken. Welke methode wordt gebruikt?",
+      buckets:["positieve bekrachtiging (+K)","negatieve bekrachtiging (−K)","positieve bestraffing (+S)","negatieve bestraffing (−S)"],
+      items:[{t:"De hond krijgt een lekkernij als hij rustig wandelt.",b:0},{t:"Je laat de lijn losser zolang de hond niet trekt, zonder te belonen.",b:1},{t:"Je trekt corrigerend aan de lijn als de hond trekt.",b:2},{t:"Je stopt met wandelen en geeft geen beloning tot de hond stopt met trekken.",b:3}],
+      ok:"Bekrachtigen stimuleert gedrag, bestraffen leert het af. Positief = iets toevoegen, negatief = iets weglaten."},
+    { type:"classify", title:"Welke leervorm?", buckets:["gewenning","inprenting","inzicht","trial-and-error","imitatie","klassieke conditionering"],
+      items:[{t:"Vogels naast een spoorweg vliegen niet meer weg als er een trein passeert.",b:0},{t:"Ganzenkuikens volgen Konrad Lorenz overal, omdat ze hem als eerste zagen.",b:1},{t:"Een chimpansee stapelt dozen om bij de bananen te kunnen.",b:2},{t:"Een rat vindt na meerdere pogingen de uitgang van het doolhof.",b:3},{t:"Een liervogel bootst alle geluiden na die hij hoort.",b:4},{t:"Bijen steken hun tong uit bij de geur van explosieven, ook zonder suikerwater.",b:5},{t:"Een leerling schuift een preparaat alle kanten op tot de cellen in het midden staan.",b:3}]},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Samenwerking of coöperatie levert alleen maar voordelen op.",a:false,e:"Er zijn ook nadelen: meer concurrentie, makkelijker doorgeven van ziekteverwekkers, bedrog en agressie."},
+        {s:"Associatief leren gaat altijd gepaard met belonen of bestraffen.",a:false,e:"Bij klassieke conditionering wordt er niet beloond of bestraft: een neutrale prikkel wordt gekoppeld aan een reactie."},
+        {s:"Een hamster komt elke avond op hetzelfde tijdstip in actie. Dat leerde ze door inzicht.",a:false,e:"Bij inzicht ontwikkelt een organisme zelf nieuw gedrag om een probleem op te lossen. Dat is hier niet het geval."}
+    ]}
+  ]},
+
+/* ---------------- HOOFDSTUK 4 ---------------- */
+{ id:"h4", num:"4", title:"Communicatie tussen organismen", short:"Zender en ontvanger, signaalvormen en functies",
+  lead:"Waarschuwen, verleiden, een territorium afbakenen: hoe sturen organismen elkaars gedrag met signalen?",
+  summary:`
+  <p><dfn>Communicatie</dfn> is informatie die een <b>zender</b> verstuurt en de <b>ontvanger</b> waarneemt, met als doel het gedrag van de ontvanger te sturen. Ze is vaak intraspecifiek, maar kan ook interspecifiek zijn. Soms is de informatie maar nuttig voor één van beide: predatoren gebruiken <b>misleidende</b> communicatie om prooien te lokken. Bij baltsgedrag en partnerkeuze moet communicatie net <b>eerlijk</b> zijn. Ook <b>toevallige ontvangers</b> nemen signalen waar, zoals de alarmsignalen van een andere soort.</p>
+  <h3>Signaalvormen</h3>
+  <ul>
+    <li><b>Visueel</b>: overdag kleur of beweging, in donkere omgevingen licht; permanent of tijdelijk. Lukt enkel als de ontvanger een goed gezichtsvermogen heeft.</li>
+    <li><b>Akoestisch</b>: geluiden en trillingen om te waarschuwen, te verleiden, te informeren … Frequentie en duur bepalen de afstand. Enkel organismen met een goed gehoororgaan, zoals wolven, gebruiken dit.</li>
+    <li><b>Chemisch</b>: via stoffen die soortgenoten waarnemen, bv. met de antennen van insecten. Vooral bij heel sociale of territoriale dieren.</li>
+    <li><b>Tactiel</b>: via aanraking, bv. bij dieren die in groep leven zoals chimpansees.</li>
+    <li><b>Elektrisch</b>: in water met weinig zicht, bv. olifantvissen, om partners en prooien te vinden.</li>
+  </ul>
+  <h3>Functies van communicatie</h3>
+  <ul>
+    <li><b>waarschuwen</b> voor een predator (de alarmkreet van een prairiehond);</li>
+    <li>een <b>territorium afbakenen</b>, bv. met geurvlaggen; een rivaal wordt eerst geïmponeerd met bewegingen of geluid, pas daarna volgt een fysieke confrontatie;</li>
+    <li>jongen <b>terugvinden</b> in een crèchesysteem (leeuwen, vleermuizen) via unieke geur, kleur of geluid;</li>
+    <li><b>informatie</b> doorgeven over voedselbronnen (bijen);</li>
+    <li><b>paarbereidheid</b> of partnerkeuze tonen.</li>
+  </ul>
+  <p>Ook op lange termijn is communicatie belangrijk, bijvoorbeeld voor het doorgeven van cultuur en kennis.</p>`,
+  cards:[["Communicatie","Een zender verstuurt informatie die de ontvanger waarneemt, om diens gedrag te sturen."],["Toevallige ontvanger","Organisme dat een signaal opvangt dat niet voor hem bedoeld was."],["Misleidende communicatie","Communicatie die enkel de zender voordeel oplevert."],["Elektrische communicatie","Signalen in water met weinig zicht, bv. bij olifantvissen."],["Crèchesysteem","Jongen worden samen opgevangen; ouders vinden ze terug via geur, kleur of geluid."]],
+  exercises:[
+    { type:"classify", title:"Welk signaal?", buckets:["visueel","akoestisch","chemisch","tactiel","elektrisch"],
+      items:[{t:"De alarmkreet van een prairiehond",b:1},{t:"Een geurvlag die een territorium afbakent",b:2},{t:"Een olifantvis zoekt een partner in troebel water",b:4},{t:"Lichtsignalen in een donkere omgeving",b:0},{t:"Braille lezen met je vingertoppen",b:3},{t:"Het gehuil van wolven",b:1},{t:"Kleurige veren tijdens de balts",b:0}]},
+    { type:"classify", title:"Welke functie?", buckets:["waarschuwen","territorium","jongen terugvinden","informatie doorgeven","partnerkeuze"],
+      items:[{t:"Een prairiehond verwittigt soortgenoten voor naderend gevaar.",b:0},{t:"Geurvlaggen langs de grens van het leefgebied",b:1},{t:"Een vleermuis vindt haar jong terug in de crèche via zijn unieke geluid.",b:2},{t:"Een bij toont waar er een goede voedselbron is.",b:3},{t:"Het baltsritueel van futen",b:4}]},
+    { type:"mc", title:"Prikkels bij voortplanting", q:"Welke prikkels kunnen een rol spelen bij het voortplantingsgedrag van dieren?",
+      o:["alleen geluiden en geuren","alleen geluiden en kleuren","alleen geuren en kleuren","zowel geluiden als geuren en kleuren"], a:3},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Als je braille leest, worden visuele signalen vervangen door tactiele signalen.",a:true,e:"Je ‘leest’ door aanraking."},
+        {s:"Non-verbale communicatie is altijd visuele communicatie.",a:false,e:"Ook geur, aanraking of elektrische signalen zijn non-verbaal."},
+        {s:"Intraspecifieke communicatie heeft altijd als doel informatie aan een soortgenoot door te geven.",a:false,e:"Communicatie stuurt het gedrag van de ontvanger en kan ook misleidend zijn of door toevallige ontvangers (andere soorten) opgevangen worden."}
+    ]},
+    { type:"open", title:"Eerst imponeren", q:"Waarom proberen rivalen elkaar eerst te imponeren met bewegingen of geluid, voor ze echt gaan vechten?",
+      model:"Een fysieke confrontatie kan ernstige gevolgen hebben (verwondingen of zelfs de dood). Visuele en akoestische signalen kosten minder risico: als die volstaan, is het conflict beslecht zonder gevecht. Dat is een kosten-batenafweging."}
+  ]},
+
+/* ---------------- FOCUS MIMICRY ---------------- */
+{ id:"mim", num:"Focus", title:"Misleidende communicatie: mimicry", short:"Agressieve, Batesiaanse en Mülleriaanse mimicry",
+  lead:"Een onschuldige vlieg die eruitziet als een wesp, een vis met een lichtgevende hengel: hoe misleiden organismen elkaar?",
+  summary:`
+  <p>In de loop van de evolutie wijzigde het uiterlijk van organismen. Sommige organismen lijken op of gedragen zich als gevaarlijke of wansmakelijke organismen om aan predatie te ontsnappen. Sommige predatoren lijken net minder gevaarlijk. Dat is <dfn>mimicry</dfn>: een vorm van (misleidende) communicatie die het gedrag van de ontvanger stuurt.</p>
+  <h3>Agressieve mimicry</h3>
+  <p>Predatoren vermommen zich of gebruiken een lichaamsdeel om voedsel of een seksuele prikkel van de prooi na te bootsen. De <b>diepzeehengelvis</b> lokt prooien met een lichtgevende hengel op zijn kop; bij sommige soorten lijkt het uiteinde op een prooivis.</p>
+  <h3>Defensieve mimicry</h3>
+  <ul>
+    <li><dfn>Batesiaanse mimicry</dfn>: een <b>ongevaarlijk</b> organisme bootst een gevaarlijk organisme na (naar Henry Bates). De <b>grote wespenboktor</b> en de <b>wespvlieg</b> hebben zwart-gele strepen zoals de gewone wesp en bewegen hun voorpoten zoals wespenantennen. De <b>Thaumoctopus mimicus</b> bootst zeeslangen, koraalduivels of een giftige pijlstaartrog na, in meer dan vijftien gedaanten.</li>
+    <li><dfn>Mülleriaanse mimicry</dfn>: meerdere <b>gevaarlijke of giftige</b> soorten lijken sterk op elkaar. Zo leren (onervaren) predatoren sneller het ‘giftige uiterlijk’ herkennen. De <b>monarchvlinder</b> en de <b>viceroyvlinder</b> in Noord-Amerika zijn allebei giftig en lijken sprekend op elkaar.</li>
+  </ul>`,
+  cards:[["Mimicry","Lijken op of zich gedragen als een ander organisme om het gedrag van de ontvanger te sturen."],["Agressieve mimicry","Een predator bootst voedsel of een prikkel na om een prooi te lokken."],["Batesiaanse mimicry","Een ongevaarlijke soort bootst een gevaarlijke soort na."],["Mülleriaanse mimicry","Meerdere giftige soorten lijken op elkaar."]],
+  exercises:[
+    { type:"classify", title:"Welke vorm van mimicry?", buckets:["agressieve mimicry","Batesiaanse mimicry","Mülleriaanse mimicry"],
+      items:[{t:"Een diepzeehengelvis lokt prooien met een lichtgevende hengel.",b:0},{t:"De wespvlieg heeft zwart-gele strepen zoals de gewone wesp.",b:1},{t:"De monarch- en de viceroyvlinder zijn allebei giftig en lijken op elkaar.",b:2},{t:"De Thaumoctopus mimicus bootst een giftige pijlstaartrog na.",b:1},{t:"De grote wespenboktor beweegt zijn voorpoten zoals wespenantennen.",b:1}]},
+    { type:"mc", title:"Waarom lijken giftige soorten op elkaar?", q:"Welk voordeel hebben de monarch- en de viceroyvlinder bij hun gelijkenis?",
+      o:["Ze kunnen samen beter jagen.","Predatoren leren sneller het giftige uiterlijk herkennen en vermijden.","Ze worden minder giftig.","Ze vinden makkelijker een partner van de andere soort."], a:1,
+      e:"Dat is vooral interessant tegen onervaren predatoren."},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Mimicry wordt enkel gebruikt om aan gevaren te ontsnappen.",a:false,e:"Ook predatoren gebruiken mimicry om prooien te lokken: agressieve mimicry."},
+        {s:"Mimicry is een vorm van communicatie.",a:true,e:"Het stuurt het gedrag van de ontvanger, op een misleidende manier."}
+    ]},
+    { type:"open", title:"Eerlijk of misleidend?", q:"Is de gelijkenis tussen de wespvlieg en de gewone wesp eerlijke of misleidende communicatie? Leg uit en benoem de vorm van mimicry.",
+      model:"Misleidend: de wespvlieg is ongevaarlijk, maar ziet eruit (en beweegt) als een gevaarlijke wesp. Predatoren laten haar daardoor met rust. Dat is Batesiaanse mimicry."}
+  ]}
+];
+
+const GLOSS = [
+ ["Interspecifieke interactie","Interactie tussen organismen van verschillende soorten.","1"],
+ ["Intraspecifieke interactie","Interactie tussen soortgenoten.","1"],
+ ["Symbiose","Langdurige interspecifieke interactie waarbij minstens één organisme voordeel heeft.","1"],
+ ["Gast","Kleiner organisme dat op of in de gastheer leeft.","1"],
+ ["Gastheer","Groter organisme waarop of waarin de gast leeft.","1"],
+ ["Interactietabel","Tabel met deelnemers, gevolg (+, −, 0), duur, intensiteit en type interactie.","1"],
+ ["Kosten-batenanalyse","Afweging van risico en voordeel van een interactie.","1"],
+ ["Neutralisme","0/0: samenleven zonder elkaar te beïnvloeden.","2"],
+ ["Predatie","−/+: een predator valt een levende prooi aan om zich te voeden.","2"],
+ ["Kannibalisme","Predatie tussen organismen van dezelfde soort.","2"],
+ ["Grazer","Eet vooral groene plantendelen.","2"],
+ ["Echte predator","Jaagt actief op dieren om ze te consumeren.","2"],
+ ["Parasitoïsme","Lange predatie waarbij de gastheer sterft.","2"],
+ ["Parasitisme","Lange symbiose: de parasiet heeft voordeel, de gastheer nadeel.","2"],
+ ["Tussengastheer","Gastheer voor de eerste ontwikkelingsstadia van de parasiet.","2"],
+ ["Eindgastheer","Gastheer waarin of waarop de volwassen parasiet leeft.","2"],
+ ["Ectoparasiet","Parasiet die op de gastheer leeft.","2"],
+ ["Endoparasiet","Parasiet die in het lichaam van de gastheer leeft.","2"],
+ ["Microparasiet","Parasitair micro-organisme, vaak in de cellen van de gastheer.","2"],
+ ["Macroparasiet","Parasiet die in of op het lichaam groeit, vaak met meerdere stadia en gastheren.","2"],
+ ["Obligate parasiet","Heeft de gastheer absoluut nodig om te overleven.","2"],
+ ["Facultatieve parasiet","Gastheer niet noodzakelijk, bv. enkel voor extra energie.","2"],
+ ["Holoparasiet","Parasitaire plant zonder eigen fotosynthese.","2"],
+ ["Halfparasiet","Doet nog fotosynthese, haalt water of nutriënten uit de gastheer.","2"],
+ ["Amensalisme","−/0: de ene soort hindert de andere zonder er zelf iets aan te hebben.","2"],
+ ["Asymmetrische concurrentie","Amensalisme tussen concurrenten die sterk verschillen in grootte of intensiteit.","2"],
+ ["Antibiose","Amensalisme waarbij een toxine de ontwikkeling van een ander organisme verhindert.","2"],
+ ["Competitie","−/−: strijd om dezelfde hulpbronnen.","2"],
+ ["Mutualisme","+/+: symbiose waarbij beide soorten voordeel hebben.","2"],
+ ["Coöperatie","+/+: (tijdelijke) samenwerking.","2"],
+ ["Commensalisme","+/0: symbiose waarbij één soort voordeel heeft en de andere niets.","2"],
+ ["Epifyt","Plant die op takken of stam van een grotere plant groeit.","2"],
+ ["Broedzorg","Veel tijd en energie investeren in de nakomelingen.","3"],
+ ["Gedrag","Wijze waarop een organisme reageert op zijn omgeving na het verwerken van prikkels.","3"],
+ ["Nature / nurture","Aangeboren gedrag / aangeleerd gedrag.","3"],
+ ["Sleutelprikkel","Prikkel die het effectiefst een bepaald gedrag veroorzaakt.","3"],
+ ["Ritueel","Vaste opeenvolging van gedragingen in een specifieke situatie.","3"],
+ ["Instinct","Genetisch voorgeprogrammeerde reactie op sleutelprikkels.","3"],
+ ["Vast actiepatroon","Complex instinctief gedrag (fixed action pattern).","3"],
+ ["Reflex","Automatische, onvrijwillige reactie op een prikkel.","3"],
+ ["Associatief leren","Een nieuwe reactie wordt gekoppeld aan een prikkel.","3"],
+ ["Klassieke conditionering","Een neutrale prikkel wordt een geconditioneerde prikkel (Pavlov).","3"],
+ ["Operante conditionering","Het gevolg van gedrag stuurt hoe vaak het voorkomt (Skinner).","3"],
+ ["Bekrachtiger","Gevolg waardoor gedrag vaker voorkomt (K).","3"],
+ ["Bestraffer","Gevolg waardoor gedrag minder voorkomt (S).","3"],
+ ["Gewenning","Een herhaalde prikkel lokt geen reactie meer uit.","3"],
+ ["Inprenting","Gedrag wordt in de eerste levensfase blijvend gevormd.","3"],
+ ["Inzicht","Zelf nieuw gedrag ontwikkelen om een probleem op te lossen.","3"],
+ ["Trial-and-error","Proefondervindelijk leren.","3"],
+ ["Imitatie","Gedrag nabootsen.","3"],
+ ["Communicatie","Informatie van zender naar ontvanger om diens gedrag te sturen.","4"],
+ ["Toevallige ontvanger","Neemt een signaal waar dat niet voor hem bedoeld was.","4"],
+ ["Mimicry","Lijken op of zich gedragen als een ander organisme om de ontvanger te misleiden.","Focus"],
+ ["Agressieve mimicry","Predator bootst voedsel of een prikkel na om prooien te lokken.","Focus"],
+ ["Batesiaanse mimicry","Ongevaarlijke soort bootst een gevaarlijke soort na.","Focus"],
+ ["Mülleriaanse mimicry","Meerdere giftige soorten lijken op elkaar.","Focus"]
+];
+
+const POOL = [
+ {q:"Een interactie tussen organismen van verschillende soorten is …",o:["interspecifiek","intraspecifiek","neutraal","symbiotisch"],a:0},
+ {q:"Een symbiose is een …",o:["korte interactie tussen soortgenoten","langdurige interspecifieke interactie waarbij minstens één organisme voordeel heeft","interactie waarbij beide nadeel hebben","vorm van communicatie"],a:1},
+ {q:"Bij een symbiose is de gast meestal …",o:["het grotere organisme","het kleinere organisme","altijd een plant","altijd een parasiet"],a:1},
+ {q:"De Indische aalscholver en de dwergaalscholver jagen op een ander moment. Dit is …",o:["competitie","neutralisme","mutualisme","amensalisme"],a:1},
+ {q:"Welke combinatie hoort bij commensalisme?",o:["+ / +","+ / 0","− / +","− / −"],a:1},
+ {q:"Welke combinatie hoort bij amensalisme?",o:["− / 0","+ / 0","0 / 0","− / −"],a:0},
+ {q:"Een koe die graast, is een voorbeeld van …",o:["echte predatie","begrazing","parasitisme","commensalisme"],a:1},
+ {q:"Sluipwesplarven die een rups van binnenuit opeten, zijn een voorbeeld van …",o:["parasitisme","parasitoïsme","mutualisme","competitie"],a:1},
+ {q:"Wat is het verschil tussen parasitoïsme en parasitisme?",o:["Bij parasitisme sterft de gastheer, bij parasitoïsme niet","Bij parasitoïsme sterft de gastheer, bij parasitisme niet","Er is geen verschil","Parasitisme komt enkel bij planten voor"],a:1},
+ {q:"Bij malaria is de mens voor de parasiet de …",o:["eindgastheer","tussengastheer","predator","commensaal"],a:1},
+ {q:"Een teek is een …",o:["endoparasiet","ectoparasiet","holoparasiet","parasitoïde"],a:1},
+ {q:"De gele ratelaar doet nog zelf aan fotosynthese en haalt water uit graswortels. Het is een …",o:["holoparasiet","halfparasiet","epifyt","grazer"],a:1},
+ {q:"Penicillium notatum maakt penicilline, waardoor bacteriën sterven. Dit is …",o:["antibiose","mutualisme","coöperatie","asymmetrische concurrentie"],a:0},
+ {q:"Hyena’s en gieren die om een karkas vechten, is een voorbeeld van …",o:["coöperatie","competitie","commensalisme","neutralisme"],a:1},
+ {q:"Koraalpoliepen en zoöxanthellen leven samen in …",o:["mutualisme","parasitisme","amensalisme","competitie"],a:0},
+ {q:"Welk mutualisme is vrijblijvend?",o:["termieten en hun darmeencelligen","remora en walvishaai","koraal en zoöxanthellen","geen van deze"],a:1},
+ {q:"Tandbaarzen en murenen die samen jagen, is een voorbeeld van …",o:["interspecifieke coöperatie","intraspecifieke coöperatie","commensalisme","predatie"],a:0},
+ {q:"Een bromelia op een tropische boom is een voorbeeld van …",o:["parasitisme","commensalisme","mutualisme","amensalisme"],a:1},
+ {q:"Wanneer is intraspecifieke concurrentie het hevigst?",o:["Bij een lage populatiedichtheid","Bij een hoge populatiedichtheid of weinig hulpbronnen per individu","Als er veel predatoren zijn","Nooit"],a:1},
+ {q:"Wat is een nadeel van samenwerken in groep?",o:["meer kans op een succesvolle jacht","betere bescherming","ziekteverwekkers worden makkelijker doorgegeven","minder warmteverlies"],a:2},
+ {q:"De prikkel die het effectiefst een bepaald gedrag veroorzaakt, is de …",o:["sleutelprikkel","neutrale prikkel","reflex","bekrachtiger"],a:0},
+ {q:"Het eirolgedrag van de grauwe gans is een …",o:["reflex","vast actiepatroon","geconditioneerde reactie","vorm van imitatie"],a:1},
+ {q:"Bij Pavlov is de metronoom na de conditionering een …",o:["ongeconditioneerde prikkel","neutrale prikkel","geconditioneerde prikkel","bestraffer"],a:2},
+ {q:"Een hond krijgt een lekkernij als hij rustig wandelt. Dit is …",o:["positieve bekrachtiging","negatieve bekrachtiging","positieve bestraffing","negatieve bestraffing"],a:0},
+ {q:"Vogels naast een spoorweg vliegen niet meer weg voor treinen. Dit is …",o:["inprenting","gewenning","inzicht","imitatie"],a:1},
+ {q:"De ganzen van Konrad Lorenz volgden hem als hun moeder door …",o:["gewenning","inprenting","trial-and-error","operante conditionering"],a:1},
+ {q:"Chimpansees stapelen dozen om bananen te bereiken. Dit is leren door …",o:["inzicht","gewenning","imitatie","reflex"],a:0},
+ {q:"Welke signalen gebruiken olifantvissen in troebel water?",o:["akoestische","elektrische","visuele","chemische"],a:1},
+ {q:"Een prairiehond die een alarmkreet slaakt, wil vooral …",o:["een partner lokken","soortgenoten waarschuwen","een territorium afbakenen","jongen terugvinden"],a:1},
+ {q:"Een ongevaarlijke wespvlieg die op een wesp lijkt, is een voorbeeld van …",o:["Batesiaanse mimicry","Mülleriaanse mimicry","agressieve mimicry","camouflage"],a:0},
+ {q:"De monarch- en viceroyvlinder zijn beide giftig en lijken op elkaar. Dit is …",o:["Batesiaanse mimicry","Mülleriaanse mimicry","agressieve mimicry","neutralisme"],a:1},
+ {q:"De diepzeehengelvis lokt prooien met een lichtgevende hengel. Dit is …",o:["agressieve mimicry","Batesiaanse mimicry","Mülleriaanse mimicry","coöperatie"],a:0}
+];
+
+const AR_MEM=[
+ ["symbiose","Langdurige interactie waarbij minstens één soort voordeel heeft"],
+ ["neutralisme","0/0: geen invloed op elkaar"],
+ ["predatie","−/+: predator valt levende prooi aan"],
+ ["parasitoïsme","De gastheer overleeft de interactie niet"],
+ ["parasitisme","Lange symbiose: parasiet +, gastheer −"],
+ ["tussengastheer","Gastheer voor de eerste stadia van de parasiet"],
+ ["ectoparasiet","Parasiet die op de gastheer leeft"],
+ ["amensalisme","−/0: de ene hindert de andere"],
+ ["antibiose","Een toxine verhindert de ontwikkeling van een ander organisme"],
+ ["competitie","−/−: strijd om dezelfde hulpbronnen"],
+ ["mutualisme","+/+ symbiose"],
+ ["commensalisme","+/0 symbiose"],
+ ["broedzorg","Veel investeren in de nakomelingen"],
+ ["sleutelprikkel","Prikkel die het effectiefst gedrag uitlokt"],
+ ["reflex","Automatische, onvrijwillige reactie"],
+ ["vast actiepatroon","Complex instinctief gedrag, bv. eirolgedrag"],
+ ["gewenning","Een herhaalde prikkel lokt geen reactie meer uit"],
+ ["inprenting","Blijvend gevormd gedrag in de eerste levensfase"],
+ ["imitatie","Gedrag nabootsen"],
+ ["Batesiaanse mimicry","Ongevaarlijk bootst gevaarlijk na"],
+ ["Mülleriaanse mimicry","Giftige soorten lijken op elkaar"]
+];
+const AR_SETS=[
+ {t:"Welke interactievorm?",c:["predatie","amensalisme","competitie","mutualisme","commensalisme"],i:[["kat en muis",0],["Penicillium en bacteriën",1],["hyena en gier",2],["koraal en zoöxanthellen",3],["bromelia op een boom",4],["lintworm in de darm",0],["termieten en darmeencelligen",3]]},
+ {t:"Wat zijn de gevolgen?",c:["+ / +","+ / 0","− / +","− / 0","− / −","0 / 0"],i:[["mutualisme",0],["coöperatie",0],["commensalisme",1],["parasitisme",2],["amensalisme",3],["competitie",4],["neutralisme",5]]},
+ {t:"Inter- of intraspecifiek?",c:["interspecifiek","intraspecifiek"],i:[["leeuwinnen jagen samen",1],["tandbaars en murene jagen samen",0],["pinguïns tegen de kou",1],["remora en walvishaai",0],["hoge en jonge beuken",1],["hyena en gier",0]]},
+ {t:"Aangeboren of aangeleerd?",c:["aangeboren","aangeleerd"],i:[["reflex",0],["instinct",0],["eirolgedrag",0],["gewenning",1],["inprenting",1],["imitatie",1],["trial-and-error",1]]},
+ {t:"Bekrachtigen of bestraffen?",c:["bekrachtigen","bestraffen"],i:[["lekkernij bij rustig wandelen",0],["lijn losser laten als de hond niet trekt",0],["corrigerend aan de lijn trekken",1],["stoppen met wandelen tot de hond niet meer trekt",1]]},
+ {t:"Welk signaal?",c:["visueel","akoestisch","chemisch","tactiel","elektrisch"],i:[["alarmkreet",1],["geurvlag",2],["kleurige veren",0],["braille",3],["olifantvis",4],["gehuil van wolven",1]]},
+ {t:"Welke mimicry?",c:["agressief","Batesiaans","Mülleriaans"],i:[["diepzeehengelvis",0],["wespvlieg",1],["wespenboktor",1],["monarch en viceroy",2],["Thaumoctopus mimicus",1]]}
+];
+const AR_WHO=[
+ {a:"remora",o:["remora","walvishaai","murene","tandbaars"],h:["Ik ben een vis.","Ik heb een soort zuignap bovenop mijn kop.","Ik zuig me vast aan een walvishaai en eet de parasieten van zijn huid."]},
+ {a:"sluipwesp",o:["sluipwesp","teek","lintworm","gewone wesp"],h:["Ik ben een insect.","Ik leg mijn eitjes in de larven van andere dieren.","Mijn larven eten hun gastheer op: parasitoïsme."]},
+ {a:"Penicillium notatum",o:["Penicillium notatum","Staphylococcus","zoöxanthel","Plasmodium"],h:["Ik ben een schimmel.","Ik maak een stof die bacteriën doodt.","Fleming ontdekte mijn penicilline: antibiose."]},
+ {a:"Plasmodium",o:["Plasmodium","Anopheles","Penicillium","teek"],h:["Ik ben een microparasiet.","Ik heb een tussengastheer en een eindgastheer.","Ik veroorzaak malaria."]},
+ {a:"zoöxanthel",o:["zoöxanthel","koraalpoliep","remora","bromelia"],h:["Ik ben een eencellige.","Ik doe aan fotosynthese.","Ik leef in koraalpoliepen en geef ze hun kleur."]},
+ {a:"murene",o:["murene","tandbaars","remora","diepzeehengelvis"],h:["Ik leef in de Rode Zee.","Ik jaag vanuit kleine ruimtes in het koraalrif.","Ik jaag samen met de tandbaars: coöperatie."]},
+ {a:"gele ratelaar",o:["gele ratelaar","bromelia","orchidee","zwarte walnoot"],h:["Ik ben een plant.","Ik doe nog zelf aan fotosynthese.","Ik haal water uit de wortels van grassen: een halfparasiet."]},
+ {a:"grauwe gans",o:["grauwe gans","fuut","zilvermeeuw","zwaan"],h:["Ik ben een vogel.","Rolt er een ei uit mijn nest, dan voer ik een vast actiepatroon uit.","Konrad Lorenz werd voor mijn kuikens een moeder."]},
+ {a:"Pavlov",o:["Pavlov","Skinner","Lorenz","Köhler"],h:["Ik ben een onderzoeker.","Ik werkte met honden, vleespoeder en een metronoom.","Ik ontdekte de klassieke conditionering."]},
+ {a:"Skinner",o:["Skinner","Pavlov","Lorenz","Bates"],h:["Ik ben een onderzoeker.","Mijn doos heeft hendels, lichtjes en een voedseldispenser.","Ik onderzocht de operante conditionering."]},
+ {a:"liervogel",o:["liervogel","fuut","prairiehond","zilvermeeuw"],h:["Ik ben een vogel.","Ik leer door imitatie.","Ik bootst alle geluiden na en gebruik ze in mijn baltsritueel."]},
+ {a:"prairiehond",o:["prairiehond","wolf","olifantvis","bij"],h:["Ik ben een zoogdier.","Ik gebruik akoestische communicatie.","Met een alarmkreet verwittig ik soortgenoten voor gevaar."]},
+ {a:"wespvlieg",o:["wespvlieg","gewone wesp","monarchvlinder","diepzeehengelvis"],h:["Ik ben een insect.","Ik ben helemaal ongevaarlijk.","Mijn zwart-gele strepen misleiden predatoren: Batesiaanse mimicry."]},
+ {a:"diepzeehengelvis",o:["diepzeehengelvis","murene","olifantvis","Thaumoctopus mimicus"],h:["Ik leef in de donkere diepzee.","Ik ben een predator.","Ik lok prooien met een lichtgevende hengel op mijn kop."]}
+];
+const AR_CHAINS=[
+ {t:"Het eirolgedrag",q:"Zet de stappen van het vaste actiepatroon van de grauwe gans in volgorde.",s:["de gans strekt haar nek naar het ei","de gans komt van het nest naar het ei","de gans plaatst haar snavel achter het ei","de gans rolt het ei terug naar het nest"]},
+ {t:"Het experiment van Pavlov",q:"Zet de fasen van het experiment in volgorde.",s:["de metronoom is een neutrale prikkel: geen speekselreflex","metronoom + vleespoeder worden samen aangeboden","na herhalingen komt de speekselreflex al bij het metronoomgeluid","de metronoom is een geconditioneerde prikkel"]},
+ {t:"De rat in de Skinner-box",q:"Hoe leert de rat op de hendel duwen?",s:["de rat duwt per ongeluk op de hendel","er komt eten vrij in de dispenser","de rat duwt opnieuw per toeval en krijgt weer eten","de rat legt het verband tussen hendel en beloning","de rat duwt steeds vaker op de hendel"]},
+ {t:"Parasitoïsme bij de sluipwesp",q:"Zet de levenscyclus in volgorde.",s:["de sluipwesp legt eitjes in een larve","uit de eitjes komen sluipwesplarven","de larven voeden zich met hun gastheer","de gastheer sterft","de larven verpoppen tot volwassen sluipwespen"]},
+ {t:"Samen jagen in de Rode Zee",q:"Hoe starten tandbaars en murene hun jacht?",s:["de tandbaars zwemt met schuddende kop naar de murene","de murene verlaat haar schuilplaats","samen jagen ze rond het koraalrif","de prooi kan nergens meer schuilen"]}
+];
+
+const TABS = {h1:"Interactievormen",h2:"Interspecifiek",h3:"Intraspecifiek & gedrag",h4:"Communicatie",mim:"Mimicry"};
+const KEY = "bio-thema3-v1";
+let P = {};
+try { P = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e) { P = {}; }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(P)); } catch(e) {} }
+
+const $ = (s, r=document) => r.querySelector(s);
+function h(html){ const t=document.createElement("template"); t.innerHTML=html.trim(); return t.content.firstElementChild; }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+const fmt = n => n.toLocaleString("nl-BE");
+
+function chProgress(ch){ const n=ch.exercises.length; let d=0; ch.exercises.forEach((_,i)=>{ if(P[ch.id+"-"+i]) d++; }); return {d,n}; }
+function ringSVG(f){ const c=2*Math.PI*6; return `<svg class="ring" viewBox="0 0 16 16" aria-hidden="true"><circle class="bg" cx="8" cy="8" r="6"/><circle class="fg" cx="8" cy="8" r="6" stroke-dasharray="${(c*f).toFixed(2)} ${c.toFixed(2)}"/></svg>`; }
+
+function renderTabs(cur){
+  const nav = $("#tabs");
+  let s = `<a href="#start" ${cur==="start"?'aria-current="page"':""}>Start</a>`;
+  CH.forEach(ch=>{ const p=chProgress(ch); s += `<a href="#${ch.id}" ${cur===ch.id?'aria-current="page"':""}>${ringSVG(p.d/p.n)}${ch.num==="Focus"?"":ch.num+" "}${TABS[ch.id]}</a>`; });
+  s += `<a href="#arena" ${cur==="arena"?'aria-current="page"':""}>Oefenarena</a><a href="#begrippen" ${cur==="begrippen"?'aria-current="page"':""}>Begrippen</a><a href="#toets" ${cur==="toets"?'aria-current="page"':""}>Eindtoets</a>`;
+  nav.innerHTML = s;
+}
+
+/* ---------- START ---------- */
+function renderStart(app){
+  const v = h(`<section class="view">
+    <div class="hero">
+      <div>
+        <h1>Wie heeft er voordeel?</h1>
+        <p class="lead">Elke interactie tussen twee soorten kun je samenvatten met twee tekens: + (voordeel), 0 (geen effect) of − (nadeel). Kies voor beide soorten een gevolg en ontdek welke interactievorm daarbij hoort. Daarna werk je per hoofdstuk door de leerstof van thema 3.</p>
+        <div class="lvinfo" id="lvinfo" aria-live="polite" style="margin-top:22px"></div>
+      </div>
+      <div class="mx-wrap">
+        <div class="mx" id="mx" role="group" aria-label="Interactiematrix: kies een combinatie van gevolgen"></div>
+        <p class="note" style="margin-top:10px">Rijen: soort A · kolommen: soort B</p>
+      </div>
+    </div>
+    <div class="chapters" id="chaps"></div>
+    <div class="howto">
+      <h3>Zo werk je</h3>
+      <p>Lees in elk hoofdstuk eerst de samenvatting. Draai daarna de begripkaarten om en maak de oefeningen: je krijgt meteen feedback. Een oefening die volledig juist is, krijgt een groen vinkje en telt mee in de voortgangsring bovenaan. Je voortgang wordt alleen in deze browser bewaard. Oefen daarna spelenderwijs in de oefenarena en test jezelf op het einde met de eindtoets.</p>
+    </div>
+  </section>`);
+  app.appendChild(v);
+  const mx=$("#mx",v), info=$("#lvinfo",v);
+  const S=["+","0","−"], K={"+":"+","0":"0","−":"-"};
+  function key(a,b){ const o={"+":0,"0":1,"-":2}; const p=[K[a],K[b]].sort((x,y)=>o[x]-o[y]); return p.join(""); }
+  let html=`<span class="mx-c mx-h"></span>`+S.map(s=>`<span class="mx-c mx-h">B ${s}</span>`).join("");
+  S.forEach(a=>{ html+=`<span class="mx-c mx-h">A ${a}</span>`; S.forEach(b=>{ const k=key(a,b); html+=`<button type="button" class="mx-c mx-b" data-k="${k}" data-a="${a}" data-b="${b}" aria-pressed="false">${MATRIX[k]?MATRIX[k].n.split(" of ")[0]:""}</button>`; }); });
+  mx.innerHTML=html;
+  function pick(btn){ mx.querySelectorAll(".mx-b").forEach(b=>b.setAttribute("aria-pressed", b.dataset.k===btn.dataset.k));
+    const m=MATRIX[btn.dataset.k]; info.innerHTML=`<p class="mx-sym">${btn.dataset.a} / ${btn.dataset.b}</p><h3>${m.n}</h3><p>${m.d}</p><p class="lvex">Voorbeeld: ${m.ex}</p>`; }
+  mx.addEventListener("click",e=>{ const b=e.target.closest(".mx-b"); if(b) pick(b); });
+  pick(mx.querySelector('.mx-b[data-a="+"][data-b="+"]'));
+  const cg=$("#chaps",v);
+  CH.forEach(ch=>{ const p=chProgress(ch); cg.appendChild(h(`<a class="chap" href="#${ch.id}"><div class="num">${ch.num}</div><h3>${ch.title}</h3><p>${ch.short}</p><div class="bar" aria-label="${p.d} van ${p.n} oefeningen juist"><i style="width:${100*p.d/p.n}%"></i></div></a>`)); });
+  cg.appendChild(h(`<a class="chap arena" href="#arena"><div class="num">Spel</div><h3>Oefenarena</h3><p>Memory, sorteerrace, wie ben ik? en kettingreactie over het hele thema.</p></a>`));
+}
+
+/* ---------- EXTRA OEFENTYPES THEMA 3 ---------- */
+const BUILD2 = {
+  itable(ex,w,body){
+    body.appendChild(h(`<p class="note" style="margin-bottom:12px">${ex.text}</p>`));
+    const t=h(`<div class="tbl"><table><thead><tr><th>Deelnemer</th><th class="c">Gevolg</th></tr></thead><tbody></tbody></table></div>`);
+    ex.parts.forEach((p,k)=>{ const tr=h(`<tr><td>${p[0]}</td><td class="c"><div class="opts" style="justify-content:center">${["+","0","−"].map(s=>`<button type="button" class="opt" aria-pressed="false" data-s="${s}" aria-label="${p[0]}: ${s}">${s}</button>`).join("")}</div></td></tr>`);
+      tr.p=p; tr.addEventListener("click",e=>{ const b=e.target.closest(".opt"); if(!b) return; tr.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); tr.dataset.v=b.dataset.s; tr.querySelector("td.c").classList.remove("ok","bad"); });
+      $("tbody",t).appendChild(tr); });
+    body.appendChild(t);
+    const sid=w.id+"-type";
+    const r=h(`<div class="row" style="margin-top:8px"><label class="t" for="${sid}">Type interactie</label><select id="${sid}"><option value="">Kies …</option>${ex.types.map((o,j)=>`<option value="${j}">${o}</option>`).join("")}</select></div>`);
+    $("select",r).addEventListener("change",()=>r.classList.remove("ok","bad")); body.appendChild(r);
+    actions(w, m=>{ let g=0; const rows=[...t.querySelectorAll("tbody tr")];
+      rows.forEach(tr=>{ const ok=tr.dataset.v===tr.p[1]; tr.querySelector("td.c").classList.toggle("ok",ok); tr.querySelector("td.c").classList.toggle("bad",!ok); if(ok) g++; });
+      const v=$("select",r).value, ok=v!==""&&+v===ex.a; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok); if(ok) g++;
+      if(setMsg(m,g,rows.length+1,ex.extra)) w.done(); });
+  }
+};
+
+/* ---------- CHAPTER ---------- */
+function renderChapter(app, ch){
+  const v = h(`<section class="view">
+    <div class="chead"><div class="num">${ch.num==="Focus"?"Focus":"Hoofdstuk "+ch.num}</div><h1>${ch.title}</h1><p>${ch.lead}</p>
+      <div class="subnav"><a href="#${ch.id}" data-jump="sum">Samenvatting</a><a href="#${ch.id}" data-jump="cards">Begripkaarten</a><a href="#${ch.id}" data-jump="oef">Oefeningen</a></div></div>
+    <div class="block" id="sum"><h2>Samenvatting</h2><div class="sum">${ch.summary}</div></div>
+    <div class="block" id="cards" style="max-width:1000px"><h2>Begripkaarten</h2><p class="note">Denk eerst zelf na over de betekenis. Klik daarna om de kaart om te draaien.</p><div class="cards"></div></div>
+    <div class="block" id="oef" style="max-width:1000px"><h2>Oefeningen</h2><div class="ex-list"></div></div>
+    <p class="foot">Gebaseerd op Focus Biologie 4.2 (Pelckmans), thema 3 Interactie en gedrag. Samenvattingen en oefeningen zijn bewerkt voor eigen gebruik in de les.</p>
+  </section>`);
+  app.appendChild(v);
+  v.querySelector(".subnav").addEventListener("click",e=>{ const a=e.target.closest("[data-jump]"); if(a){ e.preventDefault(); const t=v.querySelector("#"+a.dataset.jump); t.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); } });
+  const cards=$(".cards",v);
+  ch.cards.forEach(c=>{ const b=h(`<button type="button" class="card" aria-label="${c[0]}: klik om om te draaien"><span class="in"><span class="f">${c[0]}<small>klik om om te draaien</small></span><span class="b">${c[1]}</span></span></button>`); b.addEventListener("click",()=>b.classList.toggle("flip")); cards.appendChild(b); });
+  const list=$(".ex-list",v);
+  ch.exercises.forEach((ex,i)=> list.appendChild(buildEx(ex, ch.id+"-"+i, (ch.num==="Focus"?"F":ch.num)+"."+(i+1))));
+}
+
+function shell(ex,id,label){
+  const w = h(`<article class="ex${P[id]?" done":""}" id="ex-${id}">
+    <div class="exh"><h3><span class="tag">Oefening ${label}</span>${ex.title}</h3><span class="chip">${P[id]?"Juist":"Te doen"}</span></div>
+    ${ex.q?`<p class="q">${ex.q}</p>`:""}<div class="ex-body"></div></article>`);
+  w.done = () => { P[id]=true; save(); w.classList.add("done"); $(".chip",w).textContent="Juist"; renderTabs(current); };
+  return w;
+}
+function actions(w, onCheck, onReset){
+  const a = h(`<div class="actions"><button type="button" class="btn">Controleer</button>${onReset?'<button type="button" class="btn ghost">Opnieuw</button>':""}<span class="msg" aria-live="polite"></span></div>`);
+  a.children[0].addEventListener("click",()=>onCheck($(".msg",a)));
+  if(onReset) a.children[1].addEventListener("click",()=>{ $(".msg",a).textContent=""; $(".msg",a).className="msg"; onReset(); });
+  w.appendChild(a); return a;
+}
+function setMsg(m, good, total, okText){
+  const all = good===total;
+  m.className = "msg " + (all?"ok":"bad");
+  m.textContent = all ? ("Alles juist! " + (okText||"")) : (good + " van " + total + " juist. Pas de rode antwoorden aan.");
+  return all;
+}
+
+function buildEx(ex,id,label){
+  const w = shell(ex,id,label), body=$(".ex-body",w);
+  const T = BUILD[ex.type]; T(ex,w,body); return w;
+}
+
+const BUILD = {
+  classify(ex,w,body){
+    const items = shuffle(ex.items);
+    items.forEach((it,k)=>{
+      const r = h(`<div class="row"><div class="t">${it.t}</div><div class="opts" role="group"></div></div>`);
+      ex.buckets.forEach((b,j)=>{ const btn=h(`<button type="button" class="opt" aria-pressed="false">${b}</button>`); btn.addEventListener("click",()=>{ r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); btn.setAttribute("aria-pressed","true"); r.dataset.c=j; r.classList.remove("ok","bad"); const f=$(".fb",r); if(f) f.remove(); }); $(".opts",r).appendChild(btn); });
+      r.it=it; body.appendChild(r);
+    });
+    actions(w, m=>{
+      let g=0; body.querySelectorAll(".row").forEach(r=>{ const ok = r.dataset.c!==undefined && +r.dataset.c===r.it.b; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok); if(ok) g++; });
+      if(setMsg(m,g,items.length,ex.ok)) w.done();
+    }, ()=>{ body.querySelectorAll(".row").forEach(r=>{ delete r.dataset.c; r.classList.remove("ok","bad"); r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); }); });
+  },
+  match(ex,w,body){
+    ex.items.forEach((it,k)=>{
+      const sid = w.id+"-s"+k;
+      const r = h(`<div class="row"><label class="t" for="${sid}">${it.t}</label><select id="${sid}"><option value="">Kies …</option>${ex.options.map((o,j)=>`<option value="${j}">${o}</option>`).join("")}</select></div>`);
+      r.it=it; $("select",r).addEventListener("change",()=>r.classList.remove("ok","bad")); body.appendChild(r);
+    });
+    actions(w, m=>{ let g=0; body.querySelectorAll(".row").forEach(r=>{ const v=$("select",r).value; const ok = v!=="" && +v===r.it.a; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok); if(ok) g++; }); if(setMsg(m,g,ex.items.length)) w.done(); });
+  },
+  tf(ex,w,body){
+    const state = ex.items.map(()=>null);
+    ex.items.forEach((it,k)=>{
+      const r = h(`<div class="row"><div class="t">${k+1}. ${it.s}</div><div class="opts"><button type="button" class="opt" aria-pressed="false" data-v="1">Waar</button><button type="button" class="opt" aria-pressed="false" data-v="0">Niet waar</button></div></div>`);
+      r.addEventListener("click",e=>{ const b=e.target.closest(".opt"); if(!b) return;
+        r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");
+        const ok = (b.dataset.v==="1")===it.a; state[k]=ok; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok);
+        let f=$(".fb",r); if(!f){ f=h(`<div class="fb"></div>`); r.appendChild(f); }
+        f.className="fb "+(ok?"ok":"bad"); f.innerHTML = (ok?"<b>Juist.</b> ":"<b>Niet juist.</b> Denk nog eens na. ") + (ok?it.e:"");
+        if(state.every(s=>s===true)) w.done();
+      });
+      body.appendChild(r);
+    });
+  },
+  mc(ex,w,body){
+    const multi = Array.isArray(ex.a); const sel=new Set();
+    const box = h(`<div class="qopts" role="group"></div>`);
+    ex.o.forEach((o,j)=>{ const b=h(`<button type="button" class="qopt" aria-pressed="false">${String.fromCharCode(97+j)}&ensp;${o}</button>`);
+      b.addEventListener("click",()=>{ if(!multi){ sel.clear(); box.querySelectorAll(".qopt").forEach(x=>x.setAttribute("aria-pressed","false")); }
+        if(sel.has(j)){ sel.delete(j); b.setAttribute("aria-pressed","false"); } else { sel.add(j); b.setAttribute("aria-pressed","true"); }
+        box.querySelectorAll(".qopt").forEach(x=>x.classList.remove("ok","bad")); });
+      box.appendChild(b); });
+    body.appendChild(box);
+    const css = `.qopt[aria-pressed="true"]{border-color:var(--water);box-shadow:inset 0 0 0 1px var(--water)}`;
+    if(!document.getElementById("mccss")){ const s=document.createElement("style"); s.id="mccss"; s.textContent=css; document.head.appendChild(s); }
+    actions(w, m=>{
+      const want = new Set(multi?ex.a:[ex.a]);
+      const ok = sel.size===want.size && [...sel].every(x=>want.has(x));
+      box.querySelectorAll(".qopt").forEach((b,j)=>{ b.classList.remove("ok","bad"); if(sel.has(j)) b.classList.add(want.has(j)?"ok":"bad"); });
+      m.className="msg "+(ok?"ok":"bad");
+      m.textContent = sel.size===0 ? "Kies eerst een antwoord." : ok ? "Juist! "+(ex.e||"") : (multi?"Nog niet helemaal juist. Let op: er kunnen meerdere antwoorden juist zijn.":"Niet juist. Probeer opnieuw.");
+      if(ok) w.done();
+    });
+  },
+  multi(ex,w,body){
+    const t = h(`<div class="tbl"><table><thead><tr><th>Proces</th>${ex.cols.map(c=>`<th class="c">${c} waterkringloop</th>`).join("")}</tr></thead><tbody></tbody></table></div>`);
+    ex.rows.forEach((r,k)=>{ const tr=h(`<tr><td>${r.t}</td>${ex.cols.map((c,j)=>`<td class="c"><input type="checkbox" id="${w.id}-${k}-${j}" aria-label="${r.t}, ${c}"></td>`).join("")}</tr>`); $("tbody",t).appendChild(tr); });
+    body.appendChild(t);
+    t.addEventListener("change",e=>{ const td=e.target.closest("td"); if(td) td.classList.remove("ok","bad"); });
+    actions(w, m=>{ let g=0,n=0; ex.rows.forEach((r,k)=>ex.cols.forEach((c,j)=>{ const cb=document.getElementById(`${w.id}-${k}-${j}`); const ok=cb.checked===!!r.a[j]; n++; if(ok) g++; cb.parentElement.classList.toggle("ok",ok&&cb.checked); cb.parentElement.classList.toggle("bad",!ok); })); if(setMsg(m,g,n,"In de korte kringloop komt het water niet op het land terecht.")) w.done(); });
+  },
+  order(ex,w,body){
+    const pool=h(`<div class="pool"></div>`), ans=h(`<ol class="answer" style="list-style:none;margin:10px 0 0"></ol>`);
+    body.append(pool,ans);
+    function reset(){ pool.innerHTML=""; ans.innerHTML=""; shuffle(ex.items.map((t,i)=>i)).forEach(i=>pool.appendChild(tok(i))); }
+    function tok(i){ const b=h(`<button type="button" class="tok" data-i="${i}"><span class="i"></span><span>${ex.items[i]}</span></button>`); return b; }
+    function renum(){ ans.querySelectorAll(".tok").forEach((b,k)=>{ $(".i",b).textContent=(k+1)+"."; }); pool.querySelectorAll(".i").forEach(s=>s.textContent=""); }
+    pool.addEventListener("click",e=>{ const b=e.target.closest(".tok"); if(b){ const li=document.createElement("li"); li.appendChild(b); ans.appendChild(li); ans.querySelectorAll(".tok").forEach(x=>x.classList.remove("ok","bad")); renum(); } });
+    ans.addEventListener("click",e=>{ const b=e.target.closest(".tok"); if(b){ const li=b.parentElement; pool.appendChild(b); li.remove(); ans.querySelectorAll(".tok").forEach(x=>x.classList.remove("ok","bad")); renum(); } });
+    reset();
+    actions(w, m=>{ const toks=[...ans.querySelectorAll(".tok")]; if(toks.length<ex.items.length){ m.className="msg bad"; m.textContent="Zet eerst alle stappen in je volgorde."; return; }
+      let g=0; toks.forEach((b,k)=>{ const ok=+b.dataset.i===k; b.classList.toggle("ok",ok); b.classList.toggle("bad",!ok); if(ok) g++; }); if(setMsg(m,g,toks.length)) w.done(); }, reset);
+  },
+  open(ex,w,body){
+    const id=w.id+"-ta";
+    body.appendChild(h(`<div><label for="${id}" class="note" style="display:block;margin-bottom:6px;border:none;padding:0">Schrijf eerst je eigen antwoord.</label><textarea id="${id}"></textarea></div>`));
+    const a=h(`<div class="actions"><button type="button" class="btn">Toon modelantwoord</button></div>`); w.appendChild(a);
+    a.children[0].addEventListener("click",()=>{ if(!$(".model",w)){ w.appendChild(h(`<div class="model"><b>Modelantwoord</b>${ex.model}<br><span style="color:var(--ink-2);font-size:.9rem">Vergelijk met je eigen antwoord. Staan alle kernwoorden erin?</span></div>`)); w.done(); } });
+  },
+  explore(ex,w,body){
+    const g=h(`<div class="explore"><div class="list" role="group"></div><div class="panel" aria-live="polite"></div></div>`); body.appendChild(g);
+    const seen=new Set();
+    ex.items.forEach((it,k)=>{ const b=h(`<button type="button" class="opt" aria-pressed="false" style="text-align:left">${it.n}</button>`);
+      b.addEventListener("click",()=>{ g.querySelectorAll(".list .opt").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");
+        $(".panel",g).innerHTML=`<h4>${it.n}</h4><dl>${it.d.map(d=>`<dt>${d[0]}</dt><dd>${d[1]}</dd>`).join("")}</dl>`; seen.add(k); if(seen.size===ex.items.length) w.done(); });
+      $(".list",g).appendChild(b); });
+    g.querySelector(".list .opt").click();
+  },
+};
+Object.assign(BUILD, BUILD2);
+
+/* ---------- GLOSSARY ---------- */
+function renderGloss(app){
+  const v=h(`<section class="view"><div class="chead"><h1>Begrippenlijst</h1><p>Alle kernbegrippen van thema 3. Zoek een woord of filter op hoofdstuk.</p></div>
+    <div class="gl-tools"><input type="search" id="gl-q" placeholder="Zoek een begrip, bv. mutualisme" aria-label="Zoek een begrip"><select id="gl-c" aria-label="Filter op hoofdstuk"><option value="">Alle hoofdstukken</option><option value="1">1 Interactievormen</option><option value="2">2 Interspecifieke interacties</option><option value="3">3 Intraspecifieke interacties en gedrag</option><option value="4">4 Communicatie</option><option value="Focus">Focus mimicry</option></select><button type="button" class="btn ghost" id="gl-hide" aria-pressed="false">Verberg betekenissen</button></div>
+    <dl class="gl"></dl></section>`);
+  app.appendChild(v);
+  const dl=$(".gl",v), q=$("#gl-q",v), c=$("#gl-c",v), hide=$("#gl-hide",v); let hidden=false;
+  function draw(){ const s=q.value.trim().toLowerCase(); const rows=GLOSS.filter(g=>(!c.value||g[2]===c.value)&&(!s||(g[0]+" "+g[1]).toLowerCase().includes(s))).sort((a,b)=>a[0].localeCompare(b[0],"nl"));
+    dl.innerHTML = rows.length ? rows.map(g=>`<div><dt>${g[0]}<br><span class="h">${g[2]==="Focus"?"Focus":"hoofdstuk "+g[2]}</span></dt><dd ${hidden?'style="filter:blur(6px);cursor:pointer" title="Klik om te tonen"':""}>${g[1]}</dd></div>`).join("") : `<p class="note" style="margin-top:12px">Geen begrip gevonden. Probeer een ander woord of kies ‘Alle hoofdstukken’.</p>`; }
+  q.addEventListener("input",draw); c.addEventListener("change",draw);
+  hide.addEventListener("click",()=>{ hidden=!hidden; hide.setAttribute("aria-pressed",hidden); hide.textContent=hidden?"Toon betekenissen":"Verberg betekenissen"; draw(); });
+  dl.addEventListener("click",e=>{ const d=e.target.closest("dd"); if(d) d.style.filter="none"; });
+  draw();
+}
+
+/* ---------- QUIZ ---------- */
+function renderQuiz(app){
+  const v=h(`<section class="view quiz"><div class="chead"><h1>Eindtoets thema 3</h1><p>Tien willekeurige vragen over het hele thema. Elke keer dat je start, krijg je andere vragen.</p></div><div class="block" id="qz"></div></section>`);
+  app.appendChild(v); const box=$("#qz",v);
+  function intro(){ const best=P.best; box.innerHTML=`<div class="qcard"><h3>Klaar om jezelf te testen?</h3><p>${best!=null?`Je beste score tot nu toe: <b>${best}/10</b>.`:"Je hebt de toets nog niet gemaakt."}</p><div class="actions"><button type="button" class="btn" id="qstart">Start de toets</button></div></div>`; $("#qstart",box).addEventListener("click",start); }
+  let qs=[], i=0, score=0;
+  function start(){ qs=shuffle(POOL).slice(0,10).map(q=>{ const ord=shuffle(q.o.map((_,j)=>j)); return {q:q.q,o:ord.map(j=>q.o[j]),a:ord.indexOf(q.a)}; }); i=0; score=0; ask(); }
+  function ask(){ const q=qs[i];
+    box.innerHTML=`<div class="qcard"><div class="qn">Vraag ${i+1} van 10</div><div class="bar"><i style="width:${i*10}%"></i></div><h3>${q.q}</h3><div class="qopts">${q.o.map((o,j)=>`<button type="button" class="qopt" data-j="${j}">${o}</button>`).join("")}</div><div class="actions"><span class="msg" aria-live="polite"></span></div></div>`;
+    box.querySelector(".qopts").addEventListener("click",e=>{ const b=e.target.closest(".qopt"); if(!b||b.disabled) return; const j=+b.dataset.j; const ok=j===q.a; if(ok) score++;
+      box.querySelectorAll(".qopt").forEach((x,k)=>{ x.disabled=true; if(k===q.a) x.classList.add("ok"); }); if(!ok) b.classList.add("bad");
+      const m=$(".msg",box); m.className="msg "+(ok?"ok":"bad"); m.textContent= ok?"Juist!":"Niet juist. Het juiste antwoord is groen.";
+      const nb=h(`<button type="button" class="btn">${i<9?"Volgende vraag":"Bekijk je score"}</button>`); nb.addEventListener("click",()=>{ i++; i<10?ask():end(); }); $(".actions",box).prepend(nb); nb.focus(); });
+  }
+  function end(){ if(P.best==null||score>P.best){ P.best=score; save(); }
+    const t = score>=8?"Sterk gedaan. Je beheerst dit thema goed.":score>=5?"Goed bezig. Herhaal de hoofdstukken waar je twijfelde.":"Lees de samenvattingen nog eens en maak de oefeningen opnieuw.";
+    box.innerHTML=`<div class="qcard"><div class="score">${score}/10</div><p style="margin-top:6px">${t}</p><div class="actions"><button type="button" class="btn" id="qagain">Nieuwe toets</button><a class="btn ghost" href="#start" style="text-decoration:none">Terug naar start</a></div></div>`;
+    $("#qagain",box).addEventListener("click",start); }
+  intro();
+}
+
+/* ---------- OEFENARENA ---------- */
+let arTotal=0, arTab="mem";
+function renderArena(app){
+  const v=h(`<section class="view">
+    <div class="ar-top"><div class="chead"><div class="num">Oefenen</div><h1>Oefenarena</h1><p>Vier spellen over het hele thema. Verdien punten en verbeter je record. Je punten worden alleen in deze browser bewaard.</p></div>
+      <div class="ar-pts" aria-live="polite"><span class="ar-pill">Punten <b id="ar-total">0</b></span><span class="ar-pill">Record <b id="ar-best">0</b></span></div></div>
+    <div class="ar-tabs" role="tablist" aria-label="Spellen">
+      <button role="tab" data-g="mem">Begrippen-memory</button><button role="tab" data-g="sort">Sorteerrace</button>
+      <button role="tab" data-g="who">Wie ben ik?</button><button role="tab" data-g="chain">Kettingreactie</button></div>
+    <div id="ar-stage"></div>
+    <p class="foot">Gebaseerd op Focus Biologie 4.2 (Pelckmans), thema 3 Interactie en gedrag.</p></section>`);
+  app.appendChild(v);
+  const stage=$("#ar-stage",v);
+  function pts(n){ arTotal=Math.max(0,arTotal+n); $("#ar-total",v).textContent=arTotal; if(arTotal>(P.arenaBest||0)){ P.arenaBest=arTotal; save(); } $("#ar-best",v).textContent=P.arenaBest||0; }
+  pts(0);
+  let timer=null;
+  function fb(el,ok,t){ el.className="ar-fb "+(ok?"ok":"no"); el.textContent=t; }
+  const GAMES={
+    mem(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2>Begrippen-memory</h2><span class="ar-meta" id="m-meta"></span><p>Draai telkens twee kaarten om en zoek bij elk begrip de juiste omschrijving. Hoe minder beurten, hoe meer punten.</p></div><div class="ar-mem" id="m-grid"></div><div class="actions"><button type="button" class="btn" id="m-new">Nieuw spel</button></div><div class="ar-fb" id="m-fb" aria-live="polite"></div></div>`;
+      let st;
+      function meta(){ $("#m-meta",stage).textContent=`Beurten: ${st.turns} · Paren: ${st.found}/8`; }
+      function start(){
+        const pick=shuffle(AR_MEM).slice(0,8);
+        st={cards:shuffle(pick.flatMap((g,i)=>[{id:i,t:g[0],term:true},{id:i,t:g[1],term:false}])),open:[],turns:0,found:0,lock:false};
+        const grid=$("#m-grid",stage); grid.innerHTML=""; $("#m-fb",stage).textContent="";
+        st.cards.forEach((c,k)=>{ const b=document.createElement("button"); b.type="button"; b.className="ar-card"+(c.term?" term":""); b.textContent=c.t; b.setAttribute("aria-label","Kaart "+(k+1)+", omgedraaid"); b.addEventListener("click",()=>flip(k,b)); c.el=b; grid.appendChild(b); });
+        meta();
+      }
+      function flip(k,b){
+        const c=st.cards[k]; if(st.lock||c.done||st.open.includes(k)) return;
+        b.classList.add("open"); b.setAttribute("aria-label",c.t); st.open.push(k); if(st.open.length<2) return;
+        st.turns++; const [a,z]=st.open.map(i=>st.cards[i]); const m=$("#m-fb",stage);
+        if(a.id===z.id&&a.term!==z.term){ a.done=z.done=true; a.el.classList.add("done"); z.el.classList.add("done"); st.open=[]; st.found++; fb(m,true,"Juist paar!");
+          if(st.found===8){ const p=Math.max(4,20-Math.max(0,st.turns-8)); pts(p); fb(m,true,`Alle paren gevonden in ${st.turns} beurten: +${p} punten.`); } }
+        else { st.lock=true; a.el.classList.add("wrong"); z.el.classList.add("wrong"); fb(m,false,"Geen paar. Onthoud waar ze liggen.");
+          setTimeout(()=>{ [a,z].forEach(c=>{ c.el.classList.remove("open","wrong"); c.el.setAttribute("aria-label","Omgedraaide kaart"); }); st.open=[]; st.lock=false; },1300); }
+        meta();
+      }
+      $("#m-new",stage).addEventListener("click",start); start();
+    },
+    sort(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2 id="s-title">Sorteerrace</h2><span class="ar-meta" id="s-meta"></span><p>Tik op een kaartje en daarna op de juiste kolom. Elke fout kost een punt; ben je binnen de minuut klaar, dan krijg je 2 bonuspunten.</p></div>
+        <div class="actions"><label for="s-pick" class="ar-meta">Onderwerp</label><select id="s-pick"></select><button type="button" class="btn" id="s-next">Volgende ronde</button></div>
+        <div class="ar-pool" id="s-pool" aria-label="Te sorteren kaartjes"></div><div class="ar-buckets" id="s-buckets"></div><div class="ar-fb" id="s-fb" aria-live="polite"></div></div>`;
+      const sel=$("#s-pick",stage); AR_SETS.forEach((s,i)=>sel.appendChild(h(`<option value="${i}">${s.t}</option>`)));
+      let st={idx:-1};
+      function meta(){ $("#s-meta",stage).textContent=`Nog ${st.left} · Fouten ${st.err} · ${Math.round((Date.now()-st.t0)/1000)} s`; }
+      function start(idx){
+        if(idx===undefined) idx=(st.idx+1)%AR_SETS.length;
+        const s=AR_SETS[idx]; st={idx,set:s,left:s.i.length,err:0,sel:null,t0:Date.now()}; sel.value=idx;
+        $("#s-title",stage).textContent=s.t; $("#s-fb",stage).textContent="";
+        const pool=$("#s-pool",stage); pool.innerHTML="";
+        shuffle(s.i).forEach(it=>{ const b=document.createElement("button"); b.type="button"; b.className="ar-chip"; b.textContent=it[0]; b.dataset.c=it[1];
+          b.addEventListener("click",()=>{ if(b.classList.contains("placed")) return; stage.querySelectorAll(".ar-chip.sel").forEach(x=>x.classList.remove("sel")); b.classList.add("sel"); st.sel=b; }); pool.appendChild(b); });
+        const bk=$("#s-buckets",stage); bk.innerHTML="";
+        s.c.forEach((c,ci)=>{ const d=document.createElement("button"); d.type="button"; d.className="ar-bucket"; d.innerHTML=`<h4>${c}</h4>`; d.setAttribute("aria-label","Kolom "+c); d.addEventListener("click",()=>drop(ci,d)); bk.appendChild(d); });
+        clearInterval(timer); timer=setInterval(()=>{ if(!document.body.contains(stage)) return clearInterval(timer); meta(); },500); meta();
+      }
+      function drop(ci,d){
+        const b=st.sel, m=$("#s-fb",stage); if(!b){ fb(m,false,"Tik eerst op een kaartje."); return; }
+        if(+b.dataset.c===ci){ b.classList.remove("sel"); b.classList.add("placed"); d.appendChild(b); st.sel=null; st.left--; fb(m,true,"Juist!");
+          if(st.left===0){ clearInterval(timer); const sec=Math.round((Date.now()-st.t0)/1000); const p=Math.max(1,st.set.i.length-st.err+(sec<60?2:0)); pts(p);
+            fb(m,true,`Ronde klaar in ${sec} s met ${st.err} fout(en): +${p} punten.${sec<60?" (snelheidsbonus +2)":""}`); } }
+        else { st.err++; d.classList.add("flash","ar-shake"); b.classList.add("ar-shake"); setTimeout(()=>{ d.classList.remove("flash","ar-shake"); b.classList.remove("ar-shake"); },400);
+          fb(m,false,`‘${b.textContent}’ hoort niet bij ${st.set.c[ci]}. Probeer opnieuw.`); }
+        meta();
+      }
+      sel.addEventListener("change",()=>start(+sel.value)); $("#s-next",stage).addEventListener("click",()=>start()); start(0);
+    },
+    who(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2>Wie ben ik?</h2><span class="ar-meta" id="w-meta"></span><p>Raad het organisme, proces of begrip. Na één hint verdien je 3 punten, na twee hints 2 punten, na drie hints 1 punt.</p></div>
+        <div class="ar-riddle"><ol id="w-hints"></ol></div><div class="actions"><button type="button" class="btn ghost" id="w-hint">Volgende hint</button></div>
+        <div class="ar-opts" id="w-opts"></div><div class="ar-fb" id="w-fb" aria-live="polite"></div><div class="actions"><button type="button" class="btn" id="w-next">Volgend raadsel</button></div></div>`;
+      let st={order:[],k:-1,shown:1,done:false};
+      function draw(){ const r=AR_WHO[st.order[st.k]]; $("#w-hints",stage).innerHTML=r.h.map((x,i)=>i<st.shown?`<li>${x}</li>`:`<li class="hid" aria-hidden="true">verborgen hint</li>`).join("");
+        $("#w-hint",stage).disabled=st.done||st.shown>=3; $("#w-meta",stage).textContent=`Raadsel ${st.k+1}/${AR_WHO.length} · waard ${4-st.shown} pt`; }
+      function next(){
+        if(!st.order.length||st.k>=st.order.length-1){ st.order=shuffle(AR_WHO.map((_,i)=>i)); st.k=-1; }
+        st.k++; st.shown=1; st.done=false; const r=AR_WHO[st.order[st.k]]; $("#w-fb",stage).textContent=""; draw();
+        const o=$("#w-opts",stage); o.innerHTML="";
+        shuffle(r.o).forEach(t=>{ const b=document.createElement("button"); b.type="button"; b.textContent=t; b.addEventListener("click",()=>answer(b,t,r)); o.appendChild(b); });
+      }
+      function answer(b,t,r){ if(st.done) return; const m=$("#w-fb",stage);
+        if(t===r.a){ st.done=true; b.classList.add("ok"); const p=4-st.shown; pts(p); st.shown=3; draw(); fb(m,true,`Juist, het is ${r.a}! +${p} punten.`); }
+        else { b.classList.add("no"); b.disabled=true;
+          if(st.shown<3){ st.shown++; draw(); fb(m,false,"Niet juist. Je krijgt een extra hint."); }
+          else { st.done=true; stage.querySelectorAll("#w-opts button").forEach(x=>{ if(x.textContent===r.a) x.classList.add("ok"); }); draw(); fb(m,false,`Helaas, het juiste antwoord is ${r.a}.`); } } }
+      $("#w-hint",stage).addEventListener("click",()=>{ if(st.shown<3){ st.shown++; draw(); } });
+      $("#w-next",stage).addEventListener("click",next); next();
+    },
+    chain(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2 id="c-title">Kettingreactie</h2><span class="ar-meta" id="c-meta"></span><p id="c-q"></p></div>
+        <ol class="ar-chain" id="c-list"></ol><div class="actions"><button type="button" class="btn" id="c-check">Controleer</button><button type="button" class="btn ghost" id="c-next">Volgende ketting</button></div><div class="ar-fb" id="c-fb" aria-live="polite"></div></div>`;
+      let st={k:-1,cur:[],checked:false};
+      function draw(marks){ const ol=$("#c-list",stage); ol.innerHTML="";
+        st.cur.forEach((s,i)=>{ const li=document.createElement("li"); if(marks) li.className=marks[i]?"ok":"no";
+          li.innerHTML=`<span class="n" aria-hidden="true"></span><span class="t"></span>`; $(".t",li).textContent=s;
+          const up=h(`<button type="button" class="ar-mv">↑</button>`), dn=h(`<button type="button" class="ar-mv">↓</button>`);
+          up.setAttribute("aria-label","Omhoog: "+s); dn.setAttribute("aria-label","Omlaag: "+s); up.disabled=i===0||st.checked; dn.disabled=i===st.cur.length-1||st.checked;
+          up.addEventListener("click",()=>{ [st.cur[i-1],st.cur[i]]=[st.cur[i],st.cur[i-1]]; draw(); ol.children[i-1].querySelector(".ar-mv").focus(); });
+          dn.addEventListener("click",()=>{ [st.cur[i+1],st.cur[i]]=[st.cur[i],st.cur[i+1]]; draw(); ol.children[i+1].querySelectorAll(".ar-mv")[1].focus(); });
+          li.append(up,dn); ol.appendChild(li); }); }
+      function next(){ st.k=(st.k+1)%AR_CHAINS.length; const c=AR_CHAINS[st.k]; let cur; do{ cur=shuffle(c.s); }while(cur.every((x,i)=>x===c.s[i]));
+        st.cur=cur; st.checked=false; $("#c-title",stage).textContent=c.t; $("#c-q",stage).textContent=c.q+" Zet de stappen in de juiste volgorde met de pijltjes en controleer. Elke stap op de juiste plaats = 1 punt.";
+        $("#c-fb",stage).textContent=""; $("#c-check",stage).disabled=false; $("#c-meta",stage).textContent=`Ketting ${st.k+1}/${AR_CHAINS.length}`; draw(); }
+      $("#c-check",stage).addEventListener("click",()=>{ if(st.checked) return; const c=AR_CHAINS[st.k]; const marks=st.cur.map((s,i)=>s===c.s[i]); const n=marks.filter(Boolean).length;
+        st.checked=true; draw(marks); pts(n); $("#c-check",stage).disabled=true;
+        fb($("#c-fb",stage),n===c.s.length, n===c.s.length?`Perfect! +${n} punten.`:`${n} van de ${c.s.length} stappen staan juist: +${n} punten. Juiste volgorde: ${c.s.join(" → ")}`); });
+      $("#c-next",stage).addEventListener("click",next); next();
+    }
+  };
+  const tabs=v.querySelectorAll(".ar-tabs button");
+  function open(g){ arTab=g; clearInterval(timer); tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.g===g)); GAMES[g](); }
+  v.querySelector(".ar-tabs").addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) open(b.dataset.g); });
+  open(arTab);
+}
+
+/* ---------- ROUTER ---------- */
+let current="start";
+function route(){
+  const id=(location.hash||"#start").slice(1);
+  const ch=CH.find(c=>c.id===id);
+  current = ch?id:(["begrippen","toets","arena"].includes(id)?id:"start");
+  const app=$("#app"); app.innerHTML="";
+  if(ch) renderChapter(app,ch); else if(current==="begrippen") renderGloss(app); else if(current==="toets") renderQuiz(app); else if(current==="arena") renderArena(app); else renderStart(app);
+  renderTabs(current); window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+route();
+</script>
+<script>try{localStorage.setItem("bio42-last","3")}catch(e){}</script>
+</body>
+</html>

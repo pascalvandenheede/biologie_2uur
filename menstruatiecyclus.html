@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>De menstruatiecyclus — interactieve animatie</title>
+<style>
+  :root {
+    --forest: #1F4D2C;
+    --forest-dark: #163821;
+    --moss: #8FBC74;
+    --moss-light: #E7F0DF;
+    --amber: #D98E33;
+    --amber-light: #FBEBD6;
+    --text-dark: #22301F;
+    --text-secondary: #5C6B58;
+    --border: #D8DED2;
+    --bg-page: #FAF9F5;
+    --blue-light: #378ADD;
+    --blue-dark: #0C447C;
+    --coral-light: #F0997B;
+    --coral-dark: #993C1D;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Calibri, Arial, sans-serif;
+    background: var(--bg-page);
+    color: var(--text-dark);
+    margin: 0;
+    padding: 32px 16px;
+    display: flex;
+    justify-content: center;
+  }
+  .card {
+    background: #FFFFFF;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    max-width: 760px;
+    width: 100%;
+    padding: 28px 32px 32px;
+    box-shadow: 0 2px 12px rgba(31,77,44,0.06);
+  }
+  h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--forest);
+    margin: 0 0 2px;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0 0 24px;
+  }
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  button#playBtn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--forest);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  button#playBtn:hover { background: var(--forest-dark); }
+  input[type="range"] {
+    flex: 1;
+    min-width: 160px;
+    accent-color: var(--forest);
+    height: 4px;
+    cursor: pointer;
+  }
+  .day-out {
+    font-size: 13px;
+    color: var(--text-secondary);
+    min-width: 62px;
+    text-align: right;
+  }
+  .day-out b { color: var(--text-dark); }
+  .badge-row { margin-bottom: 14px; }
+  .badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.02em;
+  }
+  .badge.foll { background: #E6F1FB; color: var(--blue-dark); }
+  .badge.lut  { background: var(--amber-light); color: #854F0B; }
+  svg { display: block; width: 100%; height: auto; margin-bottom: 6px; }
+  .legend {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin: 4px 0 20px;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+  }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .step-box {
+    background: var(--moss-light);
+    border-radius: 12px;
+    padding: 16px 20px;
+    min-height: 84px;
+  }
+  .step-box p.title {
+    font-weight: 600;
+    font-size: 15px;
+    margin: 0 0 6px;
+    color: var(--forest);
+  }
+  .step-box p.text {
+    font-size: 14px;
+    color: var(--text-dark);
+    margin: 0;
+    line-height: 1.55;
+  }
+  .ts { font-size: 12px; fill: var(--text-secondary); }
+  footer {
+    margin-top: 20px;
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    font-style: italic;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<p style="margin:12px 16px;font-family:system-ui,sans-serif"><a href="thema6.html">Terug naar thema 6</a> &nbsp; <a href="index.html">Alle thema’s</a></p>
+<div class="card">
+  <p style="font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--text-secondary);margin:0 0 10px">P. Vandenheede</p>
+  <h1>De menstruatiecyclus</h1>
+  <p class="subtitle">Hormoonverloop en fases doorheen een cyclus van 28 dagen</p>
+
+  <div class="controls">
+    <button id="playBtn" aria-label="Start of pauzeer animatie">&#9658;</button>
+    <input type="range" id="daySlider" min="1" max="28" value="1" step="1">
+    <span class="day-out">dag <b id="dayOut">1</b>/28</span>
+  </div>
+
+  <div class="badge-row">
+    <span id="phaseBadge" class="badge foll">folliculaire fase</span>
+  </div>
+
+  <svg viewBox="0 0 680 240" role="img" aria-label="Grafiek van FSH, LH, oestrogeen en progesteron doorheen de cyclus">
+    <line x1="40" y1="20" x2="40" y2="200" stroke="var(--border)" stroke-width="1"/>
+    <line x1="40" y1="200" x2="640" y2="200" stroke="var(--border)" stroke-width="1"/>
+    <line x1="357" y1="20" x2="357" y2="200" stroke="#B9C4B0" stroke-width="1" stroke-dasharray="3 3"/>
+    <text class="ts" x="357" y="14" text-anchor="middle">eisprong</text>
+    <polyline id="lineFSH" fill="none" stroke="var(--blue-light)" stroke-width="2"/>
+    <polyline id="lineLH" fill="none" stroke="var(--blue-dark)" stroke-width="2"/>
+    <polyline id="lineOes" fill="none" stroke="var(--coral-light)" stroke-width="2"/>
+    <polyline id="lineProg" fill="none" stroke="var(--coral-dark)" stroke-width="2"/>
+    <line id="dayMarker" x1="40" y1="20" x2="40" y2="200" stroke="#22301F" stroke-width="1.2"/>
+    <circle id="markerFSH" r="4" fill="var(--blue-light)"/>
+    <circle id="markerLH" r="4" fill="var(--blue-dark)"/>
+    <circle id="markerOes" r="4" fill="var(--coral-light)"/>
+    <circle id="markerProg" r="4" fill="var(--coral-dark)"/>
+  </svg>
+
+  <div class="legend">
+    <span><span class="dot" style="background:var(--blue-light)"></span>FSH</span>
+    <span><span class="dot" style="background:var(--blue-dark)"></span>LH</span>
+    <span><span class="dot" style="background:var(--coral-light)"></span>oestrogeen</span>
+    <span><span class="dot" style="background:var(--coral-dark)"></span>progesteron</span>
+  </div>
+
+  <div class="step-box">
+    <p class="title" id="stepTitle">Menstruatiefase</p>
+    <p class="text" id="stepText">Het baarmoederslijmvlies breekt af: oestrogeen en progesteron staan op hun laagste peil.</p>
+  </div>
+
+  <footer>Illustratief verloop, niet gebaseerd op exacte meetwaarden. Gebaseerd op Focus Biologie (Pelckmans) — Voortplanting bij de mens.</footer>
+</div>
+
+<script>
+const FSH  = [45,42,40,38,37,38,40,42,44,40,36,33,55,90,45,30,26,24,23,22,22,23,25,28,32,36,40,44];
+const LH   = [15,14,14,13,13,14,15,16,18,20,24,30,60,100,40,25,20,18,16,15,14,14,14,14,14,14,14,15];
+const OES  = [15,18,22,26,30,35,42,50,60,70,82,92,98,60,45,55,62,68,72,75,76,74,68,58,45,32,22,15];
+const PROG = [5,5,5,5,5,5,5,5,5,6,8,10,15,20,35,50,62,72,80,85,84,78,65,48,32,18,10,5];
+
+const steps = [
+  {max:5,  phase:'folliculair', title:'Menstruatiefase', text:'Het baarmoederslijmvlies breekt af: oestrogeen en progesteron staan op hun laagste peil.'},
+  {max:9,  phase:'folliculair', title:'Groeifase', text:'De lage oestrogeenconcentratie zet de hypothalamus aan tot GnRH, waardoor FSH stijgt. Eén follikel begint te rijpen en produceert oestrogeen; het baarmoederslijmvlies wordt dikker.'},
+  {max:11, phase:'folliculair', title:'Negatieve terugkoppeling', text:'Rond dag 10 remt de stijgende oestrogeenconcentratie de FSH-productie, zodat er geen tweede follikel meer start.'},
+  {max:12, phase:'folliculair', title:'Positieve terugkoppeling', text:'De oestrogeenconcentratie bereikt een drempelwaarde: dit keer stimuleert ze net extra GnRH en dus extra FSH en LH.'},
+  {max:14, phase:'folliculair', title:'Eisprong', text:'De piek van LH veroorzaakt de eisprong: de rijpe follikel barst open en laat de eicel vrij.'},
+  {max:27, phase:'luteaal', title:'Secretiefase', text:'Het geel lichaam produceert oestrogeen en vooral progesteron. Progesteron maakt het baarmoederslijmvlies dik en voedselrijk, klaar voor een mogelijke innesteling.'},
+  {max:28, phase:'luteaal', title:'Geen bevruchting', text:'Zonder innesteling krimpt het geel lichaam; oestrogeen en progesteron dalen zo laag dat het slijmvlies afbreekt en een nieuwe cyclus start.'},
+];
+
+const xScale = d => 40 + (d-1) * (600/27);
+const yScale = v => 200 - (v/100)*180;
+const toPts = arr => arr.map((v,i)=>xScale(i+1)+','+yScale(v)).join(' ');
+
+document.getElementById('lineFSH').setAttribute('points', toPts(FSH));
+document.getElementById('lineLH').setAttribute('points', toPts(LH));
+document.getElementById('lineOes').setAttribute('points', toPts(OES));
+document.getElementById('lineProg').setAttribute('points', toPts(PROG));
+
+const slider = document.getElementById('daySlider');
+const dayOut = document.getElementById('dayOut');
+const marker = document.getElementById('dayMarker');
+const mFSH = document.getElementById('markerFSH');
+const mLH = document.getElementById('markerLH');
+const mOes = document.getElementById('markerOes');
+const mProg = document.getElementById('markerProg');
+const badge = document.getElementById('phaseBadge');
+const stepTitle = document.getElementById('stepTitle');
+const stepText = document.getElementById('stepText');
+const playBtn = document.getElementById('playBtn');
+
+function render(day){
+  const x = xScale(day);
+  marker.setAttribute('x1', x); marker.setAttribute('x2', x);
+  mFSH.setAttribute('cx', x); mFSH.setAttribute('cy', yScale(FSH[day-1]));
+  mLH.setAttribute('cx', x); mLH.setAttribute('cy', yScale(LH[day-1]));
+  mOes.setAttribute('cx', x); mOes.setAttribute('cy', yScale(OES[day-1]));
+  mProg.setAttribute('cx', x); mProg.setAttribute('cy', yScale(PROG[day-1]));
+  dayOut.textContent = day;
+  const step = steps.find(s => day <= s.max);
+  const isFoll = step.phase === 'folliculair';
+  badge.textContent = isFoll ? 'folliculaire fase' : 'luteale fase';
+  badge.className = 'badge ' + (isFoll ? 'foll' : 'lut');
+  stepTitle.textContent = step.title;
+  stepText.textContent = step.text;
+}
+render(1);
+slider.addEventListener('input', e => render(parseInt(e.target.value)));
+
+let playing = false, timer = null;
+playBtn.addEventListener('click', () => {
+  playing = !playing;
+  playBtn.innerHTML = playing ? '&#10074;&#10074;' : '&#9658;';
+  if (playing) {
+    timer = setInterval(() => {
+      let d = parseInt(slider.value) + 1;
+      if (d > 28) d = 1;
+      slider.value = d;
+      render(d);
+    }, 450);
+  } else {
+    clearInterval(timer);
+  }
+});
+</script>
+</body>
+</html>

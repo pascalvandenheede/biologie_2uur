@@ -1,0 +1,1168 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Populaties en ecologie – Thema 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Young+Serif&display=swap">
+<style>
+/* Layout: veldschrift — één hoofdstuk tegelijk, smalle leeskolom, oefeningen als losse werkbladen eronder */
+:root{
+  --paper:#EAF0EC; --sheet:#F8FBF9; --ink:#12302A; --ink-2:#4B6761; --line:#C6D6CE;
+  --moss:#4C7D27; --moss-soft:#DAE8CC; --water:#2A6C84; --water-soft:#D3E6ED;
+  --ok:#2C7A47; --ok-soft:#D5EDDC; --bad:#B0442D; --bad-soft:#F5DCD5;
+  --bone:#F3F1EA; --dead:#8D8676;
+  --f-display:"Young Serif", "Iowan Old Style", Georgia, serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0D1A17; --sheet:#132420; --ink:#E1ECE6; --ink-2:#9BB3AB; --line:#29423B;
+  --moss:#9CCB6B; --moss-soft:#22371B; --water:#74B5CA; --water-soft:#17313A;
+  --ok:#7ACB91; --ok-soft:#163322; --bad:#EC8F77; --bad-soft:#3B1E17;
+  --bone:#E9E6DC; --dead:#7A7466; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0D1A17; --sheet:#132420; --ink:#E1ECE6; --ink-2:#9BB3AB; --line:#29423B;
+  --moss:#9CCB6B; --moss-soft:#22371B; --water:#74B5CA; --water-soft:#17313A;
+  --ok:#7ACB91; --ok-soft:#163322; --bad:#EC8F77; --bad-soft:#3B1E17;
+  --bone:#E9E6DC; --dead:#7A7466; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;margin:0}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,5vw,3.6rem)}
+h2{font-size:clamp(1.6rem,3.4vw,2.3rem)}
+h3{font-size:1.3rem}
+p{margin:0}
+b,strong{font-weight:700}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--water);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:20px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 18px;padding-block:10px}
+.teacher{font-family:var(--f-display);font-size:1.15rem;color:var(--ink)}
+.brand{font-family:var(--f-display);font-size:1.15rem;white-space:nowrap;text-decoration:none;color:var(--ink)}
+.brand span{color:var(--moss)}
+nav.tabs{display:flex;flex-wrap:wrap;gap:4px;min-width:0;flex-basis:100%;margin-left:-11px}
+nav.tabs a{flex:none;display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;text-decoration:none;color:var(--ink-2);font-size:.92rem;white-space:nowrap}
+nav.tabs a:hover{background:var(--moss-soft);color:var(--ink)}
+nav.tabs a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+.ring{width:16px;height:16px;flex:none}
+.ring circle{fill:none;stroke-width:3}
+.ring .bg{stroke:var(--line)}
+.ring .fg{stroke:var(--moss);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%}
+nav.tabs a[aria-current="page"] .ring .bg{stroke:color-mix(in srgb,var(--paper) 35%,transparent)}
+
+main{padding-block:36px 80px}
+.view[hidden]{display:none}
+
+/* hero ladder */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:36px;align-items:center}
+.hero .lead{font-size:1.15rem;color:var(--ink-2);max-width:52ch;margin-top:14px}
+.ladder{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px;counter-reset:lv}
+.ladder button{border:1px solid var(--line);background:var(--sheet);padding:6px 12px;border-radius:999px;cursor:pointer;font-size:.95rem;display:flex;gap:7px;align-items:baseline}
+.ladder button .n{font-variant-numeric:tabular-nums;color:var(--ink-2);font-size:.8rem}
+.ladder button[aria-pressed="true"]{background:var(--moss);border-color:var(--moss);color:var(--sheet)}
+.ladder button[aria-pressed="true"] .n{color:inherit;opacity:.8}
+.lvinfo{margin-top:18px;min-height:7.5em;border-left:3px solid var(--moss);padding:4px 0 4px 16px;max-width:60ch}
+.lvinfo h3{font-size:1.5rem}
+.lvinfo .lvex{color:var(--ink-2);margin-top:6px;font-style:italic}
+#rings{width:100%;max-width:420px;height:auto;display:block;margin:auto}
+#rings circle{fill:transparent;stroke:var(--line);stroke-width:1.5;transition:fill .35s,stroke .35s;cursor:pointer}
+#rings circle.in{fill:color-mix(in srgb,var(--moss) 9%,transparent);stroke:color-mix(in srgb,var(--moss) 55%,var(--line))}
+#rings circle.on{stroke:var(--moss);stroke-width:3.5}
+#rings text{font-family:var(--f-body);font-size:13px;fill:var(--ink);text-anchor:middle;pointer-events:none}
+
+.chapters{margin-top:56px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.chap{display:block;text-decoration:none;color:inherit;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.chap:hover{border-color:var(--moss)}
+.chap .num{font-family:var(--f-display);font-size:1.9rem;color:var(--moss);line-height:1}
+.chap h3{margin-top:8px;font-size:1.15rem}
+.chap p{color:var(--ink-2);font-size:.92rem;margin-top:4px}
+.bar{height:5px;background:var(--line);border-radius:3px;margin-top:12px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--moss);border-radius:3px;width:0;transition:width .4s}
+.howto{margin-top:44px;max-width:64ch;color:var(--ink-2)}
+.howto h3{color:var(--ink);margin-bottom:6px}
+
+/* chapter */
+.chead{max-width:760px}
+.chead .num{font-family:var(--f-display);color:var(--moss);font-size:1.1rem}
+.chead p{font-size:1.12rem;color:var(--ink-2);margin-top:12px}
+.subnav{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.subnav a{font-size:.9rem;color:var(--water);text-decoration:none;border-bottom:1px solid currentColor}
+.block{margin-top:44px;max-width:760px}
+.block > h2{margin-bottom:6px}
+.sum{margin-top:22px;display:grid;gap:12px}
+.sum h3{margin-top:14px}
+.sum p,.sum li{max-width:68ch}
+.sum ul{margin:0;padding-left:1.2em;display:grid;gap:4px}
+dfn{font-style:normal;font-weight:700;background:linear-gradient(transparent 62%,var(--moss-soft) 62%)}
+.note{font-size:.95rem;color:var(--ink-2);border-left:3px solid var(--water);padding-left:12px}
+
+/* flashcards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:16px;max-width:1000px}
+.card{perspective:900px;border:none;background:none;padding:0;cursor:pointer;min-height:132px;text-align:left}
+.card .in{position:relative;display:block;width:100%;height:100%;min-height:132px;transition:transform .45s;transform-style:preserve-3d}
+.card.flip .in{transform:rotateY(180deg)}
+.card .f,.card .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;justify-content:center}
+.card .f{background:var(--sheet);border:1px solid var(--line);font-family:var(--f-display);font-size:1.2rem}
+.card .f small{font-family:var(--f-body);font-size:.78rem;color:var(--ink-2);margin-top:8px}
+.card .b{background:var(--moss-soft);border:1px solid var(--moss);transform:rotateY(180deg);font-size:.93rem;line-height:1.45}
+
+/* exercises */
+.ex-list{display:grid;gap:18px;margin-top:18px;max-width:1000px}
+.ex{min-width:0;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.ex.done{border-color:var(--ok)}
+.exh{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.exh h3{font-size:1.18rem;max-width:62ch}
+.exh .tag{font-size:.8rem;color:var(--ink-2);display:block;font-family:var(--f-body);margin-bottom:2px}
+.chip{font-size:.8rem;padding:3px 10px;border-radius:999px;background:var(--paper);color:var(--ink-2);white-space:nowrap;border:1px solid var(--line)}
+.ex.done .chip{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
+.ex .q{margin-top:8px;color:var(--ink-2);max-width:68ch}
+.ex-body{margin-top:14px}
+.row{display:flex;gap:10px 16px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:10px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:none}
+.row .t{flex:1 1 280px;min-width:0}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opt{border:1px solid var(--line);background:var(--paper);padding:5px 12px;border-radius:7px;cursor:pointer;font-size:.92rem}
+.opt:hover{border-color:var(--water)}
+.opt[aria-pressed="true"]{background:var(--water);color:var(--sheet);border-color:var(--water)}
+.row.ok .opt[aria-pressed="true"]{background:var(--ok);border-color:var(--ok)}
+.row.bad .opt[aria-pressed="true"]{background:var(--bad);border-color:var(--bad)}
+.fb{flex-basis:100%;font-size:.92rem;padding:6px 10px;border-radius:7px}
+.fb.ok{background:var(--ok-soft);color:var(--ink)}
+.fb.bad{background:var(--bad-soft);color:var(--ink)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.btn{border:none;background:var(--ink);color:var(--paper);padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.95rem}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:400}
+.btn:hover{opacity:.9}
+.msg{font-size:.95rem}
+.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+select{font:inherit;font-size:.93rem;padding:5px 8px;border-radius:7px;border:1px solid var(--line);background:var(--paper);color:var(--ink);max-width:100%}
+.row.ok select{border-color:var(--ok);background:var(--ok-soft)}
+.row.bad select{border-color:var(--bad);background:var(--bad-soft)}
+textarea{width:100%;min-height:90px;font:inherit;font-size:.95rem;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);resize:vertical}
+.model{margin-top:12px;background:var(--moss-soft);border-radius:8px;padding:12px 14px;font-size:.95rem}
+.model b{display:block;margin-bottom:2px}
+
+/* order */
+.pool,.answer{display:flex;flex-wrap:wrap;gap:8px;min-height:48px;padding:10px;border-radius:8px}
+.pool{background:var(--paper)}
+.answer{border:1.5px dashed var(--line);margin-top:10px;flex-direction:column;align-items:stretch}
+.answer:empty::before{content:"Tik de stappen hierboven aan in de juiste volgorde.";color:var(--ink-2);font-size:.92rem}
+.tok{border:1px solid var(--line);background:var(--sheet);padding:6px 12px;border-radius:7px;cursor:pointer;text-align:left;font-size:.93rem}
+.answer .tok{display:flex;gap:10px}
+.answer .tok .i{font-variant-numeric:tabular-nums;color:var(--ink-2);min-width:1.2em}
+.answer .tok.ok{border-color:var(--ok);background:var(--ok-soft)}
+.answer .tok.bad{border-color:var(--bad);background:var(--bad-soft)}
+
+/* table */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:380px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{font-weight:700;font-size:.9rem;color:var(--ink-2)}
+td.c,th.c{text-align:center}
+td.ok{background:var(--ok-soft)} td.bad{background:var(--bad-soft)}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--water)}
+
+/* explore */
+.explore{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:16px}
+.explore .list{display:flex;flex-direction:column;gap:6px}
+.explore .panel{background:var(--paper);border-radius:8px;padding:14px 16px;min-height:120px}
+.explore .panel h4{font-family:var(--f-display);font-weight:400;font-size:1.2rem;margin:0 0 6px}
+.explore .panel dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.explore .panel dt{color:var(--ink-2);font-size:.9rem}
+.explore .panel dd{margin:0}
+
+/* pyramid */
+.pyr{display:grid;gap:6px;margin-top:12px}
+.pyr .lv{display:grid;grid-template-columns:150px minmax(0,1fr) 110px;gap:10px;align-items:center;font-size:.92rem}
+.pyr .lv .bw{display:flex;justify-content:center}
+.pyr .lv .b{height:30px;background:var(--moss);border-radius:4px;min-width:3px;transition:width .3s}
+.pyr .lv:nth-child(2) .b{background:color-mix(in srgb,var(--moss) 75%,var(--water))}
+.pyr .lv:nth-child(3) .b{background:color-mix(in srgb,var(--moss) 45%,var(--water))}
+.pyr .lv:nth-child(4) .b{background:var(--water)}
+.pyr .lv .v{font-variant-numeric:tabular-nums;text-align:right}
+input[type=range]{width:100%;accent-color:var(--moss)}
+input[type=number]{font:inherit;width:9em;padding:5px 8px;border-radius:7px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+
+/* svg diagrams */
+.diagram{overflow-x:auto}
+.diagram svg{display:block;width:100%;min-width:560px;height:auto}
+.node rect{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+.node text{font-family:var(--f-body);font-size:14px;fill:var(--ink);text-anchor:middle}
+.arr{cursor:pointer}
+.arr line{stroke-width:3.5}
+.arr .hit{stroke:transparent;stroke-width:22}
+.arr text{font-family:var(--f-body);font-size:13px;font-weight:700;paint-order:stroke;stroke:var(--sheet);stroke-width:5px;stroke-linejoin:round}
+.arr.dim{opacity:.25}
+.arr.hl line{stroke-width:6}
+.k-fix{stroke:var(--water);fill:var(--water)}
+.k-ass{stroke:var(--moss);fill:var(--moss)}
+.k-nit{stroke:#C98A1B;fill:#C98A1B}
+.k-amm{stroke:var(--bad);fill:var(--bad)}
+.k-dood{stroke:var(--ink-2);fill:var(--ink-2)}
+.arr text.k-fix,.arr text.k-ass,.arr text.k-nit,.arr text.k-amm,.arr text.k-dood{stroke:var(--sheet)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:none;background:transparent;padding:6px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.infobox{margin-top:12px;background:var(--paper);border-radius:8px;padding:12px 14px;min-height:72px}
+
+/* coral */
+.coral{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:20px;align-items:center}
+.coral svg{width:100%;max-width:300px;height:auto}
+.coral .st{font-family:var(--f-display);font-size:1.5rem}
+.c-branch{transition:stroke .6s}
+.state-gezond .c-branch{stroke:var(--moss)}
+.state-gezond .c-pol{fill:#E0A33A;opacity:1}
+.state-verbleekt .c-branch{stroke:var(--bone)}
+.state-verbleekt .c-pol{fill:var(--bone);opacity:.7}
+.state-dood .c-branch{stroke:var(--dead)}
+.state-dood .c-pol{opacity:0}
+.c-alg{opacity:0;transition:opacity .6s;fill:var(--moss)}
+.state-dood .c-alg{opacity:.8}
+.c-pol{transition:fill .6s,opacity .6s}
+
+/* glossary */
+.gl-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.gl-tools input{font:inherit;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--sheet);color:var(--ink);flex:1 1 240px;min-width:0}
+.gl{margin-top:16px;display:grid;gap:0;max-width:820px}
+.gl div{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}
+.gl dt{font-weight:700}
+.gl dd{margin:0}
+.gl .h{font-size:.8rem;color:var(--ink-2)}
+
+/* toets */
+.quiz{max-width:760px}
+.qcard{background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.qcard .qn{color:var(--ink-2);font-size:.9rem;font-variant-numeric:tabular-nums}
+.qcard h3{margin:6px 0 14px}
+.qopts{display:grid;gap:8px}
+.qopt{border:1px solid var(--line);background:var(--paper);text-align:left;padding:10px 14px;border-radius:8px;cursor:pointer}
+.qopt:hover{border-color:var(--water)}
+.qopt.ok{background:var(--ok-soft);border-color:var(--ok)}
+.qopt.bad{background:var(--bad-soft);border-color:var(--bad)}
+.qopt:disabled{cursor:default}
+.score{font-family:var(--f-display);font-size:3rem;color:var(--moss)}
+
+.foot{margin-top:60px;color:var(--ink-2);font-size:.85rem;max-width:70ch}
+
+@media (max-width:820px){
+  .top{position:static}
+  .hero{grid-template-columns:1fr}
+  #rings{max-width:300px}
+  .explore,.coral{grid-template-columns:1fr}
+  .pyr .lv{grid-template-columns:110px minmax(0,1fr) 80px}
+  .gl div{grid-template-columns:1fr;gap:2px}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .ex{padding:16px}
+}
+
+/* oefenarena (spellen) */
+.ar-top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between}
+.ar-pts{display:flex;gap:8px;flex-wrap:wrap}
+.ar-pill{background:var(--sheet);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.ar-pill b{color:var(--moss)}
+.ar-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-top:26px}
+.ar-tabs button{border:1px solid var(--line);background:var(--sheet);padding:7px 14px;border-radius:999px;cursor:pointer;font-size:.95rem}
+.ar-tabs button[aria-selected="true"]{background:var(--moss);border-color:var(--moss);color:var(--sheet)}
+.ar-game{margin-top:16px;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;max-width:1000px}
+.ar-head{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:baseline}
+.ar-head p{flex-basis:100%;color:var(--ink-2);max-width:68ch;margin-top:6px}
+.ar-meta{color:var(--ink-2);font-variant-numeric:tabular-nums;font-weight:700;font-size:.95rem}
+.ar-fb{min-height:1.5em;font-weight:700;margin-top:10px;font-size:.95rem}
+.ar-fb.ok{color:var(--ok)} .ar-fb.no{color:var(--bad)}
+.ar-mem{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+@media (max-width:620px){.ar-mem{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ar-card{min-height:108px;border-radius:8px;border:1px solid var(--line);background:var(--ink);color:transparent;cursor:pointer;padding:8px;font-size:.86rem;line-height:1.3;position:relative}
+.ar-card::after{content:"?";position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-size:1.8rem;color:color-mix(in srgb,var(--paper) 45%,transparent)}
+.ar-card.open,.ar-card.done{background:var(--paper);color:var(--ink);cursor:default}
+.ar-card.open::after,.ar-card.done::after{content:none}
+.ar-card.term{font-family:var(--f-display);font-size:1.02rem}
+.ar-card.done{background:var(--ok-soft);border-color:var(--ok)}
+.ar-card.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.ar-pool{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border:1.5px dashed var(--line);border-radius:8px;margin-top:14px}
+.ar-chip{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:7px 12px;cursor:pointer;text-align:left;max-width:100%;font-size:.93rem}
+.ar-chip.sel{border-color:var(--water);background:var(--water-soft)}
+.ar-chip.placed{cursor:default;background:var(--ok-soft);border-color:transparent;font-size:.88rem;padding:5px 9px}
+.ar-buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:12px}
+.ar-bucket{border:1.5px solid var(--moss);border-radius:8px;padding:10px;min-height:100px;background:transparent;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ar-bucket h4{margin:0 0 4px;font-family:var(--f-display);font-weight:400;font-size:1.05rem;color:var(--moss)}
+.ar-bucket.flash{border-color:var(--bad);background:var(--bad-soft)}
+@keyframes ar-shake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.ar-shake{animation:ar-shake .3s}
+.ar-riddle{background:var(--moss-soft);border-radius:8px;padding:14px 16px;margin-top:14px}
+.ar-riddle ol{margin:0;padding-left:1.4em;display:grid;gap:6px}
+.ar-riddle li.hid{color:transparent;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--moss) 30%,transparent) 0 10px,transparent 10px 14px);border-radius:4px;list-style:none;margin-left:-1.4em;padding-left:1.4em}
+.ar-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:12px}
+.ar-opts button{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:11px;cursor:pointer;font-weight:700}
+.ar-opts button.ok{border-color:var(--ok);background:var(--ok-soft)}
+.ar-opts button.no{border-color:var(--bad);background:var(--bad-soft)}
+.ar-chain{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px;counter-reset:s}
+.ar-chain li{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--paper)}
+.ar-chain li .n{counter-increment:s;font-family:var(--f-display);color:var(--moss);width:1.6em;text-align:center;flex:none}
+.ar-chain li .n::before{content:counter(s)}
+.ar-chain li .t{flex:1;min-width:0}
+.ar-chain li.ok{border-color:var(--ok);background:var(--ok-soft)}
+.ar-chain li.no{border-color:var(--bad)}
+.ar-mv{border:1px solid var(--line);background:var(--sheet);border-radius:7px;width:38px;height:38px;cursor:pointer;flex:none}
+.ar-mv:disabled{opacity:.3;cursor:default}
+.chap.arena{border-color:var(--moss);background:var(--moss-soft)}
+@media (prefers-reduced-motion:reduce){.ar-shake{animation:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* thema 2 extra's */
+.top .wrap{align-items:center}
+.teacher{font-family:var(--f-display);font-size:clamp(1.5rem,3.4vw,2.4rem);line-height:1.1;color:var(--ink);margin-left:auto;text-align:right}
+#curve{width:100%;max-width:440px;height:auto;display:block;margin:auto}
+#curve .ax{stroke:var(--ink-2);stroke-width:1.5}
+#curve .k{stroke:var(--bad);stroke-width:2;stroke-dasharray:7 6}
+#curve .kl{font-size:13px;fill:var(--bad);font-family:var(--f-body)}
+#curve .axl,.diagram .axl{font-size:12px;fill:var(--ink-2);font-family:var(--f-body)}
+#curve .s{fill:none;stroke:var(--moss);stroke-width:4;stroke-linecap:round;transition:opacity .3s}
+#curve .s.dim{opacity:.2}
+#curve .c{fill:none;stroke:var(--water);stroke-width:4;stroke-linecap:round;opacity:0;transition:opacity .3s}
+#curve .c.on{opacity:1}
+#curve .hl{fill:var(--moss-soft);transition:x .35s,width .35s,opacity .3s}
+.tub{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,260px);gap:20px;align-items:start}
+.srow{padding:8px 0;border-bottom:1px solid var(--line)}
+.srow label{display:flex;gap:8px;align-items:baseline}
+.srow .sv{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700}
+.tub svg{width:100%;height:auto}
+.tub .tb{fill:var(--paper)} .tub .tbo{fill:none;stroke:var(--ink-2);stroke-width:3}
+.tub .wt{fill:var(--water);opacity:.55;transition:y .3s}
+.tub .tl{font-size:13px;fill:var(--ink-2);font-family:var(--f-body)}
+.tub .ar{font-size:30px;fill:var(--ink);font-family:var(--f-body)}
+.tub .res{margin-top:6px}
+.diagram .ax{stroke:var(--ink-2);stroke-width:1.5}
+.diagram .rab{fill:none;stroke:var(--moss);stroke-width:3}
+.diagram .fox{fill:none;stroke:var(--bad);stroke-width:3}
+.diagram .cur{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:4 4}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.9rem;color:var(--ink-2);margin-top:6px}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:6px;vertical-align:-2px}
+.legend i.rab{background:var(--moss)} .legend i.fox{background:var(--bad)}
+.legend i.h-s,.herdgrid i.h-s{background:var(--line)}
+.legend i.h-i,.herdgrid i.h-i{background:var(--water)}
+.legend i.h-x,.herdgrid i.h-x{background:var(--bad)}
+.herdgrid{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;max-width:420px;margin-top:12px}
+.herdgrid i{aspect-ratio:1;border-radius:50%;transition:background .2s}
+.row input[type=text]{font:inherit;width:7em;padding:5px 8px;border-radius:7px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+.row .u{color:var(--ink-2);font-size:.9rem}
+@media (max-width:700px){.tub{grid-template-columns:1fr}}
+
+</style>
+<style>.home-link{font-family:var(--f-body);font-size:.92rem;color:var(--ink-2);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:2px 11px;white-space:nowrap;margin-right:auto}.home-link:hover{color:var(--ink);border-color:var(--moss);background:var(--moss-soft)}</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#start">Thema 2 <span>Populaties en ecologie</span></a>
+    <a class="home-link" href="index.html">Alle thema’s</a>
+    <span class="teacher">P. Vandenheede</span>
+    <nav class="tabs" id="tabs" aria-label="Hoofdstukken"></nav>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<script>
+const PHASES = [
+  {n:"Trage groei", x:[0,22], d:"Een kleine populatie groeit eerst traag aan: er zijn nog maar weinig individuen die zich kunnen voortplanten.", ex:"Een paar pelsrobben die zich op een nieuw eiland vestigen."},
+  {n:"Exponentiële groei", x:[22,52], d:"Ver onder de draagkracht zijn er hulpbronnen genoeg. De populatie neemt snel toe.", ex:"Pelsrobben op Saint Paul (Alaska) van 1980 tot 1992."},
+  {n:"Nulgroei", x:[52,100], d:"Dicht bij de draagkracht wordt de toename steeds kleiner, tot er geen groei meer is. De populatie schommelt rond de draagkracht.", ex:"De pelsrobben op Saint Paul na 1992: de populatie blijft nagenoeg constant."},
+  {n:"Crash", x:[0,100], crash:true, d:"Sommige soorten blijven exponentieel groeien en overschrijden de draagkracht vlug en extreem. Daarna volgt een zeer snelle afname: een crash.", ex:"Kariboes op Saint Paul: exponentiële groei van 1925 tot bijna 1940, daarna een crash."}
+];
+
+const CH = [
+/* ---------------- HOOFDSTUK 1 ---------------- */
+{ id:"h1", num:"1", title:"Populatiekenmerken", short:"Sleutelsoorten, populatiegrootte en populatiedichtheid",
+  lead:"Welke soort heeft de grootste impact op een levensgemeenschap? Hoe groot is een populatie, en hoe dicht leven de individuen bij elkaar?",
+  summary:`
+  <h3>1.1 Levensgemeenschap</h3>
+  <p>Alle organismen die in hetzelfde ecosysteem leven, vormen samen de <dfn>levensgemeenschap</dfn> van dat ecosysteem. Elke soort heeft er een eigen habitat en niche. Zo ontstaat een groot netwerk van interacties.</p>
+  <p>Een levensgemeenschap heeft een hiërarchische structuur: de ene soort heeft een grotere impact dan de andere. Die impact is de <dfn>dominantiestatus</dfn> van een soort. Ze hangt onder meer af van:</p>
+  <ul>
+    <li>het <b>aantal individuen</b>;</li>
+    <li>de <b>biomassa</b> van de soort;</li>
+    <li>het <b>foerageergebied</b>: het gebied waarin een dier voedsel zoekt;</li>
+    <li>het <b>foerageergedrag</b>: hoe het dier voedsel zoekt en verzamelt.</li>
+  </ul>
+  <p>Er leven veel meer herten dan wolven, maar de wolf is dominanter: hij houdt het aantal herten onder controle. Een soort met zo’n regulerende functie is een <dfn>sleutelsoort</dfn>. Ontbreekt een sleutelsoort of kan ze haar niche niet vervullen, dan veranderen de structuur en de werking van de levensgemeenschap sterk, en dus ook het ecosysteem.</p>
+  <p><b>Yellowstone.</b> In 1995 werd de wolf opnieuw uitgezet. Het aantal wapitiherten nam af, wilgen, populieren en kruiden groeiden weer, er kwamen meer bevers en zangvogels, het rivierprofiel veranderde door de nieuwe oevervegetatie en er ontstonden meer habitats en niches: een grotere biodiversiteit.</p>
+  <h3>1.2 Populatiegrootte</h3>
+  <p>Het aantal individuen in een populatie is de <dfn>populatiegrootte</dfn>. Neemt ze toe, dan spreek je van <b>positieve populatiegroei</b>; neemt ze af, van <b>negatieve populatiegroei</b>. Een populatie vinken schommelde over 15 jaar bijvoorbeeld tussen ongeveer 60 en 145 vinken.</p>
+  <p>Factoren die de populatiegrootte beïnvloeden:</p>
+  <ul>
+    <li><b>Hulpbronnen</b> zoals nestplaats, water en voedsel bepalen de overlevings- en voortplantingskansen.</li>
+    <li><b>Broedsucces</b>: in een goed broedseizoen zijn er meer geboortes dan sterftes.</li>
+    <li><b>Migratie</b>: <dfn>immigratie</dfn> vergroot de populatie, <dfn>emigratie</dfn> verkleint ze.</li>
+    <li><b>Toevalsfactoren</b> zijn niet voorspelbaar: weer, aardbeving, de plotse komst van een invasieve exoot … Bij de bosbranden in Australië (begin 2020) werden bijna 3 miljard gewervelden gedood of ontheemd.</li>
+  </ul>
+  <p>Geboorte en immigratie doen de populatie groeien, sterfte en emigratie doen ze krimpen. Het gebied waarin een populatie voorkomt, is het <dfn>verspreidingsgebied</dfn>. Vermeld altijd hoe groot dat gebied is. Door klimaatverandering, voedselschaarste of watertekort moeten populaties zich soms verplaatsen.</p>
+  <h3>1.3 Populatiedichtheid</h3>
+  <p>De hoeveelheid individuen per oppervlakte-eenheid is de <dfn>populatiedichtheid</dfn>. 20 vogels op 100 m² = 0,2 vogels per m²; 20 vogels op 25 m² = 0,8 vogels per m². Zelfde populatiegrootte, maar vier keer zo dicht.</p>
+  <p>De populatiedichtheid hangt af van:</p>
+  <ul>
+    <li><b>groepsgrootte</b>: hoe groter de groep, hoe hoger de dichtheid; solitaire dieren hebben meestal een lage dichtheid;</li>
+    <li><b>trofisch niveau</b>: hoe hoger in de voedselpiramide, hoe lager de dichtheid;</li>
+    <li><b>concurrentie</b>: neemt de concurrentie voor hulpbronnen snel toe, dan blijft de dichtheid lager.</li>
+  </ul>
+  <p>De vos jaagt ’s nachts alleen en staat hoger in de voedselpiramide: lage dichtheid. Konijnen grazen in grote groepen rond hun hol: hogere dichtheid. Stijgt de dichtheid, dan neemt de onderlinge concurrentie toe.</p>
+  <p>Afhankelijk van de levenswijze en de verspreiding van de hulpbronnen hebben soorten een ander <dfn>verspreidingspatroon</dfn>: <b>gegroepeerd</b> (spreeuwen in een zwerm), <b>uniform</b> (pinguïns op de ijsvlakte) of <b>willekeurig</b> (planten door elkaar). In grote ecosystemen leven vaak meerdere populaties van één soort. Zijn ze verbonden, dan wisselen ze genetisch materiaal en ervaringen uit; zijn ze strikt gescheiden, dan kunnen er op lange termijn nieuwe soorten ontstaan.</p>`,
+  cards:[["Levensgemeenschap","Alle organismen die in hetzelfde ecosysteem leven."],["Dominantiestatus","De impact van een soort op de levensgemeenschap."],["Sleutelsoort","Soort met een regulerende functie in de levensgemeenschap."],["Foerageergebied","Gebied waarin een dier voedsel zoekt."],["Populatiegrootte","Het aantal individuen in een populatie."],["Broedsucces","Een goed broedseizoen: meer geboortes dan sterftes."],["Immigratie / emigratie","Individuen komen bij de populatie / verlaten de populatie."],["Verspreidingsgebied","Het gebied waarin een populatie voorkomt."],["Populatiedichtheid","Aantal individuen per oppervlakte-eenheid."],["Verspreidingspatroon","Gegroepeerd, uniform of willekeurig."]],
+  exercises:[
+    { type:"order", title:"Yellowstone: één soort, een heel ecosysteem", q:"Klik de stappen aan in de juiste volgorde. Klik op een gekozen stap om hem terug te zetten.",
+      items:["De wolf wordt opnieuw uitgezet (1995).","Het aantal wapitiherten neemt af.","Wilgen, populieren en kruiden groeien weer.","Er komen meer bevers en zangvogels.","Het rivierprofiel verandert door de nieuwe oevervegetatie.","Er ontstaan meer habitats en niches: de biodiversiteit neemt toe."]},
+    { type:"mc", title:"Sleutelsoort", q:"Waarom noemen we de wolf in Yellowstone een sleutelsoort?",
+      o:["Omdat de wolf de grootste populatie van het park heeft.","Omdat de wolf een regulerende functie heeft: zonder wolf verandert de hele levensgemeenschap.","Omdat de wolf de hoogste populatiedichtheid van het park heeft.","Omdat de wolf de enige soort in het park is die vlees eet."], a:1,
+      e:"Wolven hebben net een kleine populatie en een lage dichtheid, maar hun impact (dominantiestatus) is groot."},
+    { type:"open", title:"De krabbenscheer", q:"Krabbenscheer vormt een dicht pak drijvende planten waartussen andere waterplanten kunnen groeien en waarvan ook insecten, zoals libellen, gebruikmaken. Dat leidt uiteindelijk tot veenvorming. Geef drie redenen waarom de krabbenscheer een sleutelsoort is.",
+      model:"1) Andere waterplanten krijgen kansen om te groeien. 2) Insecten zoals libellen kunnen er overleven. 3) Het leidt tot veenvorming, een uniek natuurlijk proces. Zonder krabbenscheer verandert de levensgemeenschap van de sloot sterk."},
+    { type:"badkuip", title:"De populatie als badkuip", q:"Verschuif de vier schuifjes en kijk wat er met de populatiegrootte gebeurt. Zoek een instelling voor positieve groei, negatieve groei én nulgroei." },
+    { type:"classify", title:"Groeit of krimpt de populatie?", q:"Heeft deze situatie een positieve (+) of negatieve (−) invloed op de populatiegrootte?",
+      buckets:["+ groei","− afname"],
+      items:[{t:"Een goed broedseizoen met meer geboortes dan sterftes",b:0},{t:"Jonge dieren verlaten de populatie (emigratie)",b:1},{t:"Dieren uit een ander gebied sluiten aan (immigratie)",b:0},{t:"Een bosbrand vernietigt een groot deel van het leefgebied",b:1},{t:"Er komen extra nestplaatsen bij",b:0},{t:"Het voedsel wordt schaars",b:1}]},
+    { type:"calc", title:"Populatiedichtheid berekenen", q:"Bereken telkens de populatiedichtheid in individuen per m². Gebruik een komma of punt voor decimalen.",
+      items:[
+        {t:"20 vogels op 100 m²",a:0.2,u:"per m²"},
+        {t:"20 vogels op 25 m²",a:0.8,u:"per m²"},
+        {t:"10 konijnen op een veld van 50 m²",a:0.2,u:"per m²"},
+        {t:"5 konijnen op een veld van 10 m²",a:0.5,u:"per m²"}],
+      ok:"Het veld met 5 konijnen heeft een kleinere populatiegrootte, maar een grotere populatiedichtheid!"},
+    { type:"mc", title:"Vos en konijn", q:"Waarom heeft de vos een lagere populatiedichtheid dan het konijn?",
+      o:["De vos staat hoger in de voedselpiramide en jaagt alleen.","De vos plant zich sneller voort dan het konijn.","Vossen hebben nooit last van concurrentie.","Vossen leven altijd uniform verspreid."], a:0,
+      e:"Hoger trofisch niveau en een solitaire levenswijze bij het jagen geven een lage dichtheid."},
+    { type:"classify", title:"Welk verspreidingspatroon?", buckets:["gegroepeerd","uniform","willekeurig"],
+      items:[{t:"Spreeuwen in een zwerm",b:0},{t:"Pinguïns op de ijsvlakte",b:1},{t:"Planten die door elkaar groeien",b:2},{t:"Konijnen die in grote groepen rond hun hol grazen",b:0}]},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"De levensgemeenschap is de som van alle abiotische factoren in een ecosysteem.",a:false,e:"De levensgemeenschap bestaat uit alle organismen die in hetzelfde ecosysteem leven."},
+        {s:"De impact van een soort op de levensgemeenschap is afhankelijk van de dominantiestatus van die soort.",a:true,e:"Dat is net de betekenis van dominantiestatus."},
+        {s:"De groei van een populatie kan enkel positief zijn.",a:false,e:"Populatiegroei kan ook negatief zijn: de populatiegrootte neemt dan af."},
+        {s:"Hoe groter een populatie in een bepaald gebied is, hoe groter de populatiedichtheid.",a:false,e:"De dichtheid hangt ook af van de oppervlakte: 20 konijnen op een klein veld leven dichter dan 20 konijnen op een groot veld."},
+        {s:"Als de populatiedichtheid toeneemt, daalt de onderlinge concurrentie.",a:false,e:"Hoe dichter de dieren bij elkaar leven, hoe groter de concurrentie voor hulpbronnen zoals nestplaatsen."},
+        {s:"De populatiedichtheid bepaalt het verspreidingspatroon van een organisme.",a:false,e:"Het is omgekeerd: het verspreidingspatroon heeft een invloed op de populatiedichtheid."}
+    ]},
+    { type:"open", title:"Haai en makreel", q:"In een voedselpiramide van een marien ecosysteem staat de haai bovenaan en de makreel lager. Vergelijk hun populatiegrootte en hun populatiedichtheid, en verklaar met de voedselpiramide.",
+      model:"De haai heeft een kleinere populatiegrootte en een lagere populatiedichtheid dan de makreel, omdat de haai op een hoger trofisch niveau staat: hoe hoger in de voedselpiramide, hoe lager de populatiedichtheid."}
+  ]},
+
+/* ---------------- HOOFDSTUK 2 ---------------- */
+{ id:"h2", num:"2", title:"Populatiedynamiek", short:"Draagkracht, nulgroei, crash en dynamisch evenwicht",
+  lead:"Waarom groeit geen enkele populatie eindeloos? En hoe beïnvloeden populaties in een voedselweb elkaars grootte?",
+  summary:`
+  <h3>2.1 Draagkracht</h3>
+  <p>Elk ecosysteem heeft een <dfn>draagkracht</dfn>: de maximale hoeveelheid organismen die er kunnen overleven en zich voortplanten. Ze hangt af van de aanwezige <b>hulpbronnen</b> en van <b>biotische en abiotische factoren</b>. Elke populatie heeft daardoor een maximale populatiegrootte: de toename is niet eindeloos.</p>
+  <p>Een kleine populatie groeit eerst <b>traag</b>. Ver onder de draagkracht volgt <dfn>exponentiële groei</dfn>. Dicht bij de draagkracht wordt de toename steeds kleiner, tot er geen groei meer is: <dfn>nulgroei</dfn>. De populatie schommelt dan rond de draagkracht. Zo groeiden de pelsrobben op Saint Paul (Alaska) exponentieel van 1980 tot 1992; daarna bleef hun aantal nagenoeg constant.</p>
+  <p><b>Wat als de draagkracht overschreden wordt?</b> De vraag naar hulpbronnen neemt toe, de omgeving kan niet meer volgen, de concurrentie binnen de populatie stijgt en de zwakste individuen sterven of migreren: de populatie neemt af. Blijft de populatie lang te groot, dan raakt het ecosysteem beschadigd: biodiversiteit en abiotische factoren wijzigen permanent en de draagkracht daalt.</p>
+  <p>Sommige soorten blijven heel snel aangroeien. Die snelle groei wordt altijd gevolgd door een <dfn>crash</dfn>: een zeer snelle afname, omdat de draagkracht vlug en extreem overschreden werd. Voorbeeld: de kariboes op Saint Paul groeiden exponentieel van 1925 tot bijna 1940 en crashten daarna.</p>
+  <p>Een ecosysteem met <b>veel diverse hulpbronnen</b> heeft een grotere draagkracht, een grote biodiversiteit en herstelt sneller na een verstoring. Een gebied met <b>beperkte hulpbronnen</b> (zoals een aangelegd park) heeft een kleinere draagkracht, minder biodiversiteit en is gevoeliger voor verstoring.</p>
+  <h3>2.2 Dynamisch evenwicht</h3>
+  <p>Bereikt een populatie haar maximale grootte, dan zal ze nadien eerder dalen dan constant blijven. Die daling geeft op termijn weer ruimte om te groeien. De populatiegrootte varieert dus rond een gemiddelde waarde. Binnen een voedselweb heeft de dynamiek van de ene populatie een rechtstreeks effect op die van de andere.</p>
+  <p><b>Voorbeeld gras → konijn → vos.</b> Veel konijnen: weinig voedselconcurrentie voor de vossen, die aangroeien. Meer vossen eten meer konijnen, en veel konijnen eten veel jonge planten, zodat er meer voedselconcurrentie is bij de konijnen: de konijnenpopulatie daalt. Minder konijnen betekent meer concurrentie bij de vossen, die dan afnemen. De vossenpiek volgt telkens na de konijnenpiek, er zijn altijd meer konijnen dan vossen en beide schommelen rond een gemiddelde.</p>
+  <p>De manier waarop populaties in een levensgemeenschap elkaars grootte beïnvloeden rond een gemiddelde waarde, is het <dfn>dynamisch evenwicht</dfn>. Het bestaat op drie niveaus:</p>
+  <ul>
+    <li><b>levensgemeenschap</b>: het aantal populaties schommelt rond een gemiddelde;</li>
+    <li><b>populatie</b>: de populatiegrootte fluctueert rond een gemiddeld aantal individuen;</li>
+    <li><b>individu</b>: evenwicht dankzij homeostase en het afweersysteem.</li>
+  </ul>
+  <p>Elk niveau kan het evenwicht van het hogere niveau beïnvloeden: het verdwijnen van een ziekteverwekker <b>versterkt</b> het evenwicht, extreme hitte <b>verstoort</b> het.</p>`,
+  cards:[["Draagkracht","Maximale hoeveelheid organismen die in een ecosysteem kunnen overleven en zich voortplanten."],["Exponentiële groei","Snelle toename van een populatie ver onder de draagkracht."],["Nulgroei","Geen toename meer: de populatie schommelt rond de draagkracht."],["Crash","Zeer snelle afname na een vlugge en extreme overschrijding van de draagkracht."],["Dynamisch evenwicht","Populaties beïnvloeden elkaars grootte rond een gemiddelde waarde."],["Hulpbronnen","Nestplaats, water, voedsel … bepalen mee de draagkracht."]],
+  exercises:[
+    { type:"match", title:"Welke fase?", q:"Koppel elke situatie aan de juiste fase van populatiegroei.",
+      options:["trage groei","exponentiële groei","nulgroei","crash"],
+      items:[{t:"Enkele pelsrobben vestigen zich op een eiland; de populatie neemt maar langzaam toe.",a:0},{t:"De populatie zit ver onder de draagkracht en neemt snel toe.",a:1},{t:"Dicht bij de draagkracht: de populatie blijft nagenoeg constant.",a:2},{t:"Na een extreme overschrijding van de draagkracht stort de populatie in.",a:3}]},
+    { type:"order", title:"Draagkracht overschreden", q:"Zet de gebeurtenissen in de juiste volgorde.",
+      items:["De populatie groeit: de vraag naar hulpbronnen neemt toe.","De omgeving kan niet meer volgen: de draagkracht is overschreden.","De concurrentie binnen de populatie neemt toe.","De zwakste individuen sterven of migreren: de populatie neemt af.","Blijft de populatie lang te groot, dan raakt het ecosysteem beschadigd en daalt de draagkracht."]},
+    { type:"mc", title:"Ver onder de draagkracht", q:"Een populatie zit ver onder de draagkracht van haar ecosysteem. Wat verwacht je?",
+      o:["De populatie groeit snel (exponentieel).","De populatie neemt af.","De populatie blijft constant (nulgroei).","De populatie crasht."], a:0,
+      e:"Hoe verder onder de draagkracht, hoe sneller de toename."},
+    { type:"lv", title:"Konijnen en vossen", q:"Bekijk de grafiek van een konijnen- en een vossenpopulatie. Schuif met de tijdlijn en beantwoord daarna de stellingen.",
+      items:[
+        {s:"De piek van de vossen komt telkens kort ná de piek van de konijnen.",a:true,e:"Meer konijnen betekent meer voedsel en minder concurrentie voor de vossen; die groeien pas daarna aan."},
+        {s:"Er zijn op elk moment meer vossen dan konijnen.",a:false,e:"Er zijn altijd meer konijnen dan vossen: de vos staat op een hoger trofisch niveau."},
+        {s:"Beide populaties schommelen rond een gemiddelde waarde.",a:true,e:"Dat is het dynamisch evenwicht."}
+      ]},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"De draagkracht van een ecosysteem is enkel afhankelijk van de abiotische factoren.",a:false,e:"Ze hangt af van de hulpbronnen én van biotische en abiotische factoren."},
+        {s:"Wanneer een populatie snel groeit en de draagkracht overschreden wordt, treedt er nulgroei op.",a:false,e:"Dan volgt een crash. Nulgroei treedt op wanneer een populatie de draagkracht nadert."},
+        {s:"Wanneer een populatie in een dynamisch evenwicht is, neemt het aantal individuen afwisselend toe en af rond een gemiddelde waarde.",a:true,e:"Evenwicht betekent hier niet ‘constant’: het is dynamisch."}
+    ]},
+    { type:"classify", title:"Veel of weinig hulpbronnen?", q:"Hoort dit kenmerk bij een ecosysteem met veel diverse hulpbronnen of met beperkte hulpbronnen?",
+      buckets:["veel diverse hulpbronnen","beperkte hulpbronnen"],
+      items:[{t:"grotere draagkracht",b:0},{t:"beperkte biodiversiteit",b:1},{t:"herstelt sneller na een verstoring",b:0},{t:"bv. een aangelegd park",b:1},{t:"grote biodiversiteit",b:0},{t:"gevoeliger voor verstoring",b:1}]},
+    { type:"open", title:"Stellingen over draagkracht", q:"Verklaar: (a) ‘Zelfs dieren die een exponentiële groei kennen, hebben uiteindelijk een constante populatiegrootte.’ (b) ‘Een ecosysteem met een zeer beperkte draagkracht raakt gemakkelijker verstoord.’",
+      model:"(a) De draagkracht van het ecosysteem is bereikt: er kunnen geen organismen meer bij, want de hulpbronnen en de biotische en abiotische factoren worden al maximaal gebruikt. (b) De draagkracht is kleiner, waardoor het ecosysteem sneller uit balans raakt en zich minder snel herstelt."},
+    { type:"open", title:"Weinig uilen in 2013", q:"In 2013 kwamen er opvallend weinig jonge uilen ter wereld. Door een lage vruchtzetting van de bomen en een strenge winter was de muizenpopulatie klein. De kerkuil, bosuil en ransuil werden zwaar getroffen; de steenuil, met een gevarieerder menu, wist zich te handhaven. (a) Welke populaties beïnvloeden elkaar? (b) Verklaar de dynamiek. (c) Waarom is de steenuilpopulatie stabieler?",
+      model:"(a) Bomen (vruchten), muizen en uilen. (b) Minder vruchten → minder voedsel voor muizen → kleinere muizenpopulatie → meer voedselconcurrentie bij de uilen → minder broedgevallen, de uilenpopulatie neemt af. (c) De steenuil heeft een groter aanbod aan prooien (bv. ook kleine vogels en amfibieën)."},
+    { type:"classify", title:"Drie niveaus van dynamisch evenwicht", buckets:["levensgemeenschap","populatie","individu"],
+      items:[{t:"Het aantal populaties schommelt rond een gemiddelde.",b:0},{t:"De populatiegrootte fluctueert rond een gemiddeld aantal individuen.",b:1},{t:"Evenwicht dankzij homeostase en het afweersysteem.",b:2}]}
+  ]},
+
+/* ---------------- HOOFDSTUK 3 ---------------- */
+{ id:"h3", num:"3", title:"Verstoring van populaties", short:"Overexploitatie, habitatfragmentatie, ziekteverwekkers",
+  lead:"Wat gebeurt er als de draagkracht verstoord wordt? En hoe kunnen vaccinatie en antibiotica het evenwicht van een populatie herstellen, of net niet?",
+  summary:`
+  <h3>3.1 Verstoring van de biodiversiteit</h3>
+  <p>Verbruiken organismen te veel hulpbronnen, dan spreek je van <dfn>overexploitatie</dfn>: de draagkracht wordt overschreden. Soorten krijgen het moeilijk om te overleven en kunnen uitsterven. Het ecosysteem kan zelfs verdwijnen en plaatsmaken voor een ander soort ecosysteem. Bij een sprinkhanenplaag in Afrika raakte de bodem uitgeput en werd gesloten savanne open grasland of woestijn. Ook de mens verstoort de draagkracht, bijvoorbeeld door tropisch regenwoud te kappen.</p>
+  <p>Een verstoorde draagkracht brengt het dynamisch evenwicht uit balans. Worden er veel bomen gekapt, dan zijn er minder nestplaatsen en groeit een vogelpopulatie minder dan normaal; andere populaties veranderen mee. Is de verstoring te groot, dan sterven er meer individuen dan bij natuurlijke sterfte: <dfn>oversterfte</dfn>. Dat kan leiden tot het uitsterven van soorten en verlies van biodiversiteit.</p>
+  <p>Wordt het landschap een lappendeken van geïsoleerde stukjes natuur tussen steden, landbouw- en industriegebieden, dan spreek je van <dfn>habitatfragmentatie</dfn>. Organismen zoeken nieuwe habitats en gaan concurreren; de ene populatie verdringt de andere. Herstel kan met nieuwe aanplantingen en <b>ecoducten</b> die natuurgebieden verbinden.</p>
+  <h3>3.2 Verstoring van de homeostase</h3>
+  <p>Sommige micro-organismen (bacteriën, schimmels, virussen) verstoren het dynamisch evenwicht van het individu en de populatie. Na een <b>besmetting</b> gaat het immuunsysteem in de aanval, na een tijd herstelt het evenwicht en ben je immuun voor nieuwe infecties met dezelfde ziekteverwekker: <dfn>natuurlijke immuniteit</dfn>. Hoe snel en sterk je reageert, hangt ook af van je algemene gezondheid (bij stress of oververmoeidheid is je weerstand lager). Voorbeelden: roest (schimmelinfectie bij planten), waterpokken.</p>
+  <p>Een <b>vaccin</b> wekt een immuunrespons op zonder dat je echt ziek wordt: <dfn>kunstmatige immuniteit</dfn>. Hoe groter het deel van de populatie dat gevaccineerd is, hoe meer <dfn>groepsimmuniteit</dfn>. Is die groot genoeg, dan kan een ziekteverwekker het dynamisch evenwicht van de populatie niet meer verstoren. Het coronavirus zorgde in België in 2020 voor oversterfte.</p>
+  <p><dfn>Antibiotica</dfn> bestrijden ziekteverwekkende bacteriën: <b>bacteriedodend</b> (vernietigt celwand en celmembraan) of <b>bacterieremmend</b> (verstoort de processen in de bacterie). Ze werken <b>niet tegen virussen</b>, want een virus is niet opgebouwd uit een cel. Fleming ontdekte in 1928 penicilline.</p>
+  <p>Bij veelvuldig of foutief gebruik overleven sommige bacteriën. Ze zijn <dfn>resistent</dfn>, vermenigvuldigen zich en geven hun aanpassing door. Een bacterie die resistent is tegen meerdere antibiotica, is een <dfn>superbacterie</dfn>, zoals MRSA (de ‘ziekenhuisbacterie’). Antibiotica doden ook nuttige darmbacteriën en kunnen zo de darmflora verstoren.</p>`,
+  cards:[["Overexploitatie","Organismen verbruiken te veel hulpbronnen; de draagkracht wordt overschreden."],["Oversterfte","Meer sterfte dan bij natuurlijke sterfte, door een te grote verstoring."],["Habitatfragmentatie","Natuur versnippert in geïsoleerde stukjes tussen steden, landbouw en industrie."],["Ecoduct","Verbinding over een weg tussen twee natuurgebieden."],["Natuurlijke immuniteit","Immuun na het doormaken van een infectie."],["Kunstmatige immuniteit","Immuun dankzij een vaccin."],["Groepsimmuniteit","Genoeg immune individuen, zodat een ziekteverwekker zich moeilijk verspreidt."],["Antibioticum","Middel tegen bacteriën: bacteriedodend of bacterieremmend."],["Superbacterie","Bacterie die resistent is tegen meerdere antibiotica, zoals MRSA."]],
+  exercises:[
+    { type:"classify", title:"Wat verstoort hier het evenwicht?", buckets:["overexploitatie","habitatfragmentatie","ziekteverwekker"],
+      items:[{t:"Een sprinkhanenplaag eet alle gewassen op.",b:0},{t:"Tropisch regenwoud wordt gekapt voor land- en mijnbouw.",b:0},{t:"Een nieuwe snelweg splitst een bos in twee.",b:1},{t:"Natuur raakt versnipperd tussen steden en industriegebieden.",b:1},{t:"Roest tast zwakke planten aan.",b:2},{t:"MRSA verspreidt zich in een ziekenhuis.",b:2}]},
+    { type:"mc", title:"Een snelweg door het bos", q:"Een nieuwe snelweg splitst een bos in twee. Hoe heet dit verschijnsel en wat is een mogelijke oplossing?",
+      o:["overexploitatie – meer jagen","habitatfragmentatie – een ecoduct bouwen","oversterfte – vaccineren","crash – de draagkracht verhogen"], a:1},
+    { type:"open", title:"Slingerapen in Colombia", q:"In de vallei van de San Juan-rivier werd regenwoud gekapt voor vee- en sojateelt. Bruine slingerapen verplaatsen zich door de boomkruinen, niet over de grond. Natuurorganisaties verbinden nu gebieden met corridors. (a) Hoe verstoort de landbouw het dynamisch evenwicht van de slingeraappopulatie? (b) Welke invloed hebben de corridors?",
+      model:"(a) De slingerapen kunnen elkaar niet meer bereiken, waardoor hun voortplantingskansen afnemen. (b) Dankzij de corridors kunnen de populaties zich opnieuw met elkaar verbinden, zodat het dynamisch evenwicht zich kan herstellen."},
+    { type:"herd", title:"Groepsimmuniteit", q:"Kies hoeveel procent van de populatie immuun is (gevaccineerd) en start een besmetting. Probeer het met een lage én met een hoge vaccinatiegraad." },
+    { type:"classify", title:"Natuurlijke of kunstmatige immuniteit?", buckets:["natuurlijk","kunstmatig"],
+      items:[{t:"Je hebt waterpokken gehad en wordt niet opnieuw ziek.",b:0},{t:"Je krijgt een vaccin en bouwt afweer op zonder ziek te worden.",b:1},{t:"Je lichaam heeft na een infectie een strategie tegen de ziekteverwekker ontwikkeld.",b:0},{t:"Een stof wekt een immuunrespons op zonder echte ziekte.",b:1}]},
+    { type:"classify", title:"Helpt een antibioticum?", q:"Helpt een antibioticum tegen deze ziekteverwekker?",
+      buckets:["ja","nee"],
+      items:[{t:"een ziekteverwekkende bacterie",b:0},{t:"het griepvirus",b:1},{t:"het coronavirus",b:1},{t:"een bacteriële infectie met MRSA die nog niet resistent is tegen elk antibioticum",b:0},{t:"een verkoudheidsvirus",b:1}],
+      ok:"Een virus is niet opgebouwd uit een cel, dus antibiotica werken er niet tegen."},
+    { type:"order", title:"Zo ontstaat een superbacterie", q:"Zet de stappen in de juiste volgorde.",
+      items:["Antibiotica worden veelvuldig of foutief gebruikt.","Sommige bacteriën overleven: het evenwicht is niet volledig hersteld.","Die resistente bacteriën vermenigvuldigen zich en geven de aanpassing door.","Een bacterie wordt resistent tegen meerdere antibiotica: een superbacterie, zoals MRSA."]},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Door de verstoring van de draagkracht in een gebied kan het ecosysteem er definitief veranderen en kunnen soorten uitsterven.",a:true,e:"Bij overexploitatie kan een ecosysteem zelfs verdwijnen (bv. savanne wordt woestijn)."},
+        {s:"Door habitatfragmentatie komen er meer habitats in een gebied, wat een positieve invloed heeft op het dynamisch evenwicht.",a:false,e:"Door habitatfragmentatie verdwijnen habitats; organismen gaan concurreren en het evenwicht wordt verstoord."},
+        {s:"Als het immuunsysteem een ziekteverwekker uitschakelt, blijft het dynamisch evenwicht verstoord.",a:false,e:"Na herstel is het evenwicht net hersteld en is het individu weer gezond."}
+    ]},
+    { type:"open", title:"Antibiotica en griep", q:"(a) Op welke manier kunnen antibiotica de darmwerking negatief beïnvloeden? (b) Is het verstandig om antibiotica te gebruiken bij griep? Waarom (niet)?",
+      model:"(a) Antibiotica doden niet alleen schadelijke maar ook nuttige bacteriën in de darmen. Ze verstoren de darmflora, die belangrijk is voor een goede spijsvertering. (b) Nee: griep is een virale infectie en geneest niet met antibiotica. Onnodig gebruik doet de antibioticaresistentie toenemen."}
+  ]},
+
+/* ---------------- FOCUS INVASIEVE SOORTEN ---------------- */
+{ id:"inv", num:"Focus", title:"Invasieve soorten", short:"Exoten die het dynamisch evenwicht verstoren",
+  lead:"Niet elke exoot is een probleem. Wanneer wordt een soort van elders invasief, en wat is de schade?",
+  summary:`
+  <p><dfn>Exoten</dfn> zijn organismen die niet uit onze streken afkomstig zijn. Sommige zijn onschadelijk, maar veel exoten veroorzaken problemen. Een exoot is <dfn>invasief</dfn> wanneer hij:</p>
+  <ul>
+    <li>zich <b>snel voortplant en verspreidt</b>;</li>
+    <li><b>veel schade</b> berokkent;</li>
+    <li>een <b>gebrek aan concurrentie</b> met inheemse soorten ondervindt.</li>
+  </ul>
+  <p>Hoe minder aan die drie voorwaarden voldaan is, hoe kleiner het invasieve karakter en hoe minder de exoot het dynamisch evenwicht verstoort. De <b>roodwangschildpad</b> veroorzaakt wel schade in vijvers, maar kan zich door onze lage temperaturen niet succesvol voortplanten. Hij is dus (nog) niet echt invasief; de klimaatopwarming kan daar verandering in brengen.</p>
+  <h3>Invasieve soorten in Vlaanderen</h3>
+  <ul>
+    <li><b>Aziatische hoornaar</b>: kwam mee met Chinees aardewerk, jaagt op bijen en libellen; schade aan bestuiving, imkerij en fruitteelt.</li>
+    <li><b>Chinese wolhandkrab</b>: kwam mee via ballastwater; schade aan dijken en visserij.</li>
+    <li><b>Grijze eekhoorn</b>: verdringt de inheemse rode eekhoorn en is drager van parasieten.</li>
+    <li><b>Invasieve duizendknoop</b> (Japanse, Sachalinse en Boheemse): verdringt inheemse planten, schade aan bermen.</li>
+    <li><b>Reuzenberenklauw</b>: neemt tot 80 % van het licht van andere planten weg; het sap veroorzaakt brandwonden.</li>
+  </ul>`,
+  cards:[["Exoot","Organisme dat niet uit onze streken afkomstig is."],["Invasieve exoot","Exoot die zich snel verspreidt, veel schade berokkent en weinig concurrentie ondervindt."],["Inheemse soort","Soort die van nature in onze streken voorkomt."]],
+  exercises:[
+    { type:"mc", title:"Wanneer invasief?", q:"Aan welke voorwaarden voldoet een invasieve exoot? Er zijn meerdere antwoorden juist.",
+      o:["Hij plant zich snel voort en verspreidt zich.","Hij is giftig voor mensen.","Hij berokkent veel schade.","Hij ondervindt weinig concurrentie van inheemse soorten.","Hij werd als huisdier ingevoerd."], a:[0,2,3],
+      e:"Giftig zijn of als huisdier ingevoerd zijn, bepaalt niet of een soort invasief is."},
+    { type:"match", title:"Welke schade?", q:"Koppel elke invasieve soort aan de schade die ze veroorzaakt.",
+      options:["jaagt op bijen; schade aan bestuiving en imkerij","schade aan dijken en visserij","verdringt de rode eekhoorn","verdringt inheemse planten; schade aan bermen","sap veroorzaakt brandwonden; neemt licht weg"],
+      items:[{t:"Aziatische hoornaar",a:0},{t:"Chinese wolhandkrab",a:1},{t:"Grijze eekhoorn",a:2},{t:"Invasieve duizendknoop",a:3},{t:"Reuzenberenklauw",a:4}]},
+    { type:"mc", title:"De roodwangschildpad", q:"Waarom is de roodwangschildpad in Vlaanderen (nog) niet echt invasief?",
+      o:["Hij veroorzaakt geen enkele schade.","Hij kan zich door onze lage temperaturen niet succesvol voortplanten.","Hij is een inheemse soort.","Hij wordt opgegeten door de grijze eekhoorn."], a:1,
+      e:"Door de klimaatopwarming kan dat veranderen."},
+    { type:"tf", title:"Controle: waar of niet waar?", items:[
+        {s:"Een soort die niet inheems is, is altijd invasief.",a:false,e:"Niet elke exoot is invasief, zoals de roodwangschildpad."},
+        {s:"Hoe minder een exoot aan de drie voorwaarden voldoet, hoe minder hij het dynamisch evenwicht verstoort.",a:true,e:"Het invasieve karakter is dan kleiner."}
+    ]},
+    { type:"open", title:"Kies een invasieve exoot", q:"Geef een voorbeeld van een invasieve exoot. Leg uit hoe hij in ons ecosysteem terechtkwam en welke impact hij heeft.",
+      model:"Bv. de Aziatische hoornaar kwam samen met Chinees aardewerk ons land binnen. Hij jaagt op libellen en bijen, waardoor bijenpopulaties snel kunnen verdwijnen, en heeft een negatief effect op de bestuiving, de imkerij en de fruitindustrie."}
+  ]}
+];
+
+const GLOSS = [
+ ["Levensgemeenschap","Alle organismen die in hetzelfde ecosysteem leven.","1"],
+ ["Dominantiestatus","Impact van een soort op de levensgemeenschap (aantal, biomassa, foerageergebied en -gedrag).","1"],
+ ["Sleutelsoort","Soort met een regulerende functie in de levensgemeenschap.","1"],
+ ["Foerageergebied","Gebied waarin een dier voedsel zoekt.","1"],
+ ["Foerageergedrag","Manier waarop een dier voedsel zoekt en verzamelt.","1"],
+ ["Populatiegrootte","Aantal individuen in een populatie.","1"],
+ ["Positieve populatiegroei","De populatiegrootte neemt toe.","1"],
+ ["Negatieve populatiegroei","De populatiegrootte neemt af.","1"],
+ ["Hulpbronnen","Nestplaats, water, voedsel … die overlevings- en voortplantingskansen bepalen.","1"],
+ ["Broedsucces","Goed broedseizoen: meer geboortes dan sterftes.","1"],
+ ["Immigratie","Individuen komen bij de populatie: ze wordt groter.","1"],
+ ["Emigratie","Individuen verlaten de populatie: ze wordt kleiner.","1"],
+ ["Toevalsfactoren","Onvoorspelbare factoren zoals weer, aardbeving of een invasieve exoot.","1"],
+ ["Verspreidingsgebied","Gebied waarin een populatie voorkomt.","1"],
+ ["Populatiedichtheid","Aantal individuen per oppervlakte-eenheid.","1"],
+ ["Verspreidingspatroon","Gegroepeerd, uniform of willekeurig.","1"],
+ ["Draagkracht","Maximale hoeveelheid organismen die in een ecosysteem kunnen overleven en zich voortplanten.","2"],
+ ["Exponentiële groei","Snelle toename van een populatie ver onder de draagkracht.","2"],
+ ["Nulgroei","Geen toename meer; de populatie schommelt rond de draagkracht.","2"],
+ ["Crash","Zeer snelle afname na een vlugge, extreme overschrijding van de draagkracht.","2"],
+ ["Dynamisch evenwicht","Populaties beïnvloeden elkaars grootte rond een gemiddelde waarde.","2"],
+ ["Homeostase","Zorgt samen met het afweersysteem voor het evenwicht op het niveau van het individu.","2"],
+ ["Overexploitatie","Organismen verbruiken te veel hulpbronnen; de draagkracht wordt overschreden.","3"],
+ ["Oversterfte","Meer sterfte dan bij natuurlijke sterfte.","3"],
+ ["Habitatfragmentatie","Versnippering van de natuur in geïsoleerde stukjes.","3"],
+ ["Ecoduct","Natuurverbinding over een weg.","3"],
+ ["Natuurlijke immuniteit","Immuniteit na het doormaken van een infectie.","3"],
+ ["Kunstmatige immuniteit","Immuniteit dankzij een vaccin.","3"],
+ ["Groepsimmuniteit","Zoveel immune individuen dat een ziekteverwekker zich moeilijk verspreidt.","3"],
+ ["Antibioticum","Middel tegen bacteriën, bacteriedodend of bacterieremmend.","3"],
+ ["Antibioticaresistentie","Bacteriën overleven een antibioticum en geven die aanpassing door.","3"],
+ ["Superbacterie","Bacterie resistent tegen meerdere antibiotica, zoals MRSA.","3"],
+ ["Exoot","Organisme dat niet uit onze streken afkomstig is.","Focus"],
+ ["Invasieve exoot","Exoot die zich snel verspreidt, veel schade berokkent en weinig concurrentie ondervindt.","Focus"]
+];
+
+const POOL = [
+ {q:"Alle organismen die in hetzelfde ecosysteem leven, vormen samen de …",o:["levensgemeenschap","populatie","biotoop","draagkracht"],a:0},
+ {q:"Een soort met een regulerende functie in de levensgemeenschap is een …",o:["sleutelsoort","exoot","indicatorsoort","superbacterie"],a:0},
+ {q:"Waarvan hangt de dominantiestatus NIET af?",o:["aantal individuen","biomassa","foerageergebied","de kleur van de soort"],a:3},
+ {q:"In een broedseizoen zijn er veel meer geboortes dan sterftes. Dit noem je …",o:["emigratie","broedsucces","verspreidingsgebied","populatiedichtheid"],a:1},
+ {q:"Welke uitspraak over migratie is juist?",o:["Immigratie verkleint de populatie.","Emigratie vergroot de populatie.","Immigratie vergroot de populatie, emigratie verkleint ze.","Migratie heeft geen invloed."],a:2},
+ {q:"20 vogels leven op 25 m². Wat is de populatiedichtheid?",o:["0,2 vogels per m²","0,8 vogels per m²","5 vogels per m²","1,25 vogels per m²"],a:1},
+ {q:"Op 50 m² leven 10 konijnen, op 10 m² leven er 5. Waar is de populatiedichtheid het grootst?",o:["Op 50 m²","Op 10 m²","Overal even groot","Dat kan je niet berekenen"],a:1},
+ {q:"Hoe hoger een soort in de voedselpiramide staat, hoe … haar populatiedichtheid.",o:["hoger","lager","gelijker","onvoorspelbaarder"],a:1},
+ {q:"Pinguïns op de ijsvlakte zijn een voorbeeld van een … verspreidingspatroon.",o:["gegroepeerd","uniform","willekeurig","exponentieel"],a:1},
+ {q:"Wat gebeurt er als de populatiedichtheid stijgt?",o:["De concurrentie neemt toe.","De concurrentie verdwijnt.","De draagkracht stijgt.","Het verspreidingsgebied wordt groter."],a:0},
+ {q:"De maximale hoeveelheid organismen die in een ecosysteem kunnen overleven en zich voortplanten, is de …",o:["populatiegrootte","draagkracht","populatiedichtheid","dominantiestatus"],a:1},
+ {q:"Een populatie zit ver onder de draagkracht. Wat verwacht je?",o:["exponentiële groei","nulgroei","een crash","negatieve groei"],a:0},
+ {q:"Wanneer treedt nulgroei op?",o:["Als de populatie de draagkracht nadert","Na een extreme overschrijding","Bij een kleine populatie","Bij immigratie"],a:0},
+ {q:"Wat volgt na een vlugge en extreme overschrijding van de draagkracht?",o:["nulgroei","een crash","exponentiële groei","groepsimmuniteit"],a:1},
+ {q:"Wat gebeurt er als een populatie de draagkracht lange tijd overschrijdt?",o:["De draagkracht stijgt mee.","Het ecosysteem raakt beschadigd en de draagkracht daalt.","Er treedt meteen nulgroei op.","De populatie blijft ongestoord groeien."],a:1},
+ {q:"Welk ecosysteem herstelt het snelst na een verstoring?",o:["Een ecosysteem met veel diverse hulpbronnen","Een aangelegd park","Een ecosysteem met weinig hulpbronnen","Een ecosysteem zonder biodiversiteit"],a:0},
+ {q:"Wat betekent ‘dynamisch evenwicht’?",o:["De populatiegrootte blijft exact gelijk.","Populaties beïnvloeden elkaar en schommelen rond een gemiddelde.","Een populatie groeit altijd exponentieel.","Alleen het aantal roofdieren verandert."],a:1},
+ {q:"In het voorbeeld van konijnen en vossen komt de vossenpiek …",o:["vóór de konijnenpiek","na de konijnenpiek","tegelijk met de konijnenpiek","nooit"],a:1},
+ {q:"Organismen verbruiken te veel hulpbronnen. Dit noem je …",o:["habitatfragmentatie","overexploitatie","oversterfte","immigratie"],a:1},
+ {q:"Een nieuwe snelweg splitst een bos in twee. Welke oplossing past?",o:["een ecoduct bouwen","meer jagen","vaccineren","antibiotica gebruiken"],a:0},
+ {q:"Meer sterfte dan bij natuurlijke sterfte door een te grote verstoring noem je …",o:["een crash","oversterfte","nulgroei","emigratie"],a:1},
+ {q:"Een vaccin zorgt voor …",o:["natuurlijke immuniteit","kunstmatige immuniteit","antibioticaresistentie","overexploitatie"],a:1},
+ {q:"Waarom helpt een antibioticum niet tegen griep?",o:["Griep is een bacterie.","Een virus is niet opgebouwd uit een cel.","Antibiotica werken enkel bij kinderen.","Griepvirussen zijn resistent tegen vaccins."],a:1},
+ {q:"MRSA is een voorbeeld van een …",o:["virus","superbacterie","schimmel","vaccin"],a:1},
+ {q:"Hoe ontstaan antibioticaresistente bacteriën?",o:["Door veelvuldig of foutief gebruik van antibiotica","Door vaccinatie","Door habitatfragmentatie","Door een goed broedseizoen"],a:0},
+ {q:"Wanneer noemen we een exoot invasief?",o:["Zodra hij niet inheems is","Als hij zich snel verspreidt, veel schade berokkent en weinig concurrentie ondervindt","Als hij giftig is","Als hij als huisdier werd ingevoerd"],a:1},
+ {q:"Welke invasieve soort verdringt de rode eekhoorn?",o:["Aziatische hoornaar","grijze eekhoorn","Chinese wolhandkrab","reuzenberenklauw"],a:1},
+ {q:"De Chinese wolhandkrab kwam in onze streken terecht via …",o:["Chinees aardewerk","ballastwater","de dierenwinkel","vogels"],a:1}
+];
+
+const AR_MEM=[
+ ["levensgemeenschap","Alle organismen die in hetzelfde ecosysteem leven"],
+ ["dominantiestatus","Impact van een soort op de levensgemeenschap"],
+ ["sleutelsoort","Soort met een regulerende functie"],
+ ["foerageergebied","Gebied waarin een dier voedsel zoekt"],
+ ["populatiegrootte","Aantal individuen in een populatie"],
+ ["broedsucces","Meer geboortes dan sterftes in een broedseizoen"],
+ ["immigratie","Individuen komen bij de populatie"],
+ ["emigratie","Individuen verlaten de populatie"],
+ ["verspreidingsgebied","Gebied waarin een populatie voorkomt"],
+ ["populatiedichtheid","Aantal individuen per oppervlakte-eenheid"],
+ ["draagkracht","Maximaal aantal organismen dat een ecosysteem kan dragen"],
+ ["nulgroei","Geen toename meer, schommelen rond de draagkracht"],
+ ["crash","Zeer snelle afname na extreme overschrijding"],
+ ["dynamisch evenwicht","Populaties schommelen samen rond een gemiddelde"],
+ ["overexploitatie","Te veel hulpbronnen verbruiken"],
+ ["oversterfte","Meer sterfte dan natuurlijke sterfte"],
+ ["habitatfragmentatie","Natuur versnippert in geïsoleerde stukjes"],
+ ["groepsimmuniteit","Genoeg immune individuen om verspreiding te stoppen"],
+ ["superbacterie","Resistent tegen meerdere antibiotica"],
+ ["invasieve exoot","Exoot die zich snel verspreidt en veel schade berokkent"]
+];
+const AR_SETS=[
+ {t:"Groei of afname van de populatie?",c:["+ groei","− afname"],i:[["geboorte",0],["immigratie",0],["sterfte",1],["emigratie",1],["goed broedseizoen",0],["voedselschaarste",1],["extra nestplaatsen",0],["bosbrand",1]]},
+ {t:"Welk verspreidingspatroon?",c:["gegroepeerd","uniform","willekeurig"],i:[["spreeuwen in een zwerm",0],["pinguïns op de ijsvlakte",1],["planten door elkaar",2],["konijnen in groep rond het hol",0]]},
+ {t:"Welke fase van groei?",c:["exponentiële groei","nulgroei","crash"],i:[["ver onder de draagkracht",0],["dicht bij de draagkracht",1],["na extreme overschrijding",2],["pelsrobben 1980–1992",0],["pelsrobben na 1992",1],["kariboes na 1940",2]]},
+ {t:"Veel of weinig hulpbronnen?",c:["veel diverse hulpbronnen","beperkte hulpbronnen"],i:[["grotere draagkracht",0],["aangelegd park",1],["herstelt snel",0],["gevoelig voor verstoring",1],["grote biodiversiteit",0],["kleine draagkracht",1]]},
+ {t:"Wat verstoort het evenwicht?",c:["overexploitatie","habitatfragmentatie","ziekteverwekker"],i:[["sprinkhanenplaag",0],["regenwoud kappen",0],["snelweg door een bos",1],["lappendeken van natuur",1],["roest bij planten",2],["MRSA",2]]},
+ {t:"Helpt een antibioticum?",c:["ja","nee"],i:[["bacteriële infectie",0],["griep",1],["coronavirus",1],["verkoudheid (virus)",1]]},
+ {t:"Welke invasieve soort?",c:["dier","plant"],i:[["Aziatische hoornaar",0],["Chinese wolhandkrab",0],["grijze eekhoorn",0],["duizendknoop",1],["reuzenberenklauw",1]]}
+];
+const AR_WHO=[
+ {a:"wolf",o:["wolf","wapitihert","bever","vos"],h:["Ik ben een roofdier.","Er zijn veel minder van mij dan van mijn prooien, maar ik ben dominanter.","In 1995 keerde ik terug in Yellowstone en veranderde ik zelfs de rivieren."]},
+ {a:"krabbenscheer",o:["krabbenscheer","eendenkroos","waterlelie","duizendknoop"],h:["Ik ben een waterplant.","In de winter rust ik op de bodem, in het voorjaar drijf ik boven.","Ik ben een sleutelsoort: dankzij mij ontstaat veen."]},
+ {a:"draagkracht",o:["draagkracht","populatiedichtheid","nulgroei","dominantiestatus"],h:["Ik ben een eigenschap van een ecosysteem.","Ik hang af van hulpbronnen en biotische en abiotische factoren.","Ik ben het maximale aantal organismen dat kan overleven en zich voortplanten."]},
+ {a:"kariboe",o:["kariboe","pelsrob","konijn","vos"],h:["Ik leefde op het eiland Saint Paul.","Mijn populatie groeide exponentieel van 1925 tot bijna 1940.","Daarna volgde een crash."]},
+ {a:"pelsrob",o:["pelsrob","kariboe","wolf","haai"],h:["Ik leef op Saint Paul (Alaska).","Van 1980 tot 1992 groeide mijn populatie exponentieel.","Sindsdien schommelt mijn populatie rond de draagkracht: nulgroei."]},
+ {a:"steenuil",o:["steenuil","kerkuil","bosuil","ransuil"],h:["Ik ben een uil.","In 2013 waren er weinig muizen.","Dankzij mijn gevarieerde menu hield mijn populatie stand."]},
+ {a:"ecoduct",o:["ecoduct","corridor","natuurreservaat","wegberm"],h:["Ik ben door de mens gebouwd.","Ik help tegen habitatfragmentatie.","Ik verbind natuurgebieden over een weg."]},
+ {a:"MRSA",o:["MRSA","griepvirus","roest","coronavirus"],h:["Ik ben een ziekteverwekker.","Ik ben een bacterie die vooral in ziekenhuizen voorkomt.","Ik ben resistent tegen meerdere antibiotica: een superbacterie."]},
+ {a:"penicilline",o:["penicilline","vaccin","ecoduct","MRSA"],h:["Ik ben een geneesmiddel.","Ik werk tegen bacteriën, niet tegen virussen.","Fleming ontdekte mij in 1928."]},
+ {a:"Aziatische hoornaar",o:["Aziatische hoornaar","grijze eekhoorn","Chinese wolhandkrab","roodwangschildpad"],h:["Ik ben een invasieve exoot.","Ik kwam mee met Chinees aardewerk.","Ik jaag op bijen en libellen."]},
+ {a:"roodwangschildpad",o:["roodwangschildpad","Aziatische hoornaar","reuzenberenklauw","grijze eekhoorn"],h:["Ik ben een exoot.","Ik veroorzaak schade in vijvers.","Door de lage temperaturen kan ik me hier niet succesvol voortplanten: ik ben (nog) niet echt invasief."]},
+ {a:"reuzenberenklauw",o:["reuzenberenklauw","duizendknoop","krabbenscheer","brandnetel"],h:["Ik ben een invasieve plant.","Ik neem tot 80 % van het licht van andere planten weg.","Mijn sap veroorzaakt brandwonden."]}
+];
+const AR_CHAINS=[
+ {t:"Wolven in Yellowstone",q:"Zet de kettingreactie in de juiste volgorde.",s:["de wolf wordt opnieuw uitgezet","minder wapitiherten","wilgen en populieren groeien weer","meer bevers en zangvogels","het rivierprofiel verandert","meer habitats en niches: grotere biodiversiteit"]},
+ {t:"Van kleine populatie tot draagkracht",q:"Zet de fasen van populatiegroei in volgorde.",s:["een kleine populatie groeit traag","ver onder de draagkracht: exponentiële groei","de toename wordt steeds kleiner","nulgroei: schommelen rond de draagkracht"]},
+ {t:"Draagkracht overschreden",q:"Wat gebeurt er als een populatie te groot wordt?",s:["de vraag naar hulpbronnen neemt toe","de draagkracht is overschreden","de concurrentie neemt toe","de zwakste individuen sterven of migreren","bij langdurige overschrijding daalt de draagkracht"]},
+ {t:"Konijnen en vossen",q:"Volg het dynamisch evenwicht.",s:["veel konijnen","weinig voedselconcurrentie: de vossen groeien aan","meer vossen eten meer konijnen","minder konijnen","meer concurrentie: de vossen nemen af"]},
+ {t:"Weinig uilen in 2013",q:"Zet de oorzaak-gevolgketen in de juiste volgorde.",s:["strenge winter en lage vruchtzetting van de bomen","minder voedsel voor muizen","kleinere muizenpopulatie","meer voedselconcurrentie bij uilen","minder broedgevallen"]},
+ {t:"Zo ontstaat een superbacterie",q:"Zet de stappen in de juiste volgorde.",s:["veelvuldig of foutief gebruik van antibiotica","sommige bacteriën overleven","resistente bacteriën vermenigvuldigen zich","resistent tegen meerdere antibiotica: superbacterie"]}
+];
+
+const TABS = {h1:"Populatiekenmerken",h2:"Populatiedynamiek",h3:"Verstoring",inv:"Invasieve soorten"};
+const KEY = "eco-thema2-v1";
+let P = {};
+try { P = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e) { P = {}; }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(P)); } catch(e) {} }
+
+const $ = (s, r=document) => r.querySelector(s);
+function h(html){ const t=document.createElement("template"); t.innerHTML=html.trim(); return t.content.firstElementChild; }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+const fmt = n => n.toLocaleString("nl-BE");
+
+function chProgress(ch){ const n=ch.exercises.length; let d=0; ch.exercises.forEach((_,i)=>{ if(P[ch.id+"-"+i]) d++; }); return {d,n}; }
+function ringSVG(f){ const c=2*Math.PI*6; return `<svg class="ring" viewBox="0 0 16 16" aria-hidden="true"><circle class="bg" cx="8" cy="8" r="6"/><circle class="fg" cx="8" cy="8" r="6" stroke-dasharray="${(c*f).toFixed(2)} ${c.toFixed(2)}"/></svg>`; }
+
+function renderTabs(cur){
+  const nav = $("#tabs");
+  let s = `<a href="#start" ${cur==="start"?'aria-current="page"':""}>Start</a>`;
+  CH.forEach(ch=>{ const p=chProgress(ch); s += `<a href="#${ch.id}" ${cur===ch.id?'aria-current="page"':""}>${ringSVG(p.d/p.n)}${ch.num==="Focus"?"":ch.num+" "}${TABS[ch.id]}</a>`; });
+  s += `<a href="#arena" ${cur==="arena"?'aria-current="page"':""}>Oefenarena</a><a href="#begrippen" ${cur==="begrippen"?'aria-current="page"':""}>Begrippen</a><a href="#toets" ${cur==="toets"?'aria-current="page"':""}>Eindtoets</a>`;
+  nav.innerHTML = s;
+}
+
+/* ---------- START ---------- */
+function renderStart(app){
+  const v = h(`<section class="view">
+    <div class="hero">
+      <div>
+        <h1>Hoe groot kan een populatie worden?</h1>
+        <p class="lead">Geen enkele populatie groeit eindeloos: de draagkracht van het ecosysteem zet een grens. Klik op een fase om te zien wat er gebeurt. Daarna werk je per hoofdstuk door de leerstof van thema 2.</p>
+        <ol class="ladder" id="ladder"></ol>
+        <div class="lvinfo" id="lvinfo" aria-live="polite"></div>
+      </div>
+      <svg id="curve" viewBox="0 0 420 300" role="img" aria-label="Grafiek van populatiegroei: populatiegrootte in functie van de tijd, met de draagkracht als stippellijn"></svg>
+    </div>
+    <div class="chapters" id="chaps"></div>
+    <div class="howto">
+      <h3>Zo werk je</h3>
+      <p>Lees in elk hoofdstuk eerst de samenvatting. Draai daarna de begripkaarten om en maak de oefeningen: je krijgt meteen feedback. Een oefening die volledig juist is, krijgt een groen vinkje en telt mee in de voortgangsring bovenaan. Je voortgang wordt alleen in deze browser bewaard. Oefen daarna spelenderwijs in de oefenarena en test jezelf op het einde met de eindtoets.</p>
+    </div>
+  </section>`);
+  app.appendChild(v);
+  const lad=$("#ladder",v), svg=$("#curve",v), info=$("#lvinfo",v);
+  const X0=46, Y0=262, W=354, H=220, K=0.72; // K = draagkracht (fractie van H)
+  const sx=t=>X0+t/100*W, sy=p=>Y0-p*H;
+  function logistic(t){ return K/(1+Math.exp(-0.13*(t-37))); }
+  function crashCurve(t){ if(t<44) return Math.min(0.98, 0.02*Math.exp(0.088*t)); const peak=0.02*Math.exp(0.088*44); return Math.max(0.05, peak*Math.exp(-0.16*(t-44))); }
+  const pts=f=>{ let s=""; for(let t=0;t<=100;t+=1) s+=(t?"L":"M")+sx(t).toFixed(1)+" "+sy(f(t)).toFixed(1)+" "; return s; };
+  svg.innerHTML = `
+    <rect class="hl" id="hlr" x="0" y="${Y0-H}" width="0" height="${H}"/>
+    <line class="ax" x1="${X0}" y1="${Y0}" x2="${X0+W}" y2="${Y0}"/><line class="ax" x1="${X0}" y1="${Y0}" x2="${X0}" y2="${Y0-H-10}"/>
+    <line class="k" x1="${X0}" y1="${sy(K)}" x2="${X0+W}" y2="${sy(K)}"/>
+    <text class="kl" x="${X0+W}" y="${sy(K)-7}" text-anchor="end">draagkracht</text>
+    <path class="s" id="sc" d="${pts(logistic)}"/>
+    <path class="c" id="cc" d="${pts(crashCurve)}"/>
+    <text class="axl" x="${X0+W}" y="${Y0+22}" text-anchor="end">tijd →</text>
+    <text class="axl" x="${X0-10}" y="${Y0-H-14}" text-anchor="start">populatiegrootte</text>`;
+  PHASES.forEach((p,i)=> lad.appendChild(h(`<li><button type="button" aria-pressed="false" data-i="${i}"><span class="n">${i+1}</span>${p.n}</button></li>`)));
+  function pick(i){
+    const p=PHASES[i];
+    lad.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.i==i));
+    const r=$("#hlr",svg); r.setAttribute("x",sx(p.x[0])); r.setAttribute("width",sx(p.x[1])-sx(p.x[0])); r.style.opacity=p.crash?0:1;
+    $("#sc",svg).classList.toggle("dim",!!p.crash); $("#cc",svg).classList.toggle("on",!!p.crash);
+    info.innerHTML = `<h3>${p.n}</h3><p>${p.d}</p><p class="lvex">Voorbeeld: ${p.ex}</p>`;
+  }
+  lad.addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) pick(+b.dataset.i); });
+  pick(1);
+  const cg=$("#chaps",v);
+  CH.forEach(ch=>{ const p=chProgress(ch); cg.appendChild(h(`<a class="chap" href="#${ch.id}"><div class="num">${ch.num}</div><h3>${ch.title}</h3><p>${ch.short}</p><div class="bar" aria-label="${p.d} van ${p.n} oefeningen juist"><i style="width:${100*p.d/p.n}%"></i></div></a>`)); });
+  cg.appendChild(h(`<a class="chap arena" href="#arena"><div class="num">Spel</div><h3>Oefenarena</h3><p>Memory, sorteerrace, wie ben ik? en kettingreactie over het hele thema.</p></a>`));
+}
+
+/* ---------- EXTRA OEFENTYPES THEMA 2 ---------- */
+const BUILD2 = {
+  calc(ex,w,body){
+    ex.items.forEach((it,k)=>{
+      const id=w.id+"-c"+k;
+      const r=h(`<div class="row"><label class="t" for="${id}">${it.t}</label><span style="display:flex;gap:8px;align-items:center"><input type="text" inputmode="decimal" id="${id}" autocomplete="off"><span class="u">${it.u}</span></span></div>`);
+      r.it=it; $("input",r).addEventListener("input",()=>r.classList.remove("ok","bad")); body.appendChild(r);
+    });
+    actions(w, m=>{ let g=0; body.querySelectorAll(".row").forEach(r=>{ const v=parseFloat(String($("input",r).value).replace(",",".")); const ok=!isNaN(v)&&Math.abs(v-r.it.a)<1e-6; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok); if(ok) g++; });
+      if(setMsg(m,g,ex.items.length,ex.ok)) w.done(); else m.textContent+=" Tip: deel het aantal individuen door de oppervlakte."; });
+  },
+  badkuip(ex,w,body){
+    const F=[["geboorte","in",30],["immigratie","in",10],["sterfte","uit",25],["emigratie","uit",10]];
+    const g=h(`<div class="tub"><div class="sl"></div><div class="vis"><svg viewBox="0 0 220 190" role="img" aria-label="Badkuip als model voor de populatie">
+        <path d="M20 40 L200 40 L188 170 Q186 180 176 180 L44 180 Q34 180 32 170 Z" class="tb"/>
+        <clipPath id="tubclip"><path d="M20 40 L200 40 L188 170 Q186 180 176 180 L44 180 Q34 180 32 170 Z"/></clipPath>
+        <rect id="water" x="0" y="110" width="220" height="80" clip-path="url(#tubclip)" class="wt"/>
+        <path d="M20 40 L200 40 L188 170 Q186 180 176 180 L44 180 Q34 180 32 170 Z" class="tbo"/>
+        <text x="110" y="28" text-anchor="middle" class="tl">populatiegrootte</text>
+        <text id="arrow" x="110" y="128" text-anchor="middle" class="ar">=</text></svg>
+        <p class="res" aria-live="polite"></p><p class="note" style="margin-top:8px">Gevonden: <span class="fd">—</span></p></div></div>`);
+    body.appendChild(g);
+    const val={}; const found=new Set();
+    F.forEach(([n,dir,d])=>{ val[n]=d; const id=w.id+"-"+n;
+      const r=h(`<div class="srow"><label for="${id}"><b>${dir==="in"?"+":"−"}</b> ${n} <span class="sv">${d}</span></label><input type="range" id="${id}" min="0" max="50" value="${d}"></div>`);
+      $("input",r).addEventListener("input",e=>{ val[n]=+e.target.value; $(".sv",r).textContent=val[n]; upd(); }); $(".sl",g).appendChild(r); });
+    function upd(){
+      const net=val.geboorte+val.immigratie-val.sterfte-val.emigratie;
+      const lvl=Math.max(52,Math.min(172,110-net*1.6)); const wr=$("#water",g); wr.setAttribute("y",lvl);
+      const a=$("#arrow",g); a.setAttribute("y",Math.max(70,lvl+22)); a.textContent= net>0?"▲":net<0?"▼":"=";
+      let t,k; if(net>0){t="Positieve populatiegroei: er komt meer bij (geboorte + immigratie) dan er verdwijnt.";k="positief";} else if(net<0){t="Negatieve populatiegroei: er verdwijnt meer (sterfte + emigratie) dan er bijkomt.";k="negatief";} else {t="Nulgroei: wat erbij komt, is gelijk aan wat verdwijnt.";k="nulgroei";}
+      $(".res",g).innerHTML=`<b>Netto: ${net>0?"+":""}${net}.</b> ${t}`; found.add(k); $(".fd",g).textContent=[...found].join(", ");
+      if(found.size===3) w.done();
+    }
+    upd();
+  },
+  lv(ex,w,body){
+    // eenvoudige discrete simulatie prooi-predator
+    const R=[],V=[];
+    for(let t=0;t<=400;t++){ const a=t/400*4*2*Math.PI; R.push(100+55*Math.sin(a)+6*Math.sin(2.3*a)); V.push(32+16*Math.sin(a-1.1)+2*Math.sin(1.7*a)); }
+    const N=R.length, X0=40, Y0=210, W=520, H=190, mx=Math.max(...R)*1.05;
+    const sx=i=>X0+i/(N-1)*W, sy=y=>Y0-y/mx*H;
+    const path=a=>a.map((y,i)=>(i?"L":"M")+sx(i).toFixed(1)+" "+sy(y).toFixed(1)).join(" ");
+    const g=h(`<div><div class="diagram"><svg viewBox="0 0 580 240" role="img" aria-label="Grafiek van een konijnen- en een vossenpopulatie doorheen de tijd">
+      <line class="ax" x1="${X0}" y1="${Y0}" x2="${X0+W}" y2="${Y0}"/><line class="ax" x1="${X0}" y1="${Y0}" x2="${X0}" y2="${Y0-H}"/>
+      <path d="${path(R)}" class="rab"/><path d="${path(V)}" class="fox"/>
+      <line id="cur" class="cur" x1="0" y1="${Y0}" x2="0" y2="${Y0-H}"/>
+      <text x="${X0+W}" y="${Y0+20}" text-anchor="end" class="axl">tijd →</text><text x="${X0}" y="${Y0-H-6}" class="axl">aantal</text>
+    </svg></div>
+    <div class="legend"><span><i class="rab"></i>konijnen</span><span><i class="fox"></i>vossen</span></div>
+    <label for="${w.id}-t" class="note" style="display:block;border:none;padding:0;margin-top:8px">Tijdlijn</label><input type="range" id="${w.id}-t" min="0" max="${N-1}" value="60">
+    <p class="infobox" aria-live="polite"></p></div>`);
+    body.appendChild(g);
+    function upd(i){ $("#cur",g).setAttribute("x1",sx(i)); $("#cur",g).setAttribute("x2",sx(i));
+      const dr=R[Math.min(N-1,i+1)]-R[i], df=V[Math.min(N-1,i+1)]-V[i];
+      $(".infobox",g).innerHTML=`Konijnen: <b>${Math.round(R[i])}</b> (${dr>0?"nemen toe":"nemen af"}) · Vossen: <b>${Math.round(V[i])}</b> (${df>0?"nemen toe":"nemen af"})`; }
+    $("input",g).addEventListener("input",e=>upd(+e.target.value)); upd(60);
+    const tfBox=h(`<div style="margin-top:14px"></div>`); body.appendChild(tfBox);
+    BUILD.tf(ex,w,tfBox);
+  },
+  herd(ex,w,body){
+    const C=20, N=C*C;
+    const g=h(`<div><label for="${w.id}-v">Immuun (gevaccineerd): <b class="pv"></b> %</label><input type="range" id="${w.id}-v" min="0" max="95" step="5" value="20">
+      <div class="actions" style="margin-top:6px"><button type="button" class="btn" data-a="go">Start besmetting</button></div>
+      <div class="herdgrid" aria-hidden="true"></div>
+      <div class="legend"><span><i class="h-s"></i>vatbaar</span><span><i class="h-i"></i>immuun</span><span><i class="h-x"></i>besmet</span></div>
+      <p class="infobox" aria-live="polite">Kies een percentage en start de besmetting.</p></div>`);
+    body.appendChild(g);
+    const grid=$(".herdgrid",g); const cells=[]; for(let i=0;i<N;i++){ const c=document.createElement("i"); grid.appendChild(c); cells.push(c); }
+    let state=[], running=false; const tried={low:false,high:false};
+    function setup(){ const p=+$("input",g).value; $(".pv",g).textContent=p; const imm=new Set(shuffle([...Array(N).keys()]).slice(0,Math.round(N*p/100)));
+      state=[...Array(N)].map((_,i)=>imm.has(i)?"i":"s"); draw(); }
+    function draw(){ cells.forEach((c,i)=>c.className="h-"+state[i]); }
+    $("input",g).addEventListener("input",()=>{ if(!running) setup(); });
+    $("[data-a=go]",g).addEventListener("click",()=>{ if(running) return; setup(); running=true;
+      const p=+$("input",g).value; const sus=state.map((s,i)=>s==="s"?i:-1).filter(i=>i>=0); if(!sus.length){ running=false; return; }
+      let front=[sus[Math.floor(Math.random()*sus.length)]]; state[front[0]]="x"; draw();
+      const step=()=>{ const nf=[]; front.forEach(i=>{ const r=Math.floor(i/C), c=i%C; [[r-1,c],[r+1,c],[r,c-1],[r,c+1]].forEach(([a,b])=>{ if(a<0||b<0||a>=C||b>=C) return; const j=a*C+b; if(state[j]==="s"&&Math.random()<0.8){ state[j]="x"; nf.push(j); } }); });
+        draw(); front=nf; if(front.length){ setTimeout(step,90); } else { running=false; const n=state.filter(s=>s==="x").length, s0=state.filter(s=>s!=="i").length;
+          $(".infobox",g).innerHTML=`<b>${n} van de ${N}</b> individuen raakten besmet (${Math.round(100*n/N)} %). ${p>=70?"Door de groepsimmuniteit kan de ziekteverwekker zich nauwelijks verspreiden: de immune individuen beschermen ook de vatbare.":p<=30?"Er zijn te weinig immune individuen: de ziekteverwekker verspreidt zich vlot en verstoort het dynamisch evenwicht van de populatie.":"Probeer ook een heel lage en een heel hoge vaccinatiegraad."}`;
+          if(p<=30) tried.low=true; if(p>=70) tried.high=true; if(tried.low&&tried.high) w.done(); } };
+      setTimeout(step,200); });
+    setup();
+    body.appendChild(h(`<p class="note" style="margin-top:12px">Dit is een vereenvoudigd model: elk besmet individu kan zijn vier buren besmetten. Probeer minstens één keer ≤ 30 % en één keer ≥ 70 %.</p>`));
+  }
+};
+
+/* ---------- CHAPTER ---------- */
+function renderChapter(app, ch){
+  const v = h(`<section class="view">
+    <div class="chead"><div class="num">${ch.num==="Focus"?"Focus":"Hoofdstuk "+ch.num}</div><h1>${ch.title}</h1><p>${ch.lead}</p>
+      <div class="subnav"><a href="#${ch.id}" data-jump="sum">Samenvatting</a><a href="#${ch.id}" data-jump="cards">Begripkaarten</a><a href="#${ch.id}" data-jump="oef">Oefeningen</a></div></div>
+    <div class="block" id="sum"><h2>Samenvatting</h2><div class="sum">${ch.summary}</div></div>
+    <div class="block" id="cards" style="max-width:1000px"><h2>Begripkaarten</h2><p class="note">Denk eerst zelf na over de betekenis. Klik daarna om de kaart om te draaien.</p><div class="cards"></div></div>
+    <div class="block" id="oef" style="max-width:1000px"><h2>Oefeningen</h2><div class="ex-list"></div></div>
+    <p class="foot">Gebaseerd op Focus Biologie 4.2 (Pelckmans), thema 2 Populaties en ecologie. Samenvattingen en oefeningen zijn bewerkt voor eigen gebruik in de les.</p>
+  </section>`);
+  app.appendChild(v);
+  v.querySelector(".subnav").addEventListener("click",e=>{ const a=e.target.closest("[data-jump]"); if(a){ e.preventDefault(); const t=v.querySelector("#"+a.dataset.jump); t.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); } });
+  const cards=$(".cards",v);
+  ch.cards.forEach(c=>{ const b=h(`<button type="button" class="card" aria-label="${c[0]}: klik om om te draaien"><span class="in"><span class="f">${c[0]}<small>klik om om te draaien</small></span><span class="b">${c[1]}</span></span></button>`); b.addEventListener("click",()=>b.classList.toggle("flip")); cards.appendChild(b); });
+  const list=$(".ex-list",v);
+  ch.exercises.forEach((ex,i)=> list.appendChild(buildEx(ex, ch.id+"-"+i, (ch.num==="Focus"?"F":ch.num)+"."+(i+1))));
+}
+
+function shell(ex,id,label){
+  const w = h(`<article class="ex${P[id]?" done":""}" id="ex-${id}">
+    <div class="exh"><h3><span class="tag">Oefening ${label}</span>${ex.title}</h3><span class="chip">${P[id]?"Juist":"Te doen"}</span></div>
+    ${ex.q?`<p class="q">${ex.q}</p>`:""}<div class="ex-body"></div></article>`);
+  w.done = () => { P[id]=true; save(); w.classList.add("done"); $(".chip",w).textContent="Juist"; renderTabs(current); };
+  return w;
+}
+function actions(w, onCheck, onReset){
+  const a = h(`<div class="actions"><button type="button" class="btn">Controleer</button>${onReset?'<button type="button" class="btn ghost">Opnieuw</button>':""}<span class="msg" aria-live="polite"></span></div>`);
+  a.children[0].addEventListener("click",()=>onCheck($(".msg",a)));
+  if(onReset) a.children[1].addEventListener("click",()=>{ $(".msg",a).textContent=""; $(".msg",a).className="msg"; onReset(); });
+  w.appendChild(a); return a;
+}
+function setMsg(m, good, total, okText){
+  const all = good===total;
+  m.className = "msg " + (all?"ok":"bad");
+  m.textContent = all ? ("Alles juist! " + (okText||"")) : (good + " van " + total + " juist. Pas de rode antwoorden aan.");
+  return all;
+}
+
+function buildEx(ex,id,label){
+  const w = shell(ex,id,label), body=$(".ex-body",w);
+  const T = BUILD[ex.type]; T(ex,w,body); return w;
+}
+
+const BUILD = {
+  classify(ex,w,body){
+    const items = shuffle(ex.items);
+    items.forEach((it,k)=>{
+      const r = h(`<div class="row"><div class="t">${it.t}</div><div class="opts" role="group"></div></div>`);
+      ex.buckets.forEach((b,j)=>{ const btn=h(`<button type="button" class="opt" aria-pressed="false">${b}</button>`); btn.addEventListener("click",()=>{ r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); btn.setAttribute("aria-pressed","true"); r.dataset.c=j; r.classList.remove("ok","bad"); const f=$(".fb",r); if(f) f.remove(); }); $(".opts",r).appendChild(btn); });
+      r.it=it; body.appendChild(r);
+    });
+    actions(w, m=>{
+      let g=0; body.querySelectorAll(".row").forEach(r=>{ const ok = r.dataset.c!==undefined && +r.dataset.c===r.it.b; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok); if(ok) g++; });
+      if(setMsg(m,g,items.length,ex.ok)) w.done();
+    }, ()=>{ body.querySelectorAll(".row").forEach(r=>{ delete r.dataset.c; r.classList.remove("ok","bad"); r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); }); });
+  },
+  match(ex,w,body){
+    ex.items.forEach((it,k)=>{
+      const sid = w.id+"-s"+k;
+      const r = h(`<div class="row"><label class="t" for="${sid}">${it.t}</label><select id="${sid}"><option value="">Kies …</option>${ex.options.map((o,j)=>`<option value="${j}">${o}</option>`).join("")}</select></div>`);
+      r.it=it; $("select",r).addEventListener("change",()=>r.classList.remove("ok","bad")); body.appendChild(r);
+    });
+    actions(w, m=>{ let g=0; body.querySelectorAll(".row").forEach(r=>{ const v=$("select",r).value; const ok = v!=="" && +v===r.it.a; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok); if(ok) g++; }); if(setMsg(m,g,ex.items.length)) w.done(); });
+  },
+  tf(ex,w,body){
+    const state = ex.items.map(()=>null);
+    ex.items.forEach((it,k)=>{
+      const r = h(`<div class="row"><div class="t">${k+1}. ${it.s}</div><div class="opts"><button type="button" class="opt" aria-pressed="false" data-v="1">Waar</button><button type="button" class="opt" aria-pressed="false" data-v="0">Niet waar</button></div></div>`);
+      r.addEventListener("click",e=>{ const b=e.target.closest(".opt"); if(!b) return;
+        r.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");
+        const ok = (b.dataset.v==="1")===it.a; state[k]=ok; r.classList.toggle("ok",ok); r.classList.toggle("bad",!ok);
+        let f=$(".fb",r); if(!f){ f=h(`<div class="fb"></div>`); r.appendChild(f); }
+        f.className="fb "+(ok?"ok":"bad"); f.innerHTML = (ok?"<b>Juist.</b> ":"<b>Niet juist.</b> Denk nog eens na. ") + (ok?it.e:"");
+        if(state.every(s=>s===true)) w.done();
+      });
+      body.appendChild(r);
+    });
+  },
+  mc(ex,w,body){
+    const multi = Array.isArray(ex.a); const sel=new Set();
+    const box = h(`<div class="qopts" role="group"></div>`);
+    ex.o.forEach((o,j)=>{ const b=h(`<button type="button" class="qopt" aria-pressed="false">${String.fromCharCode(97+j)}&ensp;${o}</button>`);
+      b.addEventListener("click",()=>{ if(!multi){ sel.clear(); box.querySelectorAll(".qopt").forEach(x=>x.setAttribute("aria-pressed","false")); }
+        if(sel.has(j)){ sel.delete(j); b.setAttribute("aria-pressed","false"); } else { sel.add(j); b.setAttribute("aria-pressed","true"); }
+        box.querySelectorAll(".qopt").forEach(x=>x.classList.remove("ok","bad")); });
+      box.appendChild(b); });
+    body.appendChild(box);
+    const css = `.qopt[aria-pressed="true"]{border-color:var(--water);box-shadow:inset 0 0 0 1px var(--water)}`;
+    if(!document.getElementById("mccss")){ const s=document.createElement("style"); s.id="mccss"; s.textContent=css; document.head.appendChild(s); }
+    actions(w, m=>{
+      const want = new Set(multi?ex.a:[ex.a]);
+      const ok = sel.size===want.size && [...sel].every(x=>want.has(x));
+      box.querySelectorAll(".qopt").forEach((b,j)=>{ b.classList.remove("ok","bad"); if(sel.has(j)) b.classList.add(want.has(j)?"ok":"bad"); });
+      m.className="msg "+(ok?"ok":"bad");
+      m.textContent = sel.size===0 ? "Kies eerst een antwoord." : ok ? "Juist! "+(ex.e||"") : (multi?"Nog niet helemaal juist. Let op: er kunnen meerdere antwoorden juist zijn.":"Niet juist. Probeer opnieuw.");
+      if(ok) w.done();
+    });
+  },
+  multi(ex,w,body){
+    const t = h(`<div class="tbl"><table><thead><tr><th>Proces</th>${ex.cols.map(c=>`<th class="c">${c} waterkringloop</th>`).join("")}</tr></thead><tbody></tbody></table></div>`);
+    ex.rows.forEach((r,k)=>{ const tr=h(`<tr><td>${r.t}</td>${ex.cols.map((c,j)=>`<td class="c"><input type="checkbox" id="${w.id}-${k}-${j}" aria-label="${r.t}, ${c}"></td>`).join("")}</tr>`); $("tbody",t).appendChild(tr); });
+    body.appendChild(t);
+    t.addEventListener("change",e=>{ const td=e.target.closest("td"); if(td) td.classList.remove("ok","bad"); });
+    actions(w, m=>{ let g=0,n=0; ex.rows.forEach((r,k)=>ex.cols.forEach((c,j)=>{ const cb=document.getElementById(`${w.id}-${k}-${j}`); const ok=cb.checked===!!r.a[j]; n++; if(ok) g++; cb.parentElement.classList.toggle("ok",ok&&cb.checked); cb.parentElement.classList.toggle("bad",!ok); })); if(setMsg(m,g,n,"In de korte kringloop komt het water niet op het land terecht.")) w.done(); });
+  },
+  order(ex,w,body){
+    const pool=h(`<div class="pool"></div>`), ans=h(`<ol class="answer" style="list-style:none;margin:10px 0 0"></ol>`);
+    body.append(pool,ans);
+    function reset(){ pool.innerHTML=""; ans.innerHTML=""; shuffle(ex.items.map((t,i)=>i)).forEach(i=>pool.appendChild(tok(i))); }
+    function tok(i){ const b=h(`<button type="button" class="tok" data-i="${i}"><span class="i"></span><span>${ex.items[i]}</span></button>`); return b; }
+    function renum(){ ans.querySelectorAll(".tok").forEach((b,k)=>{ $(".i",b).textContent=(k+1)+"."; }); pool.querySelectorAll(".i").forEach(s=>s.textContent=""); }
+    pool.addEventListener("click",e=>{ const b=e.target.closest(".tok"); if(b){ const li=document.createElement("li"); li.appendChild(b); ans.appendChild(li); ans.querySelectorAll(".tok").forEach(x=>x.classList.remove("ok","bad")); renum(); } });
+    ans.addEventListener("click",e=>{ const b=e.target.closest(".tok"); if(b){ const li=b.parentElement; pool.appendChild(b); li.remove(); ans.querySelectorAll(".tok").forEach(x=>x.classList.remove("ok","bad")); renum(); } });
+    reset();
+    actions(w, m=>{ const toks=[...ans.querySelectorAll(".tok")]; if(toks.length<ex.items.length){ m.className="msg bad"; m.textContent="Zet eerst alle stappen in je volgorde."; return; }
+      let g=0; toks.forEach((b,k)=>{ const ok=+b.dataset.i===k; b.classList.toggle("ok",ok); b.classList.toggle("bad",!ok); if(ok) g++; }); if(setMsg(m,g,toks.length)) w.done(); }, reset);
+  },
+  open(ex,w,body){
+    const id=w.id+"-ta";
+    body.appendChild(h(`<div><label for="${id}" class="note" style="display:block;margin-bottom:6px;border:none;padding:0">Schrijf eerst je eigen antwoord.</label><textarea id="${id}"></textarea></div>`));
+    const a=h(`<div class="actions"><button type="button" class="btn">Toon modelantwoord</button></div>`); w.appendChild(a);
+    a.children[0].addEventListener("click",()=>{ if(!$(".model",w)){ w.appendChild(h(`<div class="model"><b>Modelantwoord</b>${ex.model}<br><span style="color:var(--ink-2);font-size:.9rem">Vergelijk met je eigen antwoord. Staan alle kernwoorden erin?</span></div>`)); w.done(); } });
+  },
+  explore(ex,w,body){
+    const g=h(`<div class="explore"><div class="list" role="group"></div><div class="panel" aria-live="polite"></div></div>`); body.appendChild(g);
+    const seen=new Set();
+    ex.items.forEach((it,k)=>{ const b=h(`<button type="button" class="opt" aria-pressed="false" style="text-align:left">${it.n}</button>`);
+      b.addEventListener("click",()=>{ g.querySelectorAll(".list .opt").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");
+        $(".panel",g).innerHTML=`<h4>${it.n}</h4><dl>${it.d.map(d=>`<dt>${d[0]}</dt><dd>${d[1]}</dd>`).join("")}</dl>`; seen.add(k); if(seen.size===ex.items.length) w.done(); });
+      $(".list",g).appendChild(b); });
+    g.querySelector(".list .opt").click();
+  },
+};
+Object.assign(BUILD, BUILD2);
+
+/* ---------- GLOSSARY ---------- */
+function renderGloss(app){
+  const v=h(`<section class="view"><div class="chead"><h1>Begrippenlijst</h1><p>Alle kernbegrippen van thema 2. Zoek een woord of filter op hoofdstuk.</p></div>
+    <div class="gl-tools"><input type="search" id="gl-q" placeholder="Zoek een begrip, bv. draagkracht" aria-label="Zoek een begrip"><select id="gl-c" aria-label="Filter op hoofdstuk"><option value="">Alle hoofdstukken</option><option value="1">1 Populatiekenmerken</option><option value="2">2 Populatiedynamiek</option><option value="3">3 Verstoring van populaties</option><option value="Focus">Focus invasieve soorten</option></select><button type="button" class="btn ghost" id="gl-hide" aria-pressed="false">Verberg betekenissen</button></div>
+    <dl class="gl"></dl></section>`);
+  app.appendChild(v);
+  const dl=$(".gl",v), q=$("#gl-q",v), c=$("#gl-c",v), hide=$("#gl-hide",v); let hidden=false;
+  function draw(){ const s=q.value.trim().toLowerCase(); const rows=GLOSS.filter(g=>(!c.value||g[2]===c.value)&&(!s||(g[0]+" "+g[1]).toLowerCase().includes(s))).sort((a,b)=>a[0].localeCompare(b[0],"nl"));
+    dl.innerHTML = rows.length ? rows.map(g=>`<div><dt>${g[0]}<br><span class="h">${g[2]==="Focus"?"Focus":"hoofdstuk "+g[2]}</span></dt><dd ${hidden?'style="filter:blur(6px);cursor:pointer" title="Klik om te tonen"':""}>${g[1]}</dd></div>`).join("") : `<p class="note" style="margin-top:12px">Geen begrip gevonden. Probeer een ander woord of kies ‘Alle hoofdstukken’.</p>`; }
+  q.addEventListener("input",draw); c.addEventListener("change",draw);
+  hide.addEventListener("click",()=>{ hidden=!hidden; hide.setAttribute("aria-pressed",hidden); hide.textContent=hidden?"Toon betekenissen":"Verberg betekenissen"; draw(); });
+  dl.addEventListener("click",e=>{ const d=e.target.closest("dd"); if(d) d.style.filter="none"; });
+  draw();
+}
+
+/* ---------- QUIZ ---------- */
+function renderQuiz(app){
+  const v=h(`<section class="view quiz"><div class="chead"><h1>Eindtoets thema 2</h1><p>Tien willekeurige vragen over het hele thema. Elke keer dat je start, krijg je andere vragen.</p></div><div class="block" id="qz"></div></section>`);
+  app.appendChild(v); const box=$("#qz",v);
+  function intro(){ const best=P.best; box.innerHTML=`<div class="qcard"><h3>Klaar om jezelf te testen?</h3><p>${best!=null?`Je beste score tot nu toe: <b>${best}/10</b>.`:"Je hebt de toets nog niet gemaakt."}</p><div class="actions"><button type="button" class="btn" id="qstart">Start de toets</button></div></div>`; $("#qstart",box).addEventListener("click",start); }
+  let qs=[], i=0, score=0;
+  function start(){ qs=shuffle(POOL).slice(0,10).map(q=>{ const ord=shuffle(q.o.map((_,j)=>j)); return {q:q.q,o:ord.map(j=>q.o[j]),a:ord.indexOf(q.a)}; }); i=0; score=0; ask(); }
+  function ask(){ const q=qs[i];
+    box.innerHTML=`<div class="qcard"><div class="qn">Vraag ${i+1} van 10</div><div class="bar"><i style="width:${i*10}%"></i></div><h3>${q.q}</h3><div class="qopts">${q.o.map((o,j)=>`<button type="button" class="qopt" data-j="${j}">${o}</button>`).join("")}</div><div class="actions"><span class="msg" aria-live="polite"></span></div></div>`;
+    box.querySelector(".qopts").addEventListener("click",e=>{ const b=e.target.closest(".qopt"); if(!b||b.disabled) return; const j=+b.dataset.j; const ok=j===q.a; if(ok) score++;
+      box.querySelectorAll(".qopt").forEach((x,k)=>{ x.disabled=true; if(k===q.a) x.classList.add("ok"); }); if(!ok) b.classList.add("bad");
+      const m=$(".msg",box); m.className="msg "+(ok?"ok":"bad"); m.textContent= ok?"Juist!":"Niet juist. Het juiste antwoord is groen.";
+      const nb=h(`<button type="button" class="btn">${i<9?"Volgende vraag":"Bekijk je score"}</button>`); nb.addEventListener("click",()=>{ i++; i<10?ask():end(); }); $(".actions",box).prepend(nb); nb.focus(); });
+  }
+  function end(){ if(P.best==null||score>P.best){ P.best=score; save(); }
+    const t = score>=8?"Sterk gedaan. Je beheerst dit thema goed.":score>=5?"Goed bezig. Herhaal de hoofdstukken waar je twijfelde.":"Lees de samenvattingen nog eens en maak de oefeningen opnieuw.";
+    box.innerHTML=`<div class="qcard"><div class="score">${score}/10</div><p style="margin-top:6px">${t}</p><div class="actions"><button type="button" class="btn" id="qagain">Nieuwe toets</button><a class="btn ghost" href="#start" style="text-decoration:none">Terug naar start</a></div></div>`;
+    $("#qagain",box).addEventListener("click",start); }
+  intro();
+}
+
+/* ---------- OEFENARENA ---------- */
+let arTotal=0, arTab="mem";
+function renderArena(app){
+  const v=h(`<section class="view">
+    <div class="ar-top"><div class="chead"><div class="num">Oefenen</div><h1>Oefenarena</h1><p>Vier spellen over het hele thema. Verdien punten en verbeter je record. Je punten worden alleen in deze browser bewaard.</p></div>
+      <div class="ar-pts" aria-live="polite"><span class="ar-pill">Punten <b id="ar-total">0</b></span><span class="ar-pill">Record <b id="ar-best">0</b></span></div></div>
+    <div class="ar-tabs" role="tablist" aria-label="Spellen">
+      <button role="tab" data-g="mem">Begrippen-memory</button><button role="tab" data-g="sort">Sorteerrace</button>
+      <button role="tab" data-g="who">Wie ben ik?</button><button role="tab" data-g="chain">Kettingreactie</button></div>
+    <div id="ar-stage"></div>
+    <p class="foot">Gebaseerd op Focus Biologie 4.2 (Pelckmans), thema 2 Populaties en ecologie.</p></section>`);
+  app.appendChild(v);
+  const stage=$("#ar-stage",v);
+  function pts(n){ arTotal=Math.max(0,arTotal+n); $("#ar-total",v).textContent=arTotal; if(arTotal>(P.arenaBest||0)){ P.arenaBest=arTotal; save(); } $("#ar-best",v).textContent=P.arenaBest||0; }
+  pts(0);
+  let timer=null;
+  function fb(el,ok,t){ el.className="ar-fb "+(ok?"ok":"no"); el.textContent=t; }
+  const GAMES={
+    mem(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2>Begrippen-memory</h2><span class="ar-meta" id="m-meta"></span><p>Draai telkens twee kaarten om en zoek bij elk begrip de juiste omschrijving. Hoe minder beurten, hoe meer punten.</p></div><div class="ar-mem" id="m-grid"></div><div class="actions"><button type="button" class="btn" id="m-new">Nieuw spel</button></div><div class="ar-fb" id="m-fb" aria-live="polite"></div></div>`;
+      let st;
+      function meta(){ $("#m-meta",stage).textContent=`Beurten: ${st.turns} · Paren: ${st.found}/8`; }
+      function start(){
+        const pick=shuffle(AR_MEM).slice(0,8);
+        st={cards:shuffle(pick.flatMap((g,i)=>[{id:i,t:g[0],term:true},{id:i,t:g[1],term:false}])),open:[],turns:0,found:0,lock:false};
+        const grid=$("#m-grid",stage); grid.innerHTML=""; $("#m-fb",stage).textContent="";
+        st.cards.forEach((c,k)=>{ const b=document.createElement("button"); b.type="button"; b.className="ar-card"+(c.term?" term":""); b.textContent=c.t; b.setAttribute("aria-label","Kaart "+(k+1)+", omgedraaid"); b.addEventListener("click",()=>flip(k,b)); c.el=b; grid.appendChild(b); });
+        meta();
+      }
+      function flip(k,b){
+        const c=st.cards[k]; if(st.lock||c.done||st.open.includes(k)) return;
+        b.classList.add("open"); b.setAttribute("aria-label",c.t); st.open.push(k); if(st.open.length<2) return;
+        st.turns++; const [a,z]=st.open.map(i=>st.cards[i]); const m=$("#m-fb",stage);
+        if(a.id===z.id&&a.term!==z.term){ a.done=z.done=true; a.el.classList.add("done"); z.el.classList.add("done"); st.open=[]; st.found++; fb(m,true,"Juist paar!");
+          if(st.found===8){ const p=Math.max(4,20-Math.max(0,st.turns-8)); pts(p); fb(m,true,`Alle paren gevonden in ${st.turns} beurten: +${p} punten.`); } }
+        else { st.lock=true; a.el.classList.add("wrong"); z.el.classList.add("wrong"); fb(m,false,"Geen paar. Onthoud waar ze liggen.");
+          setTimeout(()=>{ [a,z].forEach(c=>{ c.el.classList.remove("open","wrong"); c.el.setAttribute("aria-label","Omgedraaide kaart"); }); st.open=[]; st.lock=false; },1300); }
+        meta();
+      }
+      $("#m-new",stage).addEventListener("click",start); start();
+    },
+    sort(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2 id="s-title">Sorteerrace</h2><span class="ar-meta" id="s-meta"></span><p>Tik op een kaartje en daarna op de juiste kolom. Elke fout kost een punt; ben je binnen de minuut klaar, dan krijg je 2 bonuspunten.</p></div>
+        <div class="actions"><label for="s-pick" class="ar-meta">Onderwerp</label><select id="s-pick"></select><button type="button" class="btn" id="s-next">Volgende ronde</button></div>
+        <div class="ar-pool" id="s-pool" aria-label="Te sorteren kaartjes"></div><div class="ar-buckets" id="s-buckets"></div><div class="ar-fb" id="s-fb" aria-live="polite"></div></div>`;
+      const sel=$("#s-pick",stage); AR_SETS.forEach((s,i)=>sel.appendChild(h(`<option value="${i}">${s.t}</option>`)));
+      let st={idx:-1};
+      function meta(){ $("#s-meta",stage).textContent=`Nog ${st.left} · Fouten ${st.err} · ${Math.round((Date.now()-st.t0)/1000)} s`; }
+      function start(idx){
+        if(idx===undefined) idx=(st.idx+1)%AR_SETS.length;
+        const s=AR_SETS[idx]; st={idx,set:s,left:s.i.length,err:0,sel:null,t0:Date.now()}; sel.value=idx;
+        $("#s-title",stage).textContent=s.t; $("#s-fb",stage).textContent="";
+        const pool=$("#s-pool",stage); pool.innerHTML="";
+        shuffle(s.i).forEach(it=>{ const b=document.createElement("button"); b.type="button"; b.className="ar-chip"; b.textContent=it[0]; b.dataset.c=it[1];
+          b.addEventListener("click",()=>{ if(b.classList.contains("placed")) return; stage.querySelectorAll(".ar-chip.sel").forEach(x=>x.classList.remove("sel")); b.classList.add("sel"); st.sel=b; }); pool.appendChild(b); });
+        const bk=$("#s-buckets",stage); bk.innerHTML="";
+        s.c.forEach((c,ci)=>{ const d=document.createElement("button"); d.type="button"; d.className="ar-bucket"; d.innerHTML=`<h4>${c}</h4>`; d.setAttribute("aria-label","Kolom "+c); d.addEventListener("click",()=>drop(ci,d)); bk.appendChild(d); });
+        clearInterval(timer); timer=setInterval(()=>{ if(!document.body.contains(stage)) return clearInterval(timer); meta(); },500); meta();
+      }
+      function drop(ci,d){
+        const b=st.sel, m=$("#s-fb",stage); if(!b){ fb(m,false,"Tik eerst op een kaartje."); return; }
+        if(+b.dataset.c===ci){ b.classList.remove("sel"); b.classList.add("placed"); d.appendChild(b); st.sel=null; st.left--; fb(m,true,"Juist!");
+          if(st.left===0){ clearInterval(timer); const sec=Math.round((Date.now()-st.t0)/1000); const p=Math.max(1,st.set.i.length-st.err+(sec<60?2:0)); pts(p);
+            fb(m,true,`Ronde klaar in ${sec} s met ${st.err} fout(en): +${p} punten.${sec<60?" (snelheidsbonus +2)":""}`); } }
+        else { st.err++; d.classList.add("flash","ar-shake"); b.classList.add("ar-shake"); setTimeout(()=>{ d.classList.remove("flash","ar-shake"); b.classList.remove("ar-shake"); },400);
+          fb(m,false,`‘${b.textContent}’ hoort niet bij ${st.set.c[ci]}. Probeer opnieuw.`); }
+        meta();
+      }
+      sel.addEventListener("change",()=>start(+sel.value)); $("#s-next",stage).addEventListener("click",()=>start()); start(0);
+    },
+    who(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2>Wie ben ik?</h2><span class="ar-meta" id="w-meta"></span><p>Raad het organisme, proces of begrip. Na één hint verdien je 3 punten, na twee hints 2 punten, na drie hints 1 punt.</p></div>
+        <div class="ar-riddle"><ol id="w-hints"></ol></div><div class="actions"><button type="button" class="btn ghost" id="w-hint">Volgende hint</button></div>
+        <div class="ar-opts" id="w-opts"></div><div class="ar-fb" id="w-fb" aria-live="polite"></div><div class="actions"><button type="button" class="btn" id="w-next">Volgend raadsel</button></div></div>`;
+      let st={order:[],k:-1,shown:1,done:false};
+      function draw(){ const r=AR_WHO[st.order[st.k]]; $("#w-hints",stage).innerHTML=r.h.map((x,i)=>i<st.shown?`<li>${x}</li>`:`<li class="hid" aria-hidden="true">verborgen hint</li>`).join("");
+        $("#w-hint",stage).disabled=st.done||st.shown>=3; $("#w-meta",stage).textContent=`Raadsel ${st.k+1}/${AR_WHO.length} · waard ${4-st.shown} pt`; }
+      function next(){
+        if(!st.order.length||st.k>=st.order.length-1){ st.order=shuffle(AR_WHO.map((_,i)=>i)); st.k=-1; }
+        st.k++; st.shown=1; st.done=false; const r=AR_WHO[st.order[st.k]]; $("#w-fb",stage).textContent=""; draw();
+        const o=$("#w-opts",stage); o.innerHTML="";
+        shuffle(r.o).forEach(t=>{ const b=document.createElement("button"); b.type="button"; b.textContent=t; b.addEventListener("click",()=>answer(b,t,r)); o.appendChild(b); });
+      }
+      function answer(b,t,r){ if(st.done) return; const m=$("#w-fb",stage);
+        if(t===r.a){ st.done=true; b.classList.add("ok"); const p=4-st.shown; pts(p); st.shown=3; draw(); fb(m,true,`Juist, het is ${r.a}! +${p} punten.`); }
+        else { b.classList.add("no"); b.disabled=true;
+          if(st.shown<3){ st.shown++; draw(); fb(m,false,"Niet juist. Je krijgt een extra hint."); }
+          else { st.done=true; stage.querySelectorAll("#w-opts button").forEach(x=>{ if(x.textContent===r.a) x.classList.add("ok"); }); draw(); fb(m,false,`Helaas, het juiste antwoord is ${r.a}.`); } } }
+      $("#w-hint",stage).addEventListener("click",()=>{ if(st.shown<3){ st.shown++; draw(); } });
+      $("#w-next",stage).addEventListener("click",next); next();
+    },
+    chain(){
+      stage.innerHTML=`<div class="ar-game"><div class="ar-head"><h2 id="c-title">Kettingreactie</h2><span class="ar-meta" id="c-meta"></span><p id="c-q"></p></div>
+        <ol class="ar-chain" id="c-list"></ol><div class="actions"><button type="button" class="btn" id="c-check">Controleer</button><button type="button" class="btn ghost" id="c-next">Volgende ketting</button></div><div class="ar-fb" id="c-fb" aria-live="polite"></div></div>`;
+      let st={k:-1,cur:[],checked:false};
+      function draw(marks){ const ol=$("#c-list",stage); ol.innerHTML="";
+        st.cur.forEach((s,i)=>{ const li=document.createElement("li"); if(marks) li.className=marks[i]?"ok":"no";
+          li.innerHTML=`<span class="n" aria-hidden="true"></span><span class="t"></span>`; $(".t",li).textContent=s;
+          const up=h(`<button type="button" class="ar-mv">↑</button>`), dn=h(`<button type="button" class="ar-mv">↓</button>`);
+          up.setAttribute("aria-label","Omhoog: "+s); dn.setAttribute("aria-label","Omlaag: "+s); up.disabled=i===0||st.checked; dn.disabled=i===st.cur.length-1||st.checked;
+          up.addEventListener("click",()=>{ [st.cur[i-1],st.cur[i]]=[st.cur[i],st.cur[i-1]]; draw(); ol.children[i-1].querySelector(".ar-mv").focus(); });
+          dn.addEventListener("click",()=>{ [st.cur[i+1],st.cur[i]]=[st.cur[i],st.cur[i+1]]; draw(); ol.children[i+1].querySelectorAll(".ar-mv")[1].focus(); });
+          li.append(up,dn); ol.appendChild(li); }); }
+      function next(){ st.k=(st.k+1)%AR_CHAINS.length; const c=AR_CHAINS[st.k]; let cur; do{ cur=shuffle(c.s); }while(cur.every((x,i)=>x===c.s[i]));
+        st.cur=cur; st.checked=false; $("#c-title",stage).textContent=c.t; $("#c-q",stage).textContent=c.q+" Zet de stappen in de juiste volgorde met de pijltjes en controleer. Elke stap op de juiste plaats = 1 punt.";
+        $("#c-fb",stage).textContent=""; $("#c-check",stage).disabled=false; $("#c-meta",stage).textContent=`Ketting ${st.k+1}/${AR_CHAINS.length}`; draw(); }
+      $("#c-check",stage).addEventListener("click",()=>{ if(st.checked) return; const c=AR_CHAINS[st.k]; const marks=st.cur.map((s,i)=>s===c.s[i]); const n=marks.filter(Boolean).length;
+        st.checked=true; draw(marks); pts(n); $("#c-check",stage).disabled=true;
+        fb($("#c-fb",stage),n===c.s.length, n===c.s.length?`Perfect! +${n} punten.`:`${n} van de ${c.s.length} stappen staan juist: +${n} punten. Juiste volgorde: ${c.s.join(" → ")}`); });
+      $("#c-next",stage).addEventListener("click",next); next();
+    }
+  };
+  const tabs=v.querySelectorAll(".ar-tabs button");
+  function open(g){ arTab=g; clearInterval(timer); tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.g===g)); GAMES[g](); }
+  v.querySelector(".ar-tabs").addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) open(b.dataset.g); });
+  open(arTab);
+}
+
+/* ---------- ROUTER ---------- */
+let current="start";
+function route(){
+  const id=(location.hash||"#start").slice(1);
+  const ch=CH.find(c=>c.id===id);
+  current = ch?id:(["begrippen","toets","arena"].includes(id)?id:"start");
+  const app=$("#app"); app.innerHTML="";
+  if(ch) renderChapter(app,ch); else if(current==="begrippen") renderGloss(app); else if(current==="toets") renderQuiz(app); else if(current==="arena") renderArena(app); else renderStart(app);
+  renderTabs(current); window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+route();
+</script>
+<script>try{localStorage.setItem("bio42-last","2")}catch(e){}</script>
+</body>
+</html>
